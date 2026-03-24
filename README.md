@@ -1,8 +1,8 @@
 # Project's Description
-This is a mini learning project, demonstrating a simple ETL pipeline where data from a CSV file was converted into a DataFrame, cleaned, and loaded to a database. Then the database was normalized and the data from the database was finally used for data visualization on a dashboard. 
+This is a mini learning project, demonstrating a simple ETL pipeline where data from a CSV file was converted into a DataFrame, cleaned, and loaded to a database. Then the database table was decomposed into multiple related tables to improve the database schema. Finally, the data from the database was used for data visualization on a dashboard. 
 <br><br>
 This project was inspired by the article '[Build a Complete Data Engineering Project from Scratch (Day 42–45)](https://medium.com/@lasyachowdary1703/build-a-complete-data-engineering-project-from-scratch-day-42-45-b14b74ae1586)' by [Lasya](https://medium.com/@lasyachowdary1703) on Medium. This project adapts it to a different dataset and extends it by adding:
-- Database normalization
+- Database table decomposition to improve the database schema
 - Validation checks
 - Environment configuration
 - More charts to visualize data
@@ -13,7 +13,7 @@ This project uses the dataset: '[Chocolate Sales](https://www.kaggle.com/dataset
 In this project, the data was used/modified in the following ways after being converted into a DataFrame:
 - The column names were modified 
 - The data was cleaned
-- It was normalized into database tables
+- It was loaded to a database as one table which was then split into multiple related tables
 <br>
 The dataset is not included in this repository, it can be manually downloaded from the link provided.
 
@@ -34,7 +34,7 @@ DB_HOST="your PostgreSQL host"
 ## Database setup
 1. Create a database using PostgreSQL named choco-db
 2. Run ```python main.py``` to load the data from the CSV file to the database
-3. Run ```psql -U [your PostgreSQL username here] -d choco_db -f sql_scripts/setup.psql``` to transform the initial table into normalized tables
+3. Run ```psql -U [your PostgreSQL username here] -d choco_db -f sql_scripts/setup.psql``` to decompose the intial table into related tables
 ## Check the results by running tests 
 Run ```psql -U [your PostgreSQL username here] -d choco_db -f sql_scripts/tests.psql```
 ## View the data visualization on a dashboard
@@ -45,12 +45,12 @@ To view the dashboard run ```streamlit run dashboard.py```
 After the cleaned DataFrame is loaded to the database, the following database schema with just one table was achieved:<br>
 ![screenshot of initial database ERD](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/initial_erd.png?raw=true) 
 <br>
-The table was then normalized, resulting in the following database schema where<br> 
-all tables (except for the raw table i.e. choco_stats) are normalized to the Third Normal Form:<br>
+The table was then decomposed into related tables representing different entities (country, sales_person, product and sales).<br> 
+The following database schema was obtained:<br>
 ![screenshot of final database ERD](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/normalized-erd.png?raw=true) 
 <br> 
-The raw table (i.e. choco_stats) table was intentionally kept in the database solely for the purpose of <br>
-checking between the normalized tables and the raw table. 
+The initial table (i.e. choco_stats) was intentionally kept in the database, so that the new tables that resulted from the<br>
+decomposition can be checked against the initial table.
 
 ## Dashboard screenshots
 ![screenshot of a pie chart comparing the number of boxes shipped in different countries](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-1.png?raw=true) 
