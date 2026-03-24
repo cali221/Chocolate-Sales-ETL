@@ -18,7 +18,7 @@ In this project, the data was used/modified in the following ways after being co
 The dataset is not included in this repository, it can be manually downloaded from the link provided.
 
 # Steps to Run
-## Preparation:
+## Preparation
 1. Download the CSV file (Likely titled "Chocolate Sales (2).csv") from [here](https://www.kaggle.com/datasets/saidaminsaidaxmadov/chocolate-sales/versions/2) 
 2. Create a directory called 'data' in the root directory of this project
 3. Move the downloaded CSV file, likely named "Chocolate Sales (2).csv", into the data directory 
@@ -31,17 +31,17 @@ DB_PORT="your PostgreSQL port"
 DB_USER="your PostgreSQL username"
 DB_HOST="your PostgreSQL host"
 ```
-## Database setup:
+## Database setup
 1. Create a database using PostgreSQL named choco-db
 2. Run ```python main.py``` to load the data from the CSV file to the database
 3. Run ```psql -U [your PostgreSQL username here] -d choco_db -f sql_scripts/setup.psql``` to transform the initial table into normalized tables
-## Check the results by running tests: 
+## Check the results by running tests 
 Run ```psql -U [your PostgreSQL username here] -d choco_db -f sql_scripts/tests.psql```
-## View the data visualization on a dashboard:
+## View the data visualization on a dashboard
 To view the dashboard run ```streamlit run dashboard.py```
 
 # Results
-## Database schema:
+## Database schema
 After the cleaned DataFrame is loaded to the database, the following database schema with just one table was achieved:<br>
 ![screenshot of initial database ERD](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/initial_erd.png?raw=true) 
 <br>
@@ -52,7 +52,7 @@ all tables (except for the raw table i.e. choco_stats) are normalized to the Thi
 The raw table (i.e. choco_stats) table was intentionally kept in the database solely for the purpose of <br>
 checking between the normalized tables and the raw table. 
 
-## Dashboard screenshots:
+## Dashboard screenshots
 ![screenshot of a pie chart comparing the number of boxes shipped in different countries](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-1.png?raw=true) 
 
 ![screenshot of a line chart comparing the number of boxes shipped over time within a selected date range in selected countries](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-2.png?raw=true) 
