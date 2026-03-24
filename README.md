@@ -34,9 +34,9 @@ DB_HOST="your PostgreSQL host"
 ## Database setup:
 1. Create a database using PostgreSQL named choco-db
 2. Run ```python main.py``` to load the data from the CSV file to the database
-3. Run ```psql -U [your PostgreSQL username here] -d choco_db  -f sql_scripts/setup.psql``` to transform the initial table into normalized tables
+3. Run ```psql -U [your PostgreSQL username here] -d choco_db -f sql_scripts/setup.psql``` to transform the initial table into normalized tables
 ## Check the results by running tests: 
-Run ```psql -U [your PostgreSQL username here] -d choco_db  -f sql_scripts/tests.psql```
+Run ```psql -U [your PostgreSQL username here] -d choco_db -f sql_scripts/tests.psql```
 ## View the data visualization on a dashboard:
 To view the dashboard run ```streamlit run dashboard.py```
 
@@ -45,10 +45,12 @@ To view the dashboard run ```streamlit run dashboard.py```
 After the cleaned DataFrame is loaded to the database, the following database schema with just one table was achieved:<br>
 ![screenshot of initial database ERD](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/initial_erd.png?raw=true) 
 <br>
-The table was then normalized, resulting in the following database schema:<br>
+The table was then normalized, resulting in the following database schema where<br> 
+all tables (except for the raw table i.e. choco_stats) are normalized to the Third Normal Form:<br>
 ![screenshot of final database ERD](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/normalized-erd.png?raw=true) 
 <br> 
-The third normal form was achieved with. The raw table (i.e. choco_stats) table was intentionally kept in the database for checking between the normalized tables and the raw table. 
+The raw table (i.e. choco_stats) table was intentionally kept in the database solely for the purpose of <br>
+checking between the normalized tables and the raw table. 
 
 ## Dashboard screenshots:
 ![screenshot of a pie chart comparing the number of boxes shipped in different countries](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-1.png?raw=true) 
