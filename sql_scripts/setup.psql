@@ -1,0 +1,63 @@
+-- drop tables if they exist
+DROP TABLE IF EXISTS country CASCADE;
+DROP TABLE IF EXISTS product CASCADE;
+DROP TABLE IF EXISTS sales_person CASCADE;
+DROP TABLE IF EXISTS sales CASCADE;
+
+-- create country, product and sales_person table
+CREATE TABLE country(
+   id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+   name varchar(100) NOT NULL
+);
+
+CREATE TABLE product(
+   id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+   name varchar(250) NOT NULL
+);
+
+CREATE TABLE sales_person(
+   id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+   name varchar(100) NOT NULL
+);
+
+-- insert data from choco_stats table into the created tables
+INSERT INTO country(name)
+SELECT DISTINCT country 
+FROM choco_stats;
+
+INSERT INTO product(name)
+SELECT DISTINCT product
+FROM choco_stats;
+
+INSERT INTO sales_person(name)
+SELECT DISTINCT sales_person
+FROM choco_stats;
+
+-- create sales table
+CREATE TABLE sales(
+   id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+   date date NOT NULL,
+   sales_amount_usd decimal NOT NULL,
+   boxes_shipped integer NOT NULL,
+   country_id bigint NOT NULL references country(id),
+   product_id bigint NOT NULL references product(id),
+   sales_person_id bigint NOT NULL references sales_person(id)
+);
+
+-- insert data from choco_stats to sales table but with FKs 
+INSERT INTO sales(date, 
+                  sales_amount_usd, 
+                  boxes_shipped, 
+                  country_id, 
+                  product_id, 
+                  sales_person_id)
+SELECT s.date, 
+       s.sales_amount_usd, 
+       s.boxes_shipped,
+       c.id,
+       p.id,
+       sp.id
+FROM choco_stats s 
+JOIN country c ON s.country = c.name
+JOIN product p ON s.product = p.name
+JOIN sales_person sp ON s.sales_person = sp.name;
