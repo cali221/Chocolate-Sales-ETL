@@ -38,3 +38,7 @@ DB_HOST="your PostgreSQL host"
 Run ```psql -U [your PostgreSQL username here] -d choco_db  -f sql_scripts/tests.psql```
 ## View the data visualization on a dashboard:
 To view the dashboard run ```streamlit run dashboard.py```
+
+# Database Schema
+After the cleaned DataFrame is loaded to the database, the following database schema was achieved:<br>
+![screenshot of initial database ERD](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/initial_erd.png?raw=true)
