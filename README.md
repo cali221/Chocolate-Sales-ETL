@@ -22,7 +22,7 @@ In this project, the data was used/modified in the following ways:
 2. Create a directory called 'data' in the root directory of this project
 3. Move the downloaded CSV file, likely named "Chocolate Sales (2).csv", into the data directory 
 4. Rename the CSV file as 'choco-sales.csv' 
-5. Install the required packages by running ```pip install requirements.txt``` while in the root directory of this project
+5. Install the required packages by running ```pip install -r requirements.txt``` while in the root directory of this project
 6. Create a .env file in the root directory of this project and add the following (with your PostgreSQL setup data instead) to the file: 
 ```
 DB_PASSWORD="your PostgreSQL password"
