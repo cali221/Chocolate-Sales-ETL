@@ -62,11 +62,10 @@ the relationships between the entities. The following database schema was obtain
 ![screenshot of final database ERD](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/final-erd.png?raw=true) 
 <br> 
 This was done to improve maintainablity, because separating the entities makes updating the data simpler and reduces<br>
-the risks of inconsistent records. Additionally, it allows data, such as products or countries, to be stored<br> 
-independently of sales records.<br><br> 
-The initial table (i.e. choco_stats) was intentionally kept in the database,<br> 
-so that the new tables that resulted from the decomposition can be checked against<br>
-the initial table using the tests.psql script.
+the risks of inconsistent records. Additionally, it allows data, such as products or countries, to be stored independently<br>
+of sales records.<br><br> 
+The initial table (choco_stats) was intentionally kept in the database, so that the new tables that resulted<br>
+from the decomposition can be checked against the initial table using the tests.psql script.
 
 ## Dashboard screenshots
 The dashboard consists of 5 interactive charts as shown by the following screenshots:
