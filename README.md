@@ -23,8 +23,13 @@ The dataset is not included in this repository, it can be manually downloaded fr
 2. Create a directory called 'data' in the root directory of this project
 3. Move the downloaded CSV file, likely named "Chocolate Sales (2).csv", into the data directory 
 4. Rename the CSV file as 'choco-sales.csv' 
-5. Install the required packages by running ```pip install -r requirements.txt``` while in the root directory of this project
-6. Create a .env file in the root directory of this project and add the following (with your PostgreSQL setup data instead) to the file: 
+5. Create a new virtual environment in the project folder by running ```python -m venv venv```
+6. Activate the virtual environment by running:
+- ```venv\Scripts\activate``` for Windows Command Prompt
+- ```venv\Scripts\activate.ps1``` for Windows PowerShell  
+- ```source venv/bin/activate``` for Linux or macOS
+7. Install the required packages by running ```pip install -r requirements.txt``` while in the root directory of this project
+8. Create a .env file in the root directory of this project and add the following (with your PostgreSQL setup data instead) to the file: 
 ```
 DB_PASSWORD="your PostgreSQL password"
 DB_PORT="your PostgreSQL port"
