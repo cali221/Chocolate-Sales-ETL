@@ -32,7 +32,7 @@ DB_USER="your PostgreSQL username"
 DB_HOST="your PostgreSQL host"
 ```
 ## Database setup
-1. Create a database using PostgreSQL named choco-db
+1. Create a database using PostgreSQL named choco_db
 2. Run ```python main.py``` to load the data from the CSV file to the database
 3. Run ```psql -U [your PostgreSQL username here] -d choco_db -f sql_scripts/setup.psql``` to decompose the intial table into related tables
 ## Check the results by running tests 
