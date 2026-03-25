@@ -3,7 +3,7 @@ This is a mini learning project, demonstrating a simple ETL pipeline where data 
 <br><br>
 This project was inspired by the article '[Build a Complete Data Engineering Project from Scratch (Day 42–45)](https://medium.com/@lasyachowdary1703/build-a-complete-data-engineering-project-from-scratch-day-42-45-b14b74ae1586)' by [Lasya](https://medium.com/@lasyachowdary1703) on Medium. This project adapts it to a different dataset and extends it by adding:
 - Database table decomposition to improve the database schema
-- Validation checks
+- Validation checks between the initial database table and the final tables
 - Environment configuration
 - More charts to visualize data
 
@@ -19,7 +19,7 @@ The dataset is not included in this repository, it can be manually downloaded fr
 
 # Steps to Run
 ## Preparation
-1. Download the CSV file (Likely titled "Chocolate Sales (2).csv") from [here](https://www.kaggle.com/datasets/saidaminsaidaxmadov/chocolate-sales/versions/2) 
+1. Download the CSV file (likely titled "Chocolate Sales (2).csv") from [here](https://www.kaggle.com/datasets/saidaminsaidaxmadov/chocolate-sales/versions/2) 
 2. Create a directory called 'data' in the root directory of this project
 3. Move the downloaded CSV file, likely named "Chocolate Sales (2).csv", into the data directory 
 4. Rename the CSV file as 'choco-sales.csv' 
@@ -40,19 +40,28 @@ Run ```psql -U [your PostgreSQL username here] -d choco_db -f sql_scripts/tests.
 ## View the data visualization on a dashboard
 To view the dashboard run ```streamlit run dashboard.py```
 
+# Data Pipeline
+1. The data from CSV was converted into pandas DataFrame. Then the DataFrame was cleaned and the columns were renamed
+2. The DataFrame was loaded into the PostgreSQL database as a table
+3. The database table is decomposed into multiple related tables with primary keys and foreign keys
+4. The data from the database table is used for the dashboard for data visualization
+
 # Results
 ## Database schema
 After the cleaned DataFrame is loaded to the database, the following database schema with just one table was achieved:<br>
 ![screenshot of initial database ERD](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/initial_erd.png?raw=true) 
 <br>
-The table was then decomposed into related tables representing different entities (country, sales_person, product and sales).<br> 
+The table was then decomposed into tables representing different entities (country, sales_person, product and sales).<br>
+Primary keys and foreign keys were introduced to represent the relationships between the entities.
+Additionally the primary keys ensure uniqueness of each row.<br> 
 The following database schema was obtained:<br>
 ![screenshot of final database ERD](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/normalized-erd.png?raw=true) 
 <br> 
 The initial table (i.e. choco_stats) was intentionally kept in the database, so that the new tables that resulted from the<br>
-decomposition can be checked against the initial table.
+decomposition can be checked against the initial table using the tests.psql script.
 
 ## Dashboard screenshots
+The dashboard consists of 5 interactive charts as shown by the following screenshots:
 ![screenshot of a pie chart comparing the number of boxes shipped in different countries](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-1.png?raw=true) 
 
 ![screenshot of a line chart comparing the number of boxes shipped over time within a selected date range in selected countries](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-2.png?raw=true) 
