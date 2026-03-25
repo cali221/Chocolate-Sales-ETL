@@ -55,15 +55,18 @@ To view the dashboard run ```streamlit run dashboard.py```
 ## Database schema
 After the cleaned DataFrame is loaded to the database, the following database schema with just one table was achieved:<br>
 ![screenshot of initial database ERD](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/initial-erd.png?raw=true) 
-<br>
+<br><br>
 The table was then decomposed into tables representing different entities (country, sales_person, product and sales).<br>
-Primary keys and foreign keys were introduced to represent the relationships between the entities.
-Additionally the primary keys ensure uniqueness of each row.<br> 
-The following database schema was obtained:<br>
+Primary keys were introduced to ensure the uniqueness of each row and foreign keys were introduced to represent<br>
+the relationships between the entities. The following database schema was obtained:<br>
 ![screenshot of final database ERD](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/final-erd.png?raw=true) 
 <br> 
-The initial table (i.e. choco_stats) was intentionally kept in the database, so that the new tables that resulted from the<br>
-decomposition can be checked against the initial table using the tests.psql script.
+This was done to improve maintainablity, because separating the entities makes updating the data simpler and reduces<br>
+the risks of inconsistent records. Additionally, it allows data, such as products or countries, to be stored<br> 
+independently of sales records.<br><br> 
+The initial table (i.e. choco_stats) was intentionally kept in the database,<br> 
+so that the new tables that resulted from the decomposition can be checked against<br>
+the initial table using the tests.psql script.
 
 ## Dashboard screenshots
 The dashboard consists of 5 interactive charts as shown by the following screenshots:
