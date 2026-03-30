@@ -5,7 +5,7 @@ def clean_data(df):
     clean dataframe obtained from CSV
     """
     ################# CHECK INITIAL CSV ##################################
-    print("...................Checking initial dataframe ...........................")
+    print("Checking initial dataframe...")
     print(f"Any null values present in DF: {df.isnull().values.any()} \n")
     print(f"Number of duplicated rows: {df.duplicated().sum()} \n");
     print(f"Unique countries: {df['Country'].unique()}")
@@ -15,7 +15,7 @@ def clean_data(df):
     print(f"Initial df.dtypes:\n{df.dtypes} \n")
 
     ########################## CLEAN ##########################################
-    print("................... Cleaning dataframe ..............................")
+    print("Cleaning dataframe ...")
     # adjust column names so columns are in the form e.g. sales_person
     df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
 
@@ -39,7 +39,7 @@ def clean_data(df):
     df["date"] = pd.to_datetime(df["date"], format="%d/%m/%Y")
 
     ################## PREVIEW ###########################
-    print("...................Cleaned dataframe...........................")
+    print("Cleaned dataframe preview:")
     print(df.head())
     print('\n')
     print(f"Final df.describe:\n{df.describe()}")

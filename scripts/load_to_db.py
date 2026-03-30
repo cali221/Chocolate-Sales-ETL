@@ -13,6 +13,6 @@ def load_to_db(df):
     DB_PORT = os.getenv('DB_PORT')
     engine = create_engine(f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/choco_db")
 
-    print(".................... loading dataframe into database ......................")
+    print("Loading DataFrame to database...")
     df.to_sql("choco_stats", engine, if_exists="replace", index=False)
-    print(".................... finished loading dataframe into database ......................")
+    print("Finished loading dataframe into database")

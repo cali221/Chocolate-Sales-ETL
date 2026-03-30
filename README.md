@@ -14,32 +14,27 @@ In this project, the data was used/modified in the following ways after being co
 - The column names were modified 
 - The data was cleaned
 - It was loaded to a database as one table which was then split into multiple related tables
-<br>
-The dataset is not included in this repository, it can be manually downloaded from the link provided.
 
 # Steps to Run
 ## Preparation
-1. Download the CSV file (likely titled "Chocolate Sales (2).csv") from [here](https://www.kaggle.com/datasets/saidaminsaidaxmadov/chocolate-sales/versions/2) 
-2. Create a directory called 'data' in the root directory of this project
-3. Move the downloaded CSV file, likely named "Chocolate Sales (2).csv", into the data directory 
-4. Rename the CSV file as 'choco-sales.csv' 
-5. Create a new virtual environment in the project folder by running ```python -m venv venv```
-6. Activate the virtual environment by running:
+1. Create a new virtual environment in the project folder by running ```python -m venv venv```
+2. Activate the virtual environment by running:
 - ```venv\Scripts\activate``` for Windows Command Prompt
 - ```venv\Scripts\activate.ps1``` for Windows PowerShell  
 - ```source venv/bin/activate``` for Linux or macOS
-7. Install the required packages by running ```pip install -r requirements.txt``` while in the root directory of this project
-8. Create a .env file in the root directory of this project and add the following (with your PostgreSQL setup data instead) to the file: 
+3. Install the required packages by running ```pip install -r requirements.txt``` while in the root directory of this project
+4. Create a .env file in the root directory of this project and add the following (with your PostgreSQL setup data instead) to the file: 
 ```
 DB_PASSWORD="your PostgreSQL password"
 DB_PORT="your PostgreSQL port"
 DB_USER="your PostgreSQL username"
 DB_HOST="your PostgreSQL host"
+KAGGLE_API_TOKEN="your Kaggle API token"
 ```
 ## Database setup
 1. Create a database using PostgreSQL named choco_db
-2. Run ```python main.py``` to load the data from the CSV file to the database
-3. Run ```psql -U [your PostgreSQL username here] -d choco_db -f sql_scripts/setup.psql``` to decompose the intial table into related tables
+2. Run ```python main.py``` when in the root directory of this project to load the data from the CSV file to the database and transform the schema
+
 ## Check the results by running tests 
 Run ```psql -U [your PostgreSQL username here] -d choco_db -f sql_scripts/tests.psql```
 ## View the data visualization on a dashboard

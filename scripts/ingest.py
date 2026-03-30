@@ -1,7 +1,17 @@
-import pandas as pd
+import kagglehub
+from kagglehub import KaggleDatasetAdapter
 
-def load_csv(csvFile):
+def load_csv():
     """
-    get dataframe from CSV file
+    get dataframe from CSV file from
     """
-    return pd.read_csv(csvFile)
+    print("Loading CSV to a DataFrame...")
+    df = kagglehub.dataset_load(
+        KaggleDatasetAdapter.PANDAS,
+        "saidaminsaidaxmadov/chocolate-sales/versions/2",
+        "Chocolate Sales (2).csv",
+    )
+    print("Loaded CSV to a DataFrame")
+    return df
+
+#print(load_csv().head())
