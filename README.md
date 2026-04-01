@@ -6,6 +6,7 @@ This project was inspired by the article '[Build a Complete Data Engineering Pro
 - Validation checks between the initial database table and the final tables
 - Environment configuration
 - More charts to visualize data
+- Docker
 
 # Dataset Source
 This project uses the dataset: '[Chocolate Sales](https://www.kaggle.com/datasets/saidaminsaidaxmadov/chocolate-sales/versions/2)' which was uploaded to Kaggle by [Saidamin Saidakhmadov](https://www.kaggle.com/saidaminsaidaxmadov) and licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
