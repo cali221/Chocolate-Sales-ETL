@@ -1,4 +1,5 @@
 .env
-data/
+.env.docker
+.env.local
 __pycache__/
 venv/

@@ -1,0 +1,61 @@
+services:
+  # pipeline to load data from kaggle dataset to PostgreSQL DB
+  # NOTE: this will reset the DB by dropping table if they exist
+  pipeline:
+    build:
+      context: .
+      dockerfile: Dockerfile.pipeline
+    container_name: pipeline
+    volumes: 
+      - ./app:/choco-project-pipeline/app 
+    depends_on:
+      database:
+        condition: service_healthy
+    env_file:
+      - .env.docker
+    environment:
+      - KAGGLE_CACHE_DIR=/app/.cache
+    profiles: [load]
+    restart: "no"
+    init: true
+
+  # streamlit dashboard showing data visualization from DB's data
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    container_name: dashboard
+    volumes: 
+      - ./dashboard:/choco-project-dashboard/dashboard 
+      - ./.streamlit:/choco-project-dashboard/.streamlit
+    ports: 
+      - "8501:8501"
+    depends_on:
+      database:
+        condition: service_healthy
+      pipeline:
+        condition: service_completed_successfully
+        required: false
+    env_file:
+      - .env.docker
+        
+  # PostgreSQL DB
+  database:
+    image: postgres:18
+    container_name: database
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes: 
+      - postgres_data:/var/lib/postgresql
+    env_file:
+      - .env.docker
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+      
+# volume for PostgreSQL data  
+volumes:
+  postgres_data:
