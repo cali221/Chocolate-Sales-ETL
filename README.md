@@ -15,7 +15,28 @@ In this project, the data was used/modified in the following ways after being co
 - The data was cleaned
 - It was loaded to a database as one table which was then split into multiple related tables
 
-# Steps to Run
+# Data Pipeline
+1. The data from CSV was converted into pandas DataFrame. Then the DataFrame was cleaned and the columns were renamed
+2. The DataFrame was loaded into the PostgreSQL database as a table
+3. The database table is decomposed into multiple related tables with primary keys and foreign keys
+4. The data from the database table is used for the dashboard for data visualization
+
+# Steps to Run with Docker
+1. Create a ```.env.docker``` file in the root directory of this project and add the following (with your PostgreSQL user and password, and Kaggle API token instead) to the file: 
+```
+KAGGLE_API_TOKEN="your Kaggle API token"
+POSTGRES_USER="your PostgreSQL user"
+POSTGRES_PASSWORD="your PostgreSQL password"
+POSTGRES_PORT=5432
+POSTGRES_HOST="database"
+POSTGRES_DB="choco_db"
+```
+2. Run ```docker compose --profile load up --build``` (make sure port 5433 is free on the host)
+3. The data will be loaded to the choco_db database, the schema will be transformed and the results of the tests for the results of the transformation will be printed 
+4. View the dashboard at http://localhost:8501/
+5. When done, stop the containers by running ```docker compose --profile load down```
+
+# Steps to Run Without Docker
 ## Preparation
 1. Create a new virtual environment in the project folder by running ```python -m venv venv```
 2. Activate the virtual environment by running:
@@ -23,28 +44,20 @@ In this project, the data was used/modified in the following ways after being co
 - ```venv\Scripts\activate.ps1``` for Windows PowerShell  
 - ```source venv/bin/activate``` for Linux or macOS
 3. Install the required packages by running ```pip install -r requirements.txt``` while in the root directory of this project
-4. Create a .env file in the root directory of this project and add the following (with your PostgreSQL setup data instead) to the file: 
+4. Create a ```.env``` file in the root directory of this project and add the following (with your PostgreSQL setup data and Kaggle API key instead) to the file: 
 ```
-DB_PASSWORD="your PostgreSQL password"
-DB_PORT="your PostgreSQL port"
-DB_USER="your PostgreSQL username"
-DB_HOST="your PostgreSQL host"
+POSTGRES_PASSWORD="your PostgreSQL password"
+POSTGRES_PORT="your PostgreSQL port"
+POSTGRES_USER="your PostgreSQL username"
+POSTGRES_HOST="your PostgreSQL host"
+POSTGRES_DB="choco_db"
 KAGGLE_API_TOKEN="your Kaggle API token"
 ```
 ## Database setup
 1. Create a database using PostgreSQL named choco_db
-2. Run ```python main.py``` when in the root directory of this project to load the data from the CSV file to the database and transform the schema
-
-## Check the results by running tests 
-Run ```psql -U [your PostgreSQL username here] -d choco_db -f sql_scripts/tests.psql```
-## View the data visualization on a dashboard
-To view the dashboard run ```streamlit run dashboard.py```
-
-# Data Pipeline
-1. The data from CSV was converted into pandas DataFrame. Then the DataFrame was cleaned and the columns were renamed
-2. The DataFrame was loaded into the PostgreSQL database as a table
-3. The database table is decomposed into multiple related tables with primary keys and foreign keys
-4. The data from the database table is used for the dashboard for data visualization
+2. Run ```python -m app.main``` when in the root directory of this project
+3. The data will be loaded to the choco_db database, the schema will be transformed and the results of the tests for the results of the transformation will be printed 
+4. To view the dashboard run ```streamlit run dashboard/dashboard.py``` from the root directory of this project and view the dashboard at http://localhost:8501/
 
 # Results
 ## Database schema

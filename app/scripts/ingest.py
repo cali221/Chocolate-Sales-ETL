@@ -13,5 +13,3 @@ def load_csv():
     )
     print("Loaded CSV to a DataFrame")
     return df
-
-#print(load_csv().head())
