@@ -1,0 +1,13 @@
+**/.env
+**/.env.local
+**/.env.docker
+**/__pycache__/
+**/venv/
+**/.gitignore
+**/.git
+**/README.md
+**/LICENSE
+choco_sales/target/
+choco_sales/dbt_packages/
+choco_sales/logs/
+**/.user.yml
