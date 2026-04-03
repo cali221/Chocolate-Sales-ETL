@@ -32,11 +32,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 USER appuser
 
 # Copy the source code into the container.
-COPY dashboard/ dashboard/
-COPY .streamlit/ .streamlit/
+COPY . .
 
 # Expose the port that the application listens on.
 EXPOSE 8501
 
 # Run the application.
-CMD ["streamlit", "run", "dashboard/dashboard.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["streamlit", "run", "dashboard.py", "--server.port=8501", "--server.address=0.0.0.0"]

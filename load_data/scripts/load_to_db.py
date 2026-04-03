@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 
@@ -6,7 +7,11 @@ def load_to_db(df):
     """
     load dataframe to postgresql database titled choco_db
     """
-    load_dotenv()
+    if not os.getenv('USING_DOCKER'):
+        print('Not using docker, loading .env')
+        dotenv_path = Path(__file__).parent.parent.parent / '.env'
+        load_dotenv(dotenv_path)
+
     POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD')
     POSTGRES_HOST = os.getenv('POSTGRES_HOST')
     POSTGRES_USER = os.getenv('POSTGRES_USER')

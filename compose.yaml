@@ -3,18 +3,16 @@ services:
   # NOTE: this will reset the DB by dropping table if they exist
   pipeline:
     build:
-      context: .
-      dockerfile: Dockerfile.pipeline
+      context: ./load_data
+      dockerfile: Dockerfile
     container_name: pipeline
     volumes: 
-      - ./app:/choco-project-pipeline/app 
+      - ./load_data:/choco-project-pipeline
     depends_on:
       database:
         condition: service_healthy
     env_file:
       - .env.docker
-    environment:
-      - KAGGLE_CACHE_DIR=/app/.cache
     profiles: [load]
     restart: "no"
     init: true
@@ -22,12 +20,11 @@ services:
   # streamlit dashboard showing data visualization from DB's data
   dashboard:
     build:
-      context: .
-      dockerfile: Dockerfile.dashboard
+      context: ./dashboard
+      dockerfile: Dockerfile
     container_name: dashboard
     volumes: 
-      - ./dashboard:/choco-project-dashboard/dashboard 
-      - ./.streamlit:/choco-project-dashboard/.streamlit
+      - ./dashboard:/choco-project-dashboard
     ports: 
       - "8501:8501"
     depends_on:
