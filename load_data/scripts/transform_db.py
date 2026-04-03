@@ -1,12 +1,17 @@
 import psycopg2
 import os
 from dotenv import load_dotenv
+from pathlib import Path
 
 def get_psycopg2_conn():
     """
     get connection to PostgreSQL database for psycopg
     """
-    load_dotenv()
+    if not os.getenv('USING_DOCKER'):
+        print('Not using docker, loading .env')
+        dotenv_path = Path(__file__).parent.parent.parent / '.env'
+        load_dotenv(dotenv_path)
+
     POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD')
     POSTGRES_HOST = os.getenv('POSTGRES_HOST')
     POSTGRES_USER = os.getenv('POSTGRES_USER')

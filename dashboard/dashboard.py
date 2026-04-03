@@ -4,12 +4,17 @@ import altair as alt
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 import os
+from pathlib import Path
 
 def load_sales_data():
     """
     load the sales data from the database
     """
-    load_dotenv()
+    if not os.getenv('USING_DOCKER'):
+        print('Not using docker, loading .env')
+        dotenv_path = Path(__file__).parent.parent / '.env'
+        load_dotenv(dotenv_path)
+
     POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD')
     POSTGRES_HOST = os.getenv('POSTGRES_HOST')
     POSTGRES_USER = os.getenv('POSTGRES_USER')
@@ -215,8 +220,9 @@ def create_dashboard():
             st.altair_chart(boxes_shipped_overtime_linechart)
         else:
             st.info("Please pick one start date and one end date")
-    except:
-        st.error("Failed to get data from database")
+    except Exception as e: 
+        print(e)
+        st.error("Failed to get data from database" )
 
         
 

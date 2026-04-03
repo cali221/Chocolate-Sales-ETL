@@ -3,7 +3,6 @@
 **/.env.docker
 **/__pycache__/
 **/venv/
-**/readme-images/
 **/.gitignore
 **/.git
 **/README.md
