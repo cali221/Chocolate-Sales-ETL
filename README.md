@@ -33,10 +33,15 @@ POSTGRES_PORT="5432"
 POSTGRES_HOST="database"
 POSTGRES_DB="choco_db"
 ```
-2. Run ```docker compose --profile load up --build``` (make sure port 5433 is free on the host)
-3. The data will be loaded to the choco_db database, the schema will be transformed and the results of the tests for the results of the transformation will be printed 
-4. View the dashboard at http://localhost:8501/
-5. When done, stop the containers by running ```docker compose --profile load down```
+2. Create a ```.env``` file in the root directory of this project and add the following to the file with your host's UID and GID instead: 
+```
+UID=your host's UID, check by running id -u in terminal
+GID=your host's GID, check by running id -g in terminal
+```
+3. Run ```docker compose --profile load --profile transform up --build``` (make sure port 5433 is free on the host)
+4. The data will be loaded to the choco_db database, the schema will be transformed and the results of the tests for the results of the transformation will be printed 
+5. View the dashboard at http://localhost:8501/
+6. When done, stop the containers by running ```docker compose --profile load --profile transform down```
 
 # Results
 ## Database schema

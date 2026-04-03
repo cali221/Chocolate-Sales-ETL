@@ -17,6 +17,34 @@ services:
     restart: "no"
     init: true
 
+  # transform DB's schema (to be completed)
+  transform:
+    build:
+      context: ./transform
+      dockerfile: Dockerfile
+      args:
+        UID: ${UID}
+        GID: ${GID}
+    container_name: transform
+    volumes: 
+      - ./transform:/choco-project-transform
+    depends_on:
+      database:
+        condition: service_healthy
+      pipeline:
+        condition: service_completed_successfully
+        required: false
+    env_file:
+      - .env.docker
+    environment:
+      DBT_PROFILES_DIR: /choco-project-transform/choco_sales
+      DBT_ENGINE_LOG_PATH: /choco-project-transform/choco_sales/logs
+      DBT_ENGINE_TARGET_PATH: /choco-project-transform/choco_sales/target
+    profiles: [transform]
+    restart: "no"
+    init: true
+    user: "${UID}:${GID}"
+
   # streamlit dashboard showing data visualization from DB's data
   dashboard:
     build:
@@ -31,6 +59,9 @@ services:
       database:
         condition: service_healthy
       pipeline:
+        condition: service_completed_successfully
+        required: false
+      transform:
         condition: service_completed_successfully
         required: false
     env_file:
