@@ -1,0 +1,26 @@
+version: 2
+
+sources:
+  - name: choco_db
+    database: choco_db
+    schema: public
+    tables:
+      - name: choco_stats
+        columns: 
+          - name: Sales Person
+          - name: Country
+          - name: Product
+          - name: Date
+          - name: Amount
+          - name: Boxes Shipped
+
+models:
+  - name: stg_choco_db__choco_stats
+    description: "Cleaned raw sales records table"
+    columns: 
+      - name: sales_person
+      - name: country
+      - name: product
+      - name: date
+      - name: sales_amount_usd
+      - name: boxes_shipped
