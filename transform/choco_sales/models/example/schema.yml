@@ -17,19 +17,21 @@ sources:
 models:
   # example models for learning/experimenting
   - name: my_first_dbt_model
-    description: "A starter dbt model"
-    columns:
-      - name: id
-        description: "The primary key for this table"
-        data_tests:
-          - unique
-          - not_null
+    description: "Sales records where country is New Zealand taken from a sample of 100 records"
+    columns: 
+      - name: sales_person
+      - name: country
+      - name: product
+      - name: date
+      - name: sales_amount_usd
+      - name: boxes_shipped
 
   - name: my_second_dbt_model
-    description: "A starter dbt model"
-    columns:
-      - name: id
-        description: "The primary key for this table"
-        data_tests:
-          - unique
-          - not_null
+    description: "Sales records taken from my_first_dbt_model where product is 50% Dark Bites"
+    columns: 
+      - name: sales_person
+      - name: country
+      - name: product
+      - name: date
+      - name: sales_amount_usd
+      - name: boxes_shipped
