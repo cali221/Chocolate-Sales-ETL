@@ -9,17 +9,14 @@
 
 {{ config(materialized='table') }}
 
-with source_data as (
-
-    select 1 as id
-    union all
-    select null as id
-
+with raw_table_sample as (
+    select * from {{ source('choco_db', 'choco_stats') }}
+    limit 100
 )
 
 select *
-from source_data
-
+from raw_table_sample
+where country = 'New Zealand'
 /*
     Uncomment the line below to remove records with null `id` values
 */

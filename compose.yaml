@@ -18,6 +18,8 @@ services:
     init: true
 
   # transform DB's schema (to be completed)
+  # note: alias dbt="docker compose exec transform dbt" was added locally,
+  # to run dbt commands do e.g. dbt run, dbt build etc
   transform:
     build:
       context: ./transform
@@ -37,6 +39,7 @@ services:
     env_file:
       - .env.docker
     environment:
+      DBT_PROJECT_DIR: /choco-project-transform/choco_sales
       DBT_PROFILES_DIR: /choco-project-transform/choco_sales
       DBT_ENGINE_LOG_PATH: /choco-project-transform/choco_sales/logs
       DBT_ENGINE_TARGET_PATH: /choco-project-transform/choco_sales/target

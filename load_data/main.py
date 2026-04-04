@@ -12,5 +12,6 @@ cleaned_df = clean_data(df)
 # load cleaned dataframe to database
 load_to_db(cleaned_df)
 
+# TODO: move to transform service
 # transform DB schema and check results
-transform_and_check("sql_scripts/setup.psql", "sql_scripts/tests.psql")
+#transform_and_check("sql_scripts/setup.psql", "sql_scripts/tests.psql")
