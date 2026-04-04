@@ -49,4 +49,7 @@ RUN echo "Build UID is: $UID"
 RUN echo "Build GID is: $GID"
 
 # Run the application.
-CMD ["dbt", "debug", "--project-dir", "choco_sales"]
+#CMD ["dbt", "debug", "--project-dir", "choco_sales"]
+
+# keep container up for development
+CMD ["tail", "-f", "/dev/null"]

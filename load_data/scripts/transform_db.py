@@ -32,7 +32,7 @@ def get_psycopg2_conn():
 
 def transform_db_schema(cursor, path_to_script):
     """
-    execute psql script to transfor schema
+    execute psql script to transform schema
     """
     psql_setup_file = open(path_to_script,'r')
     cursor.execute(psql_setup_file.read())

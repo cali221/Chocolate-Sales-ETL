@@ -1,7 +1,21 @@
-
 version: 2
 
+sources:
+  - name: choco_db
+    database: choco_db
+    schema: public
+    tables:
+      - name: choco_stats
+        columns: 
+          - name: sales_person
+          - name: country
+          - name: product
+          - name: date
+          - name: sales_amount_usd
+          - name: boxes_shipped
+
 models:
+  # example models for learning/experimenting
   - name: my_first_dbt_model
     description: "A starter dbt model"
     columns:
