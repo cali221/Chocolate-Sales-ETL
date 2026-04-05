@@ -30,10 +30,10 @@ def load_sales_data():
                        c.name AS country,
                        sp.name AS sales_person,
                        p.name AS product
-                FROM sales s
-                JOIN country c ON c.id = s.country_id
-                JOIN sales_person sp ON sp.id = s.sales_person_id
-                JOIN product p on p.id = s.product_id
+                FROM fct_sales s
+                JOIN dim_countries c ON c.id = s.country_id
+                JOIN dim_sales_people sp ON sp.id = s.sales_person_id
+                JOIN dim_products p on p.id = s.product_id
                 """
     sales_df = pd.read_sql(sql_query, engine)
     return sales_df

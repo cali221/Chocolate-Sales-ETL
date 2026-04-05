@@ -50,6 +50,7 @@ RUN echo "Build GID is: $GID"
 
 # Run the application.
 #CMD ["dbt", "debug", "--project-dir", "choco_sales"]
+CMD ["dbt", "build"]
 
 # keep container up for development
-CMD ["tail", "-f", "/dev/null"]
+#CMD ["tail", "-f", "/dev/null"]
