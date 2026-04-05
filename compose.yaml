@@ -48,6 +48,8 @@ services:
     restart: "no"
     init: true
     user: "${UID}:${GID}"
+    ports: 
+      - "127.0.0.1:8080:8080"
 
   # streamlit dashboard showing data visualization from DB's data
   dashboard:
@@ -58,7 +60,7 @@ services:
     volumes: 
       - ./dashboard:/choco-project-dashboard
     ports: 
-      - "8501:8501"
+      - "127.0.0.1:8501:8501"
     depends_on:
       database:
         condition: service_healthy
