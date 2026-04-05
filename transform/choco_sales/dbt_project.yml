@@ -18,9 +18,6 @@ seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
 
-# log-path: "logs"
-# target-path: "target"
-
 clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
@@ -40,3 +37,6 @@ models:
     # materialize staging models as view
     staging:
       +materialized: view
+    # materialize marts models as table
+    marts:
+      +materialized: table
