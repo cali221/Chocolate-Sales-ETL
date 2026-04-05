@@ -1,5 +1,5 @@
 # Project's Description
-This is a mini learning project undergoing a refactor. It is consists of a simple data pipeline and data visualization on a dashboard. The other README shown below reflects the previous versions of this project and hence doesn't reflect the updated code or currently aimed pipeline.
+This is a mini learning project undergoing a refactor. It consists of a simple data pipeline and data visualization on a dashboard. The other README shown below reflects the previous versions of this project and hence doesn't reflect the updated code or currently aimed pipeline.
 
 ## Current refactor plan:
 - Complete transition to use dbt for transformation by adding tests
