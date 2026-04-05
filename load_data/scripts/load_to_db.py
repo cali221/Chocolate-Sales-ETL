@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 
 def load_to_db(df):
     """
@@ -18,6 +18,10 @@ def load_to_db(df):
     POSTGRES_PORT = os.getenv('POSTGRES_PORT')
     POSTGRES_DB = os.getenv('POSTGRES_DB')
     engine = create_engine(f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}")
+
+    with engine.connect() as connection:
+        connection.execute(text("DROP TABLE IF EXISTS choco_stats CASCADE"))
+        connection.commit()
 
     print("Loading DataFrame to database...")
     df.to_sql("choco_stats", engine, if_exists="replace", index=False)

@@ -1,4 +1,3 @@
--- dbt compile -s stg_choco_db__choco_stats
 {# adjust column names so columns are in the form e.g. sales_person #}
 WITH source_cols_renamed AS (
     SELECT 
@@ -6,7 +5,7 @@ WITH source_cols_renamed AS (
         {%- if col.name == 'Amount' -%}
             "{{col.name}}" AS sales_amount_usd
         {%- else -%}
-            "{{col.name}}" AS {{ col.name | lower| trim | replace(' ', '_')  }}
+            "{{col.name}}" AS {{ col.name | lower | trim | replace(' ', '_')  }}
         {%- endif %}
 
         {%- if not loop.last -%},{%- endif %}
