@@ -1,12 +1,13 @@
 # Project's Description
-This is a mini learning project undergoing a refactor. It is consists of a simple data pipeline and data visualization on a dashboard. The README shown below reflect the previous versions of this project and hence doesn't reflect the updated code or currently aimed pipeline.
-<br><br>
-Current refactor plan:
+This is a mini learning project undergoing a refactor. It is consists of a simple data pipeline and data visualization on a dashboard. The other README shown below reflects the previous versions of this project and hence doesn't reflect the updated code or currently aimed pipeline.
+
+## Current refactor plan:
 - Complete transition to use dbt for transformation by adding tests
 - Integrate Airflow
 - Possibly integrate a dummy API to supply changing data instead of just ingesting static data from the Kaggle dataset
 - Modify README to match latest progress
-<br><br>
+
+## Initial Inspiration
 This project was inspired by the article '[Build a Complete Data Engineering Project from Scratch (Day 42–45)](https://medium.com/@lasyachowdary1703/build-a-complete-data-engineering-project-from-scratch-day-42-45-b14b74ae1586)' by [Lasya](https://medium.com/@lasyachowdary1703) on Medium. This project adapts it to a different dataset and extends it by adding:
 - Database table decomposition to improve the database schema
 - Validation checks between the initial database table and the final tables
