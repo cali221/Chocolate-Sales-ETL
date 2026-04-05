@@ -15,11 +15,11 @@ WITH source_cols_renamed AS (
 ),
 {# adjust data types and clean text data #}
 cleaned AS (
-    SELECT TRIM(INITCAP(LOWER(sales_person))) AS sales_person, 
-           CASE WHEN (TRIM(LOWER(country)) = 'uk' OR TRIM(LOWER(country)) = 'usa') THEN TRIM(UPPER(country))
+    SELECT CAST(TRIM(INITCAP(LOWER(sales_person))) AS VARCHAR(100))AS sales_person, 
+           CAST((CASE WHEN (TRIM(LOWER(country)) = 'uk' OR TRIM(LOWER(country)) = 'usa') THEN TRIM(UPPER(country))
                 ELSE TRIM(INITCAP(LOWER(country))) 
-           END AS country,
-           TRIM(INITCAP(LOWER(product))) AS product, 
+                END) AS VARCHAR(100)) AS country,
+           CAST(TRIM(INITCAP(LOWER(product))) AS VARCHAR(100)) AS product, 
            to_date(date, 'DD/MM/YYYY') AS date, 
            CAST((REPLACE(REPLACE(sales_amount_usd, '$', ''), ',', '')) AS decimal) AS sales_amount_usd,
            CAST(boxes_shipped AS INTEGER) AS boxes_shipped

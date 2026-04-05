@@ -18,7 +18,8 @@ services:
     init: true
 
   # transform DB's schema (to be completed)
-  # note: alias dbt="docker compose exec transform dbt" was added locally,
+  # note (applies to me only): 
+  # alias dbt="docker compose exec transform dbt" was added locally,
   # to run dbt commands do e.g. dbt run, dbt build etc
   transform:
     build:
