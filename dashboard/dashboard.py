@@ -11,8 +11,8 @@ def load_sales_data():
     load the sales data from the database
     """
     if not os.getenv('USING_DOCKER'):
-        print('Not using docker, loading .env')
-        dotenv_path = Path(__file__).parent.parent / '.env'
+        print('Not using docker, loading .env.local')
+        dotenv_path = Path(__file__).parent.parent / '.env.local'
         load_dotenv(dotenv_path)
 
     POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD')
