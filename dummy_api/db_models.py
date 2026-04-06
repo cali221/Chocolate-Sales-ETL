@@ -4,26 +4,29 @@ from datetime import datetime
 from decimal import Decimal
 
 class DimensionsBase(SQLModel):
-    id: int | None = Field(default=None, primary_key=True)
     name: str = Field(sa_type=String(100), index=False, nullable=False)
 
 class Product(DimensionsBase, table=True):
     __table_args__ = {"schema": "oltp_online_store"}
     __tablename__ = "products"
-    current_price: Decimal = Field(nullable=False, max_digits=15, decimal_places=3)
+    id: int | None = Field(default=None, primary_key=True)
+    current_price: Decimal = Field(nullable=False, max_digits=10, decimal_places=3)
 
 class Country(DimensionsBase, table=True):
     __table_args__ = {"schema": "oltp_online_store"}
     __tablename__ = "countries"
+    id: int | None = Field(default=None, primary_key=True)
 
 class Customer(DimensionsBase, table=True):
     __table_args__ = {"schema": "oltp_online_store"}
     __tablename__ = "customers"
+    id: int | None = Field(default=None, primary_key=True)
     username: str = Field(sa_type=String(50), index=False, nullable=False)
     email: str = Field(sa_type=String(100), index=False, nullable=False)
     country_id: int = Field(nullable=False, foreign_key="oltp_online_store.countries.id")
 
 class Status(DimensionsBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
     __table_args__ = {"schema": "oltp_online_store"}
     __tablename__ = "status"
 
