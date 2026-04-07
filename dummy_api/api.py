@@ -14,7 +14,7 @@ from .api_models import (ProductPublic, ProductCreate,
                          CountryCreate, CountryPublic, 
                          CustomerPublic, CustomerCreate, 
                          StatusPublic, StatusCreate,
-                         OrderCreate, OrderPublic,
+                         OrderCreate, OrderPublic, OrderUpdate,
                          OrderItemCreate, OrderItemPublic)
 
 engine = get_engine()
@@ -153,19 +153,37 @@ def create_order(order: OrderCreate, session: SessionDep):
         session.rollback()
         raise
 
-# TODO: add endpoints for updating status
-# @app.patch("/orders/{order_id}", response_model=OrderPublic)
-# def update_order(order_id: int, order: OrderUpdate, session: SessionDep):
-#     order_db = session.get(Order, order_id)
+# TODO: fix so that last_updated_at is updated when the row is updated
+# endpoint to update status of an order
+@app.patch("/orders/{order_id}", response_model=OrderPublic)
+def update_order(order_id: int, order: OrderUpdate, session: SessionDep):
+    print(f"order: {order}")
 
-#     if not order_db:
-#         raise HTTPException(status_code=404, detail="Order was not found")
+    order_db = session.get(Order, order_id)
 
-    # hero_data = hero.model_dump(exclude_unset=True)
-    # hero_db.sqlmodel_update(hero_data)
-    # session.add(hero_db)
-    # session.commit()
-    # session.refresh(hero_db)
-    # return hero_db
+    get_status_statement = select(Status).where(Status.id == order.current_status_id)
+    status_results = session.exec(get_status_statement)
+    status = status_results.first()
+
+    if not order_db or not status:
+        raise HTTPException(status_code=404, detail="Order and/or status were not found")
+
+    order_update_data = order.model_dump(exclude_unset=True)
+    order_db.sqlmodel_update(order_update_data)
+    session.add(order_db)
+    session.flush()
+    session.refresh(order_db)
+
+    status_history_to_add = StatusHistory( 
+        order_id = order_id,
+        status_id = order.current_status_id
+    )
+
+    session.add(status_history_to_add)
+    session.flush()
+    session.refresh(status_history_to_add)
+
+    session.commit()
+    return order_db
 
 # TODO: add GET endpoints (optional)
