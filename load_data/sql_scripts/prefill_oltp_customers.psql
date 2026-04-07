@@ -1,0 +1,8 @@
+INSERT INTO oltp_online_store.customers(name, username, email, country_id)
+VALUES ('John Doe', 'john_doe', 'john@mail.com', (SELECT id from oltp_online_store.countries WHERE name='USA')), 
+       ('Jane Doe', 'jane_doe', 'jane@mail.com', (SELECT id from oltp_online_store.countries WHERE name='UK')),
+       ('Catherine Thompson', 'catht', 'cath@mail.com', (SELECT id from oltp_online_store.countries WHERE name='Canada')),
+       ('Zi Yuan', 'zyuan', 'zyn@mail.com', (SELECT id from oltp_online_store.countries WHERE name='China')),
+       ('Tsuchiya Ken', 'tsuken', 'ken@mail.com', (SELECT id from oltp_online_store.countries WHERE name='Japan')),
+       ('Bambang Sucipto', 'bmbang', 'bam@mail.com', (SELECT id from oltp_online_store.countries WHERE name='Indonesia'))
+ON CONFLICT (username) DO NOTHING;
