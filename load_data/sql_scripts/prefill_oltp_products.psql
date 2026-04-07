@@ -1,0 +1,12 @@
+INSERT INTO oltp_online_store.products(name, current_price)
+VALUES ('99% Dark & Pure', 4.0), 
+       ('Milk Bars', 3.5), 
+       ('Drinking Coco', 4.0), 
+       ('White Choc', 3.0), 
+       ('Spicy Special Slims', 5.0),
+       ('Caramel Stuffed Bars', 4.5),
+       ('After Nines', 3.5),
+       ('Smooth Sliky Salty', 3.2),
+       ('Peanut Butter Cubes', 4.5),
+       ('Choco Coated Almonds', 5.0)
+ON CONFLICT (name) DO NOTHING;

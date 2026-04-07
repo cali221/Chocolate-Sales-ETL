@@ -7,7 +7,7 @@ class Product(SQLModel, table=True):
     __table_args__ = {"schema": "oltp_online_store"}
     __tablename__ = "products"
     id: int | None = Field(default=None, primary_key=True)
-    name: str = Field(sa_type=String(50), index=False, nullable=False)
+    name: str = Field(sa_type=String(50), index=False, nullable=False, unique=True)
     current_price: Decimal = Field(nullable=False, max_digits=10, decimal_places=3)
 
 class Country(SQLModel, table=True):
