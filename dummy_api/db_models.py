@@ -3,32 +3,33 @@ from sqlalchemy import Column, TIMESTAMP, text
 from datetime import datetime
 from decimal import Decimal
 
-class DimensionsBase(SQLModel):
-    name: str = Field(sa_type=String(100), index=False, nullable=False)
-
-class Product(DimensionsBase, table=True):
+class Product(SQLModel, table=True):
     __table_args__ = {"schema": "oltp_online_store"}
     __tablename__ = "products"
     id: int | None = Field(default=None, primary_key=True)
+    name: str = Field(sa_type=String(50), index=False, nullable=False)
     current_price: Decimal = Field(nullable=False, max_digits=10, decimal_places=3)
 
-class Country(DimensionsBase, table=True):
+class Country(SQLModel, table=True):
     __table_args__ = {"schema": "oltp_online_store"}
     __tablename__ = "countries"
     id: int | None = Field(default=None, primary_key=True)
+    name: str = Field(sa_type=String(50), index=False, nullable=False, unique=True)
 
-class Customer(DimensionsBase, table=True):
+class Customer(SQLModel, table=True):
     __table_args__ = {"schema": "oltp_online_store"}
     __tablename__ = "customers"
     id: int | None = Field(default=None, primary_key=True)
-    username: str = Field(sa_type=String(50), index=False, nullable=False)
-    email: str = Field(sa_type=String(100), index=False, nullable=False)
+    name: str = Field(sa_type=String(50), index=False, nullable=False)
+    username: str = Field(sa_type=String(50), index=False, nullable=False, unique=True)
+    email: str = Field(sa_type=String(100), index=False, nullable=False, unique=True)
     country_id: int = Field(nullable=False, foreign_key="oltp_online_store.countries.id")
 
-class Status(DimensionsBase, table=True):
-    id: int | None = Field(default=None, primary_key=True)
+class Status(SQLModel, table=True):
     __table_args__ = {"schema": "oltp_online_store"}
     __tablename__ = "status"
+    id: int | None = Field(default=None, primary_key=True)
+    name: str = Field(sa_type=String(50), index=False, nullable=False, unique=True)
 
 class Order(SQLModel, table=True):
     __table_args__ = {"schema": "oltp_online_store"}
@@ -46,7 +47,7 @@ class Order(SQLModel, table=True):
         server_default=text("CURRENT_TIMESTAMP"),
         server_onupdate=text("CURRENT_TIMESTAMP"),
     ))
-    current_status: int = Field(nullable=False, foreign_key="oltp_online_store.status.id")
+    current_status_id: int = Field(nullable=False, foreign_key="oltp_online_store.status.id")
     customer_id: int = Field(nullable=False, foreign_key="oltp_online_store.customers.id")
 
 class StatusHistory(SQLModel, table=True):
@@ -61,9 +62,9 @@ class StatusHistory(SQLModel, table=True):
         server_default=text("CURRENT_TIMESTAMP"),
     ))
 
-class OrderProduct(SQLModel, table=True):
+class OrderItem(SQLModel, table=True):
     __table_args__ = {"schema": "oltp_online_store"}
-    __tablename__ = "order_item"
+    __tablename__ = "order_items"
     id: int | None = Field(default=None, primary_key=True)
     product_id: int = Field(nullable=False, foreign_key="oltp_online_store.products.id")
     order_id: int = Field(nullable=False, foreign_key="oltp_online_store.orders.id")
