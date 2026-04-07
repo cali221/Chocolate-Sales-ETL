@@ -85,4 +85,7 @@ class OrderCreate(SQLModel):
         raise ValueError("Unexpected behavior detected: duplicated product IDs in one order")
 
        return items
+
+class OrderUpdate(SQLModel):
+    current_status_id: int
     
