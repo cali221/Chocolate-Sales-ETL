@@ -63,23 +63,23 @@ def create_customer(customer: CustomerCreate, session: SessionDep):
     # if no country was found, show error
     if not country:
         raise HTTPException(status_code=404, detail="Country not found")
-    else:
-        # get the country's name
-        country_name = country.name
 
-        session.add(db_customer)
-        session.commit()
-        session.refresh(db_customer)
+    # get the country's name
+    country_name = country.name
 
-        # return the customers table fields + the country's name
-        return CustomerPublic(
-            id=db_customer.id,
-            name=db_customer.name,
-            email=db_customer.email,
-            username=db_customer.username,
-            country_name=country_name,
-            country_id=db_customer.country_id
-        )
+    session.add(db_customer)
+    session.commit()
+    session.refresh(db_customer)
+
+    # return the customers table fields + the country's name
+    return CustomerPublic(
+        id=db_customer.id,
+        name=db_customer.name,
+        email=db_customer.email,
+        username=db_customer.username,
+        country_name=country_name,
+        country_id=db_customer.country_id
+    )
 
 # endpoint to create a status
 @app.post("/status/", response_model=StatusPublic)
@@ -99,50 +99,69 @@ def create_order(order: OrderCreate, session: SessionDep):
 
     if not status:
         raise HTTPException(status_code=404, detail="Pending order status not found")
-    else:
-        try:
-            order_data = Order(
-                current_status_id = status.id,
-                customer_id = order.customer_id,
-                total_amount = order.total_amount
-            )
 
-            session.add(order_data)
-            session.flush()
-            session.refresh(order_data)
+    try:
+        order_data = Order(
+            current_status_id = status.id,
+            customer_id = order.customer_id,
+            tax_amount = order.tax_amount,
+            discount_amount = order.discount_amount,
+            shipping_costs_amount = order.shipping_costs_amount
+        )
 
-            print(f"ORDER DATA: {order_data}")    
+        session.add(order_data)
+        session.flush()
+        session.refresh(order_data)
 
-            for item in order.items:
-                product = session.get(Product, item.product_id)
-                
-                if not product:
-                    raise HTTPException(status_code=404, detail="Country not found")
-                else:
-                    item_to_add = OrderItem(
-                        product_id = product.id,
-                        order_id = order_data.id,
-                        quantity = item.quantity,
-                        price_at_purchase = product.current_price
-                    )
-                    session.add(item_to_add)
-                    session.flush()
-                    session.refresh(item_to_add)
-                    print(f"ITEM TO ADD: {item_to_add}")
+        print(f"ORDER DATA: {order_data}")    
 
-            status_history_to_add = StatusHistory( 
+        for item in order.items:
+            product = session.get(Product, item.product_id)
+            
+            if not product:
+                raise HTTPException(status_code=404, detail="Product was not found")
+        
+            item_to_add = OrderItem(
+                product_id = product.id,
                 order_id = order_data.id,
-                status_id = status.id
+                quantity = item.quantity,
+                price_per_unit_at_purchase = product.current_price
             )
-
-            session.add(status_history_to_add)
+            session.add(item_to_add)
             session.flush()
-            session.refresh(status_history_to_add)
-            print(f"STATUS HISTORY TO ADD:{status_history_to_add}")
+            session.refresh(item_to_add)
+            print(f"ITEM TO ADD: {item_to_add}")
 
-            session.commit()
+        status_history_to_add = StatusHistory( 
+            order_id = order_data.id,
+            status_id = status.id
+        )
 
-            return order_data
-        except:
-            session.rollback()
-            raise
+        session.add(status_history_to_add)
+        session.flush()
+        session.refresh(status_history_to_add)
+        print(f"STATUS HISTORY TO ADD:{status_history_to_add}")
+
+        session.commit()
+
+        return order_data
+    except:
+        session.rollback()
+        raise
+
+# TODO: add endpoints for updating status
+# @app.patch("/orders/{order_id}", response_model=OrderPublic)
+# def update_order(order_id: int, order: OrderUpdate, session: SessionDep):
+#     order_db = session.get(Order, order_id)
+
+#     if not order_db:
+#         raise HTTPException(status_code=404, detail="Order was not found")
+
+    # hero_data = hero.model_dump(exclude_unset=True)
+    # hero_db.sqlmodel_update(hero_data)
+    # session.add(hero_db)
+    # session.commit()
+    # session.refresh(hero_db)
+    # return hero_db
+
+# TODO: add GET endpoints (optional)

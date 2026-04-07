@@ -50,7 +50,7 @@ class OrderItemPublic(SQLModel):
     product_id: int
     order_id: int
     quantity: int
-    price_at_purchase: Decimal
+    price_per_unit_at_purchase: Decimal
 
 class OrderItemCreate(SQLModel):
     quantity: int
@@ -59,16 +59,20 @@ class OrderItemCreate(SQLModel):
 # orders table api models
 class OrderPublic(SQLModel):
     id: int
-    total_amount: Decimal
     created_at: datetime
     last_updated_at: datetime
     current_status_id: int
-    customer_id: int  
+    customer_id: int 
+    tax_amount: Decimal
+    discount_amount: Decimal
+    shipping_costs_amount: Decimal
 
 class OrderCreate(SQLModel):
-    total_amount: Decimal
     customer_id: int
     items: list[OrderItemCreate]  
+    tax_amount: Decimal = Field(max_digits=10, decimal_places=3)
+    discount_amount: Decimal = Field(max_digits=10, decimal_places=3)
+    shipping_costs_amount: Decimal = Field(max_digits=10, decimal_places=3)
 
     # check if there are duplicated product IDs in the list of items purchased
     # throw error if they exist
