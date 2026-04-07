@@ -93,12 +93,16 @@ def create_status(status: StatusCreate, session: SessionDep):
 # endpoint to create an order
 @app.post("/orders/", response_model=OrderPublic)
 def create_order(order: OrderCreate, session: SessionDep):
+    get_customer_statement = select(Customer).where(Customer.id == order.customer_id)
+    customer_results = session.exec(get_customer_statement)
+    customer = customer_results.first()
+
     get_status_statement = select(Status).where(Status.name == "Pending")
     status_results = session.exec(get_status_statement)
     status = status_results.first()
 
-    if not status:
-        raise HTTPException(status_code=404, detail="Pending order status not found")
+    if not status or not customer:
+        raise HTTPException(status_code=404, detail="Pending order status and/or customer were not found")
 
     try:
         order_data = Order(
