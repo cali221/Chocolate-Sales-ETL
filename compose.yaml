@@ -1,6 +1,6 @@
 services:
   # pipeline to load data from kaggle dataset to PostgreSQL DB
-  # NOTE: this will reset the DB by dropping table if they exist
+  # NOTE: this will reset the data by dropping table if they exist
   load_kaggle_data:
     build:
       context: ./load_data
@@ -17,6 +17,9 @@ services:
     restart: "no"
     init: true
 
+  # API for simulated online store
+  # available at: http://127.0.0.1:8000 
+  # docs are at: http://127.0.0.1:8000/docs 
   dummy_api:
     build:
       context: ./dummy_api

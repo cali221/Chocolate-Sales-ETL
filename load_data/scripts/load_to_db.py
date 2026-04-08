@@ -20,9 +20,10 @@ def load_to_db(df):
     engine = create_engine(f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}")
 
     with engine.connect() as connection:
-        connection.execute(text("DROP TABLE IF EXISTS choco_stats CASCADE"))
+        connection.execute(text("CREATE SCHEMA IF NOT EXISTS kaggle_hist_data"))
+        connection.execute(text("DROP TABLE IF EXISTS kaggle_hist_data.choco_stats CASCADE"))
         connection.commit()
 
     print("Loading DataFrame to database...")
-    df.to_sql("choco_stats", engine, if_exists="replace", index=False)
+    df.to_sql("choco_stats", engine, if_exists="replace", index=False, schema="kaggle_hist_data")
     print("Finished loading dataframe into database")
