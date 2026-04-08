@@ -25,8 +25,11 @@ customer_ids = [customer['id'] for customer in customers]
 print(f"Product IDs: {product_ids}")
 print(f"Customer IDs: {customer_ids}")
 
+print(f"len(product_ids): {len(product_ids)})")
+
 # get a random number of distinct products to order
-number_of_items = random.randint(1, 10)
+# should be <= the nu,ber of product IDs
+number_of_items = random.randint(1, len(product_ids))
 
 # get number_of_items unique product IDs 
 selected_product_ids = random.sample(product_ids, number_of_items)
