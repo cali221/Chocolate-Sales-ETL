@@ -1,4 +1,4 @@
-{# start of code I did not write myself #}}
+{# start of code I did not write myself #}
 {# copied from (as of Apr 9, 2026): https://discourse.getdbt.com/t/using-different-target-schemas-in-dbt/7732/5 #}
 {# by: brunoszdl (username on discourse.getdbt.com) #}
 {# date: Apr 10, 2023 #}
