@@ -200,3 +200,12 @@ def read_customers(
 ) -> list[Customer]:
     customers = session.exec(select(Customer).offset(offset).limit(limit)).all()
     return customers
+
+@app.get("/orders/")
+def read_orders(
+    session: SessionDep,
+    offset: int = 0,
+    limit: Annotated[int, Query(le=100)] = 100,
+) -> list[Order]:
+    orders = session.exec(select(Order).offset(offset).limit(limit)).all()
+    return orders
