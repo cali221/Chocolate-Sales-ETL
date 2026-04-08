@@ -17,6 +17,7 @@ order_data = {
   "shipping_costs_amount": 3
 }
 
+# TODO: change localhost to dummy_api based on whether or not docker is used
 r = requests.post('http://localhost:8000/orders', json=order_data)
 
 print(r.json())
