@@ -8,7 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # the application crashes without emitting any logs due to buffering.
 ENV PYTHONUNBUFFERED=1
 
-WORKDIR /choco-project-pipeline
+WORKDIR /choco-project-load-kaggle-data
 
 # Create a non-privileged user that the app will run under
 ARG UID=10001
