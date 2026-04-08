@@ -1,4 +1,4 @@
-# python3 simulate_orders.py
+# python3 create_random_order.py
 import requests
 import os
 from pathlib import Path
