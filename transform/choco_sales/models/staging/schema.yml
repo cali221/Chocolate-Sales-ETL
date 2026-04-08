@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: choco_db
     database: choco_db
-    schema: public
+    schema: kaggle_hist_data
     tables:
       - name: choco_stats
         columns: 
