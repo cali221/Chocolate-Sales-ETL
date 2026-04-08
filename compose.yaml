@@ -1,13 +1,13 @@
 services:
   # pipeline to load data from kaggle dataset to PostgreSQL DB
   # NOTE: this will reset the DB by dropping table if they exist
-  pipeline:
+  load_kaggle_data:
     build:
       context: ./load_data
       dockerfile: Dockerfile
-    container_name: pipeline
+    container_name: load_kaggle_data
     volumes: 
-      - ./load_data:/choco-project-pipeline
+      - ./load_data:/choco-project-load-kaggle-data
     depends_on:
       database:
         condition: service_healthy
@@ -16,6 +16,24 @@ services:
     profiles: [load]
     restart: "no"
     init: true
+
+  dummy_api:
+    build:
+      context: ./dummy_api
+      dockerfile: Dockerfile
+    container_name: dummy_api
+    volumes: 
+      - ./dummy_api:/choco-project-dummy-api
+    depends_on: 
+      database:
+        condition: service_healthy
+    env_file:
+      - .env.docker
+    profiles: [api]
+    restart: unless-stopped
+    init: true
+    ports: 
+      - "127.0.0.1:8000:8000"
 
   # transform DB's schema (to be completed)
   # note (applies to me only): 
@@ -64,7 +82,7 @@ services:
     depends_on:
       database:
         condition: service_healthy
-      pipeline:
+      load_kaggle_data:
         condition: service_completed_successfully
         required: false
       transform:
