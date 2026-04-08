@@ -182,4 +182,21 @@ def update_order(order_id: int, order: OrderUpdate, session: SessionDep):
     session.refresh(order_db)
     return order_db
 
-# TODO: add GET endpoints (optional)
+# TODO: add GET endpoints the online_store simulator can use
+@app.get("/products/")
+def read_products(
+    session: SessionDep,
+    offset: int = 0,
+    limit: Annotated[int, Query(le=100)] = 100,
+) -> list[Product]:
+    products = session.exec(select(Product).offset(offset).limit(limit)).all()
+    return products
+
+@app.get("/customers/")
+def read_customers(
+    session: SessionDep,
+    offset: int = 0,
+    limit: Annotated[int, Query(le=100)] = 100,
+) -> list[Customer]:
+    customers = session.exec(select(Customer).offset(offset).limit(limit)).all()
+    return customers
