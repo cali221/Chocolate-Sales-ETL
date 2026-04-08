@@ -93,18 +93,22 @@ def create_status(status: StatusCreate, session: SessionDep):
 # endpoint to create an order
 @app.post("/orders/", response_model=OrderPublic)
 def create_order(order: OrderCreate, session: SessionDep):
+    # get customer making the order
     get_customer_statement = select(Customer).where(Customer.id == order.customer_id)
     customer_results = session.exec(get_customer_statement)
     customer = customer_results.first()
 
+    # get status Pending for creating the order
     get_status_statement = select(Status).where(Status.name == "Pending")
     status_results = session.exec(get_status_statement)
     status = status_results.first()
 
+    # if customer or status for Pending doesn't exist throw an error
     if not status or not customer:
         raise HTTPException(status_code=404, detail="Pending order status and/or customer were not found")
 
     try:
+        # the order data to be inserted to orders table
         order_data = Order(
             current_status_id = status.id,
             customer_id = order.customer_id,
@@ -113,77 +117,69 @@ def create_order(order: OrderCreate, session: SessionDep):
             shipping_costs_amount = order.shipping_costs_amount
         )
 
+        # add the new order data
         session.add(order_data)
         session.flush()
         session.refresh(order_data)
 
         print(f"ORDER DATA: {order_data}")    
 
+        # loop through items for the order
         for item in order.items:
+            # get the product from the products table
             product = session.get(Product, item.product_id)
             
+            # if not found, throw an error
             if not product:
                 raise HTTPException(status_code=404, detail="Product was not found")
         
+            # the item to add to the order_items table
             item_to_add = OrderItem(
                 product_id = product.id,
                 order_id = order_data.id,
                 quantity = item.quantity,
                 price_per_unit_at_purchase = product.current_price
             )
+
+            # add the item to the order_items table
             session.add(item_to_add)
             session.flush()
             session.refresh(item_to_add)
             print(f"ITEM TO ADD: {item_to_add}")
 
-        status_history_to_add = StatusHistory( 
-            order_id = order_data.id,
-            status_id = status.id
-        )
-
-        session.add(status_history_to_add)
-        session.flush()
-        session.refresh(status_history_to_add)
-        print(f"STATUS HISTORY TO ADD:{status_history_to_add}")
-
         session.commit()
-
         return order_data
     except:
         session.rollback()
         raise
 
-# TODO: fix so that last_updated_at is updated when the row is updated
 # endpoint to update status of an order
 @app.patch("/orders/{order_id}", response_model=OrderPublic)
 def update_order(order_id: int, order: OrderUpdate, session: SessionDep):
     print(f"order: {order}")
 
+    # get the order from the orders table
     order_db = session.get(Order, order_id)
 
+    # get the new status from the status table
     get_status_statement = select(Status).where(Status.id == order.current_status_id)
     status_results = session.exec(get_status_statement)
     status = status_results.first()
 
+    # if order or status doesn't exist throw an error
     if not order_db or not status:
         raise HTTPException(status_code=404, detail="Order and/or status were not found")
 
+    # get the data to update the order with
     order_update_data = order.model_dump(exclude_unset=True)
+
+    # update the existing order with the new data
     order_db.sqlmodel_update(order_update_data)
+
+    # commit the changes
     session.add(order_db)
-    session.flush()
-    session.refresh(order_db)
-
-    status_history_to_add = StatusHistory( 
-        order_id = order_id,
-        status_id = order.current_status_id
-    )
-
-    session.add(status_history_to_add)
-    session.flush()
-    session.refresh(status_history_to_add)
-
     session.commit()
+    session.refresh(order_db)
     return order_db
 
 # TODO: add GET endpoints (optional)

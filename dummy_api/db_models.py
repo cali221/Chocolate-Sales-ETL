@@ -49,8 +49,8 @@ class Order(SQLModel, table=True):
     current_status_id: int = Field(nullable=False, foreign_key="oltp_online_store.status.id")
     customer_id: int = Field(nullable=False, foreign_key="oltp_online_store.customers.id")
     tax_amount: Decimal = Field(nullable=False, max_digits=10, decimal_places=3)
-    discount_amount: Decimal =Field(nullable=False, max_digits=10, decimal_places=3)
-    shipping_costs_amount: Decimal =Field(nullable=False, max_digits=10, decimal_places=3)
+    discount_amount: Decimal = Field(nullable=False, max_digits=10, decimal_places=3)
+    shipping_costs_amount: Decimal = Field(nullable=False, max_digits=10, decimal_places=3)
 
 class StatusHistory(SQLModel, table=True):
     __table_args__ = {"schema": "oltp_online_store"}
