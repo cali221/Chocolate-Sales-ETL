@@ -34,6 +34,10 @@ async def lifespan(app: FastAPI):
     
 app = FastAPI(lifespan=lifespan)
 
+@app.get("/health/")
+def healthcheck(session: SessionDep):
+    return {"health": "ok"}
+
 # endpoint to create a product
 @app.post("/products/", response_model=ProductPublic)
 def create_product(product: ProductCreate, session: SessionDep):
