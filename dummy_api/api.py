@@ -124,6 +124,9 @@ def create_order(order: OrderCreate, session: SessionDep):
 
         print(f"ORDER DATA: {order_data}")    
 
+        # items array to show in output
+        items_arr = []
+
         # loop through items for the order
         for item in order.items:
             # get the product from the products table
@@ -147,8 +150,27 @@ def create_order(order: OrderCreate, session: SessionDep):
             session.refresh(item_to_add)
             print(f"ITEM TO ADD: {item_to_add}")
 
+            # get the item data
+            item_data = OrderItemPublic(
+               **item_to_add.model_dump(),
+               product_name = product.name
+            )
+
+            # push to array for output
+            items_arr.append(item_data)
+
+        print(f"ITEMS ARRAY FOR OUTPUT: {items_arr}")
+
+        # build output
+        output = OrderPublic(
+            **order_data.model_dump(),
+            customer_name = customer.name,
+            current_status_name = status.name,
+            order_items = items_arr
+        )
+
         session.commit()
-        return order_data
+        return output
     except:
         session.rollback()
         raise
@@ -170,6 +192,48 @@ def update_order(order_id: int, order: OrderUpdate, session: SessionDep):
     if not order_db or not status:
         raise HTTPException(status_code=404, detail="Order and/or status were not found")
 
+    # get customer making the order
+    get_customer_statement = select(Customer).where(Customer.id == order_db.customer_id)
+    customer_results = session.exec(get_customer_statement)
+    customer = customer_results.first()
+
+    if not customer:
+        raise HTTPException(status_code=404, detail="Customer was not found")
+
+    # get order items for the order
+    get_order_items_statement = select(OrderItem).where(OrderItem.order_id == order_db.id)
+    order_items_results = session.exec(get_order_items_statement)
+    order_items = order_items_results.all()
+
+    # if no order items found, throw error
+    if not order_items:
+        raise HTTPException(status_code=404, detail="Order items were not found")
+
+    # items array for output
+    items_arr = []
+
+    for ord_item in order_items:
+        # get the product from the products table
+        product = session.get(Product, ord_item.product_id)
+            
+        # if not found, throw an error
+        if not product:
+            raise HTTPException(status_code=404, detail="Product was not found")
+
+        item_data = OrderItemPublic(
+            id = ord_item.id,
+            product_id = ord_item.product_id,
+            order_id = ord_item.order_id,
+            quantity = ord_item.quantity,
+            price_per_unit_at_purchase = ord_item.price_per_unit_at_purchase,
+            product_name = product.name
+        )
+
+        items_arr.append(item_data)
+
+    # preview the items_array for output
+    print(f"ITEMS ARRAY FOR OUTPUT: {items_arr}")
+
     # get the data to update the order with
     order_update_data = order.model_dump(exclude_unset=True)
 
@@ -180,11 +244,17 @@ def update_order(order_id: int, order: OrderUpdate, session: SessionDep):
     session.add(order_db)
     session.commit()
     session.refresh(order_db)
-    return order_db
+
+    return OrderPublic(
+        **order_db.model_dump(),
+        customer_name = customer.name,
+        current_status_name = status.name,
+        order_items = items_arr
+    )
 
 # TODO: add GET endpoints the online_store simulator can use
 # get products
-@app.get("/products/", response_model=ProductPublic)
+@app.get("/products/", response_model=list[ProductPublic])
 def read_products(
     session: SessionDep,
     offset: int = 0,
@@ -194,31 +264,162 @@ def read_products(
     return products
 
 # get customers
-@app.get("/customers/", response_model=CustomerPublic)
+@app.get("/customers/", response_model=list[CustomerPublic])
 def read_customers(
     session: SessionDep,
     offset: int = 0,
     limit: Annotated[int, Query(le=100)] = 100,
 ) -> list[Customer]:
-    customers = session.exec(select(Customer).offset(offset).limit(limit)).all()
+    customers = session.exec(select(Customer.id, 
+                                    Customer.username, 
+                                    Customer.email,
+                                    Customer.name,
+                                    Customer.country_id, 
+                                    Country.name.label("country_name"))
+                            .join(Country).offset(offset).limit(limit)).all()
     return customers
 
 # get orders
-@app.get("/orders/", response_model=OrderPublic)
+@app.get("/orders/", response_model=list[OrderPublic])
 def read_orders(
     session: SessionDep,
     offset: int = 0,
     limit: Annotated[int, Query(le=100)] = 100,
 ) -> list[Order]:
     orders = session.exec(select(Order).offset(offset).limit(limit)).all()
-    return orders
+
+    output_arr = []
+    for order in orders:
+        # get customer making the order
+        get_customer_statement = select(Customer).where(Customer.id == order.customer_id)
+        customer_results = session.exec(get_customer_statement)
+        customer = customer_results.first()
+
+        # if customer wasn't found throw error
+        if not customer:
+            raise HTTPException(status_code=404, detail="Customer was not found")
+
+        # get order's status from the status table
+        get_status_statement = select(Status).where(Status.id == order.current_status_id)
+        status_results = session.exec(get_status_statement)
+        status = status_results.first()
+
+        # if status wasn't found throw error
+        if not status:
+            raise HTTPException(status_code=404, detail="Status was not found")
+
+        # get order items for the order
+        get_order_items_statement = select(OrderItem).where(OrderItem.order_id == order.id)
+        order_items_results = session.exec(get_order_items_statement)
+        order_items = order_items_results.all()
+
+        # if no order items found, throw error
+        if not order_items:
+            raise HTTPException(status_code=404, detail="Order items were not found")
+
+        # items array for output
+        items_arr = []
+
+        # handle order items 
+        for ord_item in order_items:
+            # get the product from the products table
+            product = session.get(Product, ord_item.product_id)
+                
+            # if not found, throw an error
+            if not product:
+                raise HTTPException(status_code=404, detail="Product was not found")
+
+            item_data = OrderItemPublic(
+                id = ord_item.id,
+                product_id = ord_item.product_id,
+                order_id = ord_item.order_id,
+                quantity = ord_item.quantity,
+                price_per_unit_at_purchase = ord_item.price_per_unit_at_purchase,
+                product_name = product.name
+            )
+
+            items_arr.append(item_data)
+
+        # preview the items_array for output
+        print(f"ITEMS ARRAY FOR OUTPUT: {items_arr}")
+
+        output_arr.append(
+            OrderPublic(
+                **order.model_dump(),
+                customer_name = customer.name,
+                current_status_name = status.name,
+                order_items = items_arr
+            )
+        )
+
+    return output_arr
 
 # get uncompleted orders (current_status is not 'Completed')
-@app.get("/uncompleted_orders/", response_model=OrderPublic)
+@app.get("/uncompleted_orders/", response_model=list[OrderPublic])
 def read_orders(
     session: SessionDep,
     offset: int = 0,
     limit: Annotated[int, Query(le=100)] = 100,
 ) -> list[Order]:
-    orders = session.exec(select(Order).offset(offset).limit(limit).join(Status).where(Status.name != "Completed")).all()
-    return orders
+    orders = session.exec(select(Order).join(Status).offset(offset).limit(limit).where(Status.name != "Completed")).all()
+    
+    output_arr = []
+    for order in orders:
+        # get customer making the order
+        get_customer_statement = select(Customer).where(Customer.id == order.customer_id)
+        customer_results = session.exec(get_customer_statement)
+        customer = customer_results.first()
+        
+        # get order's status from the status table
+        get_status_statement = select(Status).where(Status.id == order.current_status_id)
+        status_results = session.exec(get_status_statement)
+        status = status_results.first()
+
+        if not customer or not status:
+            raise HTTPException(status_code=404, detail="Customer and/or status were not found")
+
+        # get order items for the order
+        get_order_items_statement = select(OrderItem).where(OrderItem.order_id == order.id)
+        order_items_results = session.exec(get_order_items_statement)
+        order_items = order_items_results.all()
+
+        # if no order items found, throw error
+        if not order_items:
+            raise HTTPException(status_code=404, detail="Order items were not found")
+
+        # items array for output
+        items_arr = []
+
+        # handle order items 
+        for ord_item in order_items:
+            # get the product from the products table
+            product = session.get(Product, ord_item.product_id)
+                
+            # if not found, throw an error
+            if not product:
+                raise HTTPException(status_code=404, detail="Product was not found")
+
+            item_data = OrderItemPublic(
+                id = ord_item.id,
+                product_id = ord_item.product_id,
+                order_id = ord_item.order_id,
+                quantity = ord_item.quantity,
+                price_per_unit_at_purchase = ord_item.price_per_unit_at_purchase,
+                product_name = product.name
+            )
+
+            items_arr.append(item_data)
+
+        # preview the items_array for output
+        print(f"ITEMS ARRAY FOR OUTPUT: {items_arr}")
+        
+        output_arr.append(
+            OrderPublic(
+                **order.model_dump(),
+                customer_name = customer.name,
+                current_status_name = status.name,
+                order_items = items_arr
+            )
+        )
+
+    return output_arr
