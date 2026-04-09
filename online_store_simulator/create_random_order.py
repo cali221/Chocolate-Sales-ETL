@@ -28,7 +28,7 @@ print(f"Customer IDs: {customer_ids}")
 print(f"len(product_ids): {len(product_ids)})")
 
 # get a random number of distinct products to order
-# should be <= the nu,ber of product IDs
+# should be <= the number of product IDs
 number_of_items = random.randint(1, len(product_ids))
 
 # get number_of_items unique product IDs 

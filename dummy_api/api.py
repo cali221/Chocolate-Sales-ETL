@@ -183,7 +183,8 @@ def update_order(order_id: int, order: OrderUpdate, session: SessionDep):
     return order_db
 
 # TODO: add GET endpoints the online_store simulator can use
-@app.get("/products/")
+# get products
+@app.get("/products/", response_model=ProductPublic)
 def read_products(
     session: SessionDep,
     offset: int = 0,
@@ -192,7 +193,8 @@ def read_products(
     products = session.exec(select(Product).offset(offset).limit(limit)).all()
     return products
 
-@app.get("/customers/")
+# get customers
+@app.get("/customers/", response_model=CustomerPublic)
 def read_customers(
     session: SessionDep,
     offset: int = 0,
@@ -201,11 +203,22 @@ def read_customers(
     customers = session.exec(select(Customer).offset(offset).limit(limit)).all()
     return customers
 
-@app.get("/orders/")
+# get orders
+@app.get("/orders/", response_model=OrderPublic)
 def read_orders(
     session: SessionDep,
     offset: int = 0,
     limit: Annotated[int, Query(le=100)] = 100,
 ) -> list[Order]:
     orders = session.exec(select(Order).offset(offset).limit(limit)).all()
+    return orders
+
+# get uncompleted orders (current_status is not 'Completed')
+@app.get("/uncompleted_orders/", response_model=OrderPublic)
+def read_orders(
+    session: SessionDep,
+    offset: int = 0,
+    limit: Annotated[int, Query(le=100)] = 100,
+) -> list[Order]:
+    orders = session.exec(select(Order).offset(offset).limit(limit).join(Status).where(Status.name != "Completed")).all()
     return orders
