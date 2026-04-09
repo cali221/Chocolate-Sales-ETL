@@ -1,21 +1,8 @@
-# python3 create_random_order.py
 import requests
-# import os
-# from pathlib import Path
-# from dotenv import load_dotenv
 import random
 import json
 
 def create_random_order(host):
-  # setup env variable for host (in Docker: database, locally: localhost)
-  # if not os.getenv('USING_DOCKER'):
-  #   print('Not using docker, loading .env.local')
-  #   dotenv_path = Path(__file__).parent.parent / '.env.local'
-  #   load_dotenv(dotenv_path)
-
-  # host = os.getenv('POSTGRES_HOST')
-  # print(f"host: {host}")
-
   print("\nCreating a new random order....")
   # get product IDs (limit 100)
   products = requests.get(f"http://{host}:8000/products").json()
