@@ -98,14 +98,18 @@ def create_order(order: OrderCreate, session: SessionDep):
     customer_results = session.exec(get_customer_statement)
     customer = customer_results.first()
 
+    # if customer doesn't exist throw an error
+    if not customer:
+        raise HTTPException(status_code=404, detail="Customer was not found")
+
     # get status Pending for creating the order
     get_status_statement = select(Status).where(Status.name == "Pending")
     status_results = session.exec(get_status_statement)
     status = status_results.first()
 
-    # if customer or status for Pending doesn't exist throw an error
-    if not status or not customer:
-        raise HTTPException(status_code=404, detail="Pending order status and/or customer were not found")
+    # if status for Pending doesn't exist throw an error
+    if not status:
+        raise HTTPException(status_code=404, detail="Pending order status was not found")
 
     try:
         # the order data to be inserted to orders table
@@ -183,20 +187,25 @@ def update_order(order_id: int, order: OrderUpdate, session: SessionDep):
     # get the order from the orders table
     order_db = session.get(Order, order_id)
 
+    # if order was not found throw error
+    if not order_db:
+        raise HTTPException(status_code=404, detail="Order was not found")
+
     # get the new status from the status table
     get_status_statement = select(Status).where(Status.id == order.current_status_id)
     status_results = session.exec(get_status_statement)
     status = status_results.first()
 
-    # if order or status doesn't exist throw an error
-    if not order_db or not status:
-        raise HTTPException(status_code=404, detail="Order and/or status were not found")
+    # if status doesn't exist throw an error
+    if not status:
+        raise HTTPException(status_code=404, detail="Status was not found")
 
     # get customer making the order
     get_customer_statement = select(Customer).where(Customer.id == order_db.customer_id)
     customer_results = session.exec(get_customer_statement)
     customer = customer_results.first()
 
+    # if customer doesn't exist thrown an error
     if not customer:
         raise HTTPException(status_code=404, detail="Customer was not found")
 
@@ -380,13 +389,18 @@ def read_orders(
         customer_results = session.exec(get_customer_statement)
         customer = customer_results.first()
         
+        # if customer wasn't found throw error
+        if not customer:
+            raise HTTPException(status_code=404, detail="Customer was not found")
+
         # get order's status from the status table
         get_status_statement = select(Status).where(Status.id == order.current_status_id)
         status_results = session.exec(get_status_statement)
         status = status_results.first()
 
-        if not customer or not status:
-            raise HTTPException(status_code=404, detail="Customer and/or status were not found")
+        # if status wasn't found throw error
+        if not status:
+            raise HTTPException(status_code=404, detail="Status was not found")
 
         # get order items for the order
         get_order_items_statement = select(OrderItem).where(OrderItem.order_id == order.id)
