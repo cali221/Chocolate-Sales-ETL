@@ -14,10 +14,11 @@ host = os.getenv('POSTGRES_HOST')
 print(f"host: {host}")
 
 # get product IDs (limit 100)
-products = requests.get(f"http://{host}:8000/products").json()
+products = requests.get(f"http://{host}:8000/products")
+print(products)
 product_ids = [product['id'] for product in products]
 
-# get customer IDs (limit 100)
+get customer IDs (limit 100)
 customers = requests.get(f"http://{host}:8000/customers").json()
 customer_ids = [customer['id'] for customer in customers]
 

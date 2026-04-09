@@ -48,6 +48,7 @@ class StatusCreate(SQLModel):
 class OrderItemPublic(SQLModel):
     id: int
     product_id: int
+    product_name: str
     order_id: int
     quantity: int
     price_per_unit_at_purchase: Decimal
@@ -62,10 +63,13 @@ class OrderPublic(SQLModel):
     created_at: datetime
     status_last_updated_at: datetime
     current_status_id: int
+    current_status_name: str
     customer_id: int 
+    customer_name: str
     tax_amount: Decimal
     discount_amount: Decimal
     shipping_costs_amount: Decimal
+    order_items: list[OrderItemPublic]
 
 class OrderCreate(SQLModel):
     customer_id: int
