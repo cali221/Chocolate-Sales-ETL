@@ -1,13 +1,24 @@
 from sqlmodel import Field, SQLModel, String
 from decimal import Decimal
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, BaseModel, PlainSerializer
 from datetime import datetime
+from typing_extensions import Annotated
+
+# start of code I did not write myself
+# copied from (as of April 9th 2026): https://github.com/pydantic/pydantic/issues/7457#issuecomment-2994018396
+# author: samuelcolvin (username on GitHub)
+# date of source's publication: Jun 22, 2025
+FloatDecimal = Annotated[
+    Decimal,
+    PlainSerializer(float, return_type=float, when_used='json')
+]
+# end of code I did not write myself
 
 # products table api models
 class ProductPublic(SQLModel):
     id: int = Field(nullable=False)
     name: str = Field(min_length=1, nullable=False, max_length=50)
-    current_price: Decimal = Field(max_digits=10, decimal_places=3, ge=0, nullable=False)
+    current_price: FloatDecimal = Field(max_digits=10, decimal_places=3, ge=0, nullable=False)
 
 class ProductCreate(SQLModel):
     name: str = Field(max_length=50, min_length=1, nullable=False)
@@ -51,7 +62,7 @@ class OrderItemPublic(SQLModel):
     product_name: str = Field(max_length=50, min_length=1, nullable=False)
     order_id: int = Field(nullable=False)
     quantity: int = Field(nullable=False, ge=1)
-    price_per_unit_at_purchase: Decimal = Field(max_digits=10, decimal_places=3, ge=0, nullable=False)
+    price_per_unit_at_purchase: FloatDecimal = Field(max_digits=10, decimal_places=3, ge=0, nullable=False)
 
 class OrderItemCreate(SQLModel):
     quantity: int = Field(nullable=False, ge=0)
@@ -66,9 +77,9 @@ class OrderPublic(SQLModel):
     current_status_name: str = Field(max_length=50, min_length=1, nullable=False)
     customer_id: int = Field(nullable=False)
     customer_name: str = Field(max_length=50, min_length=1, nullable=False)
-    tax_amount: Decimal = Field(max_digits=10, decimal_places=3, ge=0)
-    discount_amount: Decimal = Field(max_digits=10, decimal_places=3, ge=0)
-    shipping_costs_amount: Decimal = Field(max_digits=10, decimal_places=3, ge=0)
+    tax_amount: FloatDecimal = Field(max_digits=10, decimal_places=3, ge=0)
+    discount_amount: FloatDecimal = Field(max_digits=10, decimal_places=3, ge=0)
+    shipping_costs_amount: FloatDecimal = Field(max_digits=10, decimal_places=3, ge=0)
     order_items: list[OrderItemPublic]
 
 class OrderCreate(SQLModel):

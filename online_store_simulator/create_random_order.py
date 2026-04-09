@@ -8,9 +8,9 @@ import json
 
 # setup env variable for host (in Docker: database, locally: localhost)
 if not os.getenv('USING_DOCKER'):
-    print('Not using docker, loading .env.local')
-    dotenv_path = Path(__file__).parent.parent / '.env.local'
-    load_dotenv(dotenv_path)
+  print('Not using docker, loading .env.local')
+  dotenv_path = Path(__file__).parent.parent / '.env.local'
+  load_dotenv(dotenv_path)
 
 host = os.getenv('POSTGRES_HOST')
 print(f"host: {host}")
