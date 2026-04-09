@@ -14,18 +14,17 @@ host = os.getenv('POSTGRES_HOST')
 print(f"host: {host}")
 
 # get product IDs (limit 100)
-products = requests.get(f"http://{host}:8000/products")
+products = requests.get(f"http://{host}:8000/products").json()
 print(products)
 product_ids = [product['id'] for product in products]
 
-get customer IDs (limit 100)
+# get customer IDs (limit 100)
 customers = requests.get(f"http://{host}:8000/customers").json()
 customer_ids = [customer['id'] for customer in customers]
 
 # print the available IDs for products and customers
 print(f"Product IDs: {product_ids}")
 print(f"Customer IDs: {customer_ids}")
-
 print(f"len(product_ids): {len(product_ids)})")
 
 # get a random number of distinct products to order
