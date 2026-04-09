@@ -5,6 +5,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import random
 
+# setup env variable for host (in Docker: database, locally: localhost)
 if not os.getenv('USING_DOCKER'):
     print('Not using docker, loading .env.local')
     dotenv_path = Path(__file__).parent.parent / '.env.local'
@@ -13,26 +14,51 @@ if not os.getenv('USING_DOCKER'):
 host = os.getenv('POSTGRES_HOST')
 print(f"host: {host}")
 
-# get uncompleted order IDs (limit 100)
+# get uncompleted orders (limit 100)
 orders = requests.get(f"http://{host}:8000/uncompleted_orders").json()
-order_ids = [order['id'] for order in orders]
 
-# print the available orders
-print(f"Order IDs: {order_ids}")
-
-if len(order_ids) != 0:
-    print("Uncompleted order found")
-
-    # get a random number of distinct orders to update
-    # should be <= the number of order IDs
-    number_of_order_to_update = random.randint(1, len(order_ids))
-    print(f"Number of orders to update: {number_of_order_to_update}")
-
-    # get number_of_items unique product IDs 
-    selected_order_ids = random.sample(order_ids, number_of_order_to_update)
-    print(f"Selected order IDs to update: {selected_order_ids}")
-
-    
-
-else:
+if not orders:
     print("Uncompleted order not found")
+else:
+    # get all statuses as json
+    all_statuses = requests.get(f"http://{host}:8000/status").json()
+
+    # status id mapping
+    status_id_mapping = {status["name"]: status["id"] for status in all_statuses}
+
+    # status transition mapping
+    status_transition_mapping = {
+        "Pending": "Processing",
+        "Processing": "In Transit",
+        "In Transit": "Arrived",
+        "Arrived": "Completed",
+        "Completed": None
+    }
+
+    # get the number of orders to update
+    number_of_orders_to_update = random.randint(1, len(orders))
+    print(f"NUMBER OF ORDERS TO UPDATE: {number_of_orders_to_update }")
+
+    # get a sample of unique orders of size number_of_orders_to_update
+    selected_orders = random.sample(orders, number_of_orders_to_update)
+    print(f"SELECTED ORDER IDs: {[order['id'] for order in selected_orders]}")
+
+    for order in selected_orders:
+        # get the order's current status name
+        current_status = order["current_status_name"]
+
+        # get the order's next status name
+        next_status = status_transition_mapping[current_status]
+
+        # print some data
+        print(f"ORDER ID {order["id"]} | CURRENT STATUS: {current_status} | NEXT STATUS: {next_status} | NEXT STATUS ID: {status_id_mapping[next_status]}")
+        
+        # if next status is not None (not completed)
+        if next_status is not None:
+            # update the order so it has the next status
+            update_response = requests.patch(f"http://{host}:8000/orders/{order['id']}", json={"current_status_id": status_id_mapping[next_status]})
+            
+            # print the updated status result
+            print(f"Updated order status: {update_response.json()['current_status_name']} (status ID: {update_response.json()['current_status_id']})")
+        else:
+            print("Order has been completed, skipping update...")

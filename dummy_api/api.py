@@ -263,6 +263,16 @@ def read_products(
     products = session.exec(select(Product).offset(offset).limit(limit)).all()
     return products
 
+# get statuses
+@app.get("/status/", response_model=list[StatusPublic])
+def read_status(
+    session: SessionDep,
+    offset: int = 0,
+    limit: Annotated[int, Query(le=10)] = 10,
+) -> list[Status]:
+    status = session.exec(select(Status).offset(offset).limit(limit)).all()
+    return status
+
 # get customers
 @app.get("/customers/", response_model=list[CustomerPublic])
 def read_customers(
