@@ -4,7 +4,9 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 import random
+import json
 
+# setup env variable for host (in Docker: database, locally: localhost)
 if not os.getenv('USING_DOCKER'):
     print('Not using docker, loading .env.local')
     dotenv_path = Path(__file__).parent.parent / '.env.local'
@@ -15,7 +17,6 @@ print(f"host: {host}")
 
 # get product IDs (limit 100)
 products = requests.get(f"http://{host}:8000/products").json()
-print(products)
 product_ids = [product['id'] for product in products]
 
 # get customer IDs (limit 100)
@@ -50,4 +51,4 @@ order_data = {
 order_created = requests.post(f"http://{host}:8000/orders", json=order_data)
 
 # print the json results of the endpoint
-print(order_created.json())
+print(f"Inserted order:\n{json.dumps(order_created.json(), indent=2)}")
