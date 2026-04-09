@@ -60,7 +60,7 @@ class OrderItemCreate(SQLModel):
 class OrderPublic(SQLModel):
     id: int
     created_at: datetime
-    last_updated_at: datetime
+    status_last_updated_at: datetime
     current_status_id: int
     customer_id: int 
     tax_amount: Decimal

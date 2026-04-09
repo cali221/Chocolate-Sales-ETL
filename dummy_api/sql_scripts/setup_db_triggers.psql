@@ -20,17 +20,17 @@ AFTER UPDATE OF current_status_id ON oltp_online_store.orders
 FOR EACH ROW 
 EXECUTE FUNCTION oltp_online_store.log_order_status_history();
 
--- trigger function for updating the last_updated_at column in order table when a row is updated
-CREATE OR REPLACE FUNCTION oltp_online_store.update_order_last_updated_at_when_order_updated() 
+-- trigger function for updating the status_last_updated_at column in order table when a row is updated
+CREATE OR REPLACE FUNCTION oltp_online_store.update_order_status_last_updated_at_when_order_updated() 
 RETURNS TRIGGER AS $$
 BEGIN
-   NEW.last_updated_at = CURRENT_TIMESTAMP;
+   NEW.status_last_updated_at = CURRENT_TIMESTAMP;
    RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
 -- create and attach the trigger to the orders table
-CREATE OR REPLACE TRIGGER update_order_last_updated_at_when_order_updated_trigger 
+CREATE OR REPLACE TRIGGER update_order_status_last_updated_at_when_order_updated_trigger 
 BEFORE UPDATE OF current_status_id ON oltp_online_store.orders
 FOR EACH ROW 
-EXECUTE FUNCTION oltp_online_store.update_order_last_updated_at_when_order_updated();
+EXECUTE FUNCTION oltp_online_store.update_order_status_last_updated_at_when_order_updated();

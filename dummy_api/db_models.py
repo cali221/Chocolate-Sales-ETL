@@ -40,7 +40,7 @@ class Order(SQLModel, table=True):
         nullable=False,
         server_default=text("CURRENT_TIMESTAMP"),
     ))
-    last_updated_at: datetime = Field(sa_column=Column(
+    status_last_updated_at: datetime = Field(sa_column=Column(
         TIMESTAMP(timezone=True),
         nullable=False,
         server_default=text("CURRENT_TIMESTAMP"),
