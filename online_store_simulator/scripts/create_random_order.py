@@ -2,14 +2,14 @@ import requests
 import random
 import json
 
-def create_random_order(host):
+def create_random_order(host, port):
   print("\nCreating a new random order....")
   # get product IDs (limit 100)
-  products = requests.get(f"http://{host}:8000/products").json()
+  products = requests.get(f"http://{host}:{port}/products").json()
   product_ids = [product['id'] for product in products]
 
   # get customer IDs (limit 100)
-  customers = requests.get(f"http://{host}:8000/customers").json()
+  customers = requests.get(f"http://{host}:{port}/customers").json()
   customer_ids = [customer['id'] for customer in customers]
 
   # print the available IDs for products and customers
@@ -39,7 +39,7 @@ def create_random_order(host):
   }
 
   # create an order
-  order_created = requests.post(f"http://{host}:8000/orders", json=order_data)
+  order_created = requests.post(f"http://{host}:{port}/orders", json=order_data)
 
   # print the json results of the endpoint
   print(f"Inserted order:\n{json.dumps(order_created.json(), indent=2)}")

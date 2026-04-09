@@ -8,10 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # the application crashes without emitting any logs due to buffering.
 ENV PYTHONUNBUFFERED=1
 
-# install curl (needed for healthcheck)
-RUN apt-get update && apt-get install -y curl
-
-WORKDIR /choco-project-dummy-api
+WORKDIR /choco-project-online-store-sim
 
 # Create a non-privileged user that the app will run under
 ARG UID=10001
@@ -37,8 +34,5 @@ USER appuser
 # Copy the source code into the container.
 COPY  . .
 
-# Expose the port that the application listens on.
-EXPOSE 80
-
 # Run the application.
-CMD ["fastapi", "run", "api.py", "--port", "80"]
+CMD ["python", "-m", "main"]
