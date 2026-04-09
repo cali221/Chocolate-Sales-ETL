@@ -7,7 +7,7 @@ from datetime import datetime
 class ProductPublic(SQLModel):
     id: int
     name: str
-    current_price: Decimal 
+    current_price: Decimal = Field(max_digits=10, decimal_places=3)
 
 class ProductCreate(SQLModel):
     name: str = Field(max_length=50)
@@ -51,7 +51,7 @@ class OrderItemPublic(SQLModel):
     product_name: str
     order_id: int
     quantity: int
-    price_per_unit_at_purchase: Decimal
+    price_per_unit_at_purchase: Decimal = Field(max_digits=10, decimal_places=3)
 
 class OrderItemCreate(SQLModel):
     quantity: int
@@ -66,9 +66,9 @@ class OrderPublic(SQLModel):
     current_status_name: str
     customer_id: int 
     customer_name: str
-    tax_amount: Decimal
-    discount_amount: Decimal
-    shipping_costs_amount: Decimal
+    tax_amount: Decimal = Field(max_digits=10, decimal_places=3)
+    discount_amount: Decimal = Field(max_digits=10, decimal_places=3)
+    shipping_costs_amount: Decimal = Field(max_digits=10, decimal_places=3)
     order_items: list[OrderItemPublic]
 
 class OrderCreate(SQLModel):
@@ -87,6 +87,17 @@ class OrderCreate(SQLModel):
 
        if len(product_ids) != len(set(product_ids)):
         raise ValueError("Unexpected behavior detected: duplicated product IDs in one order")
+
+       return items
+
+    # check if there is at lest an item to order, throw error if not
+    @field_validator('items', mode='after')  
+    @classmethod
+    def items_to_order_exists(cls, items: list):
+       product_ids = [item.dict()['product_id'] for item in items]
+
+       if len(items) == 0 or items is None:
+        raise ValueError("Order should consists of at least one product to order")
 
        return items
 
