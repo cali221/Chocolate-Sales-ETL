@@ -62,8 +62,12 @@ services:
 
   # transform DB's schema (to be completed)
   # note (applies to me only): 
-  # alias dbt="docker compose exec transform dbt" was added locally,
+  # ---------- WSL ----------:
+  # alias dbt="docker compose exec transform dbt" was added,
   # to run dbt commands do e.g. dbt run, dbt build etc
+  # ---------- Windows powershell ----------:
+  # function chocddbt { docker compose exec transform dbt @args } was added
+  # to run dbt commands in docker use chocddbt run etc
   transform:
     build:
       context: ./transform
