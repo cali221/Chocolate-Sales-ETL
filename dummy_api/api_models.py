@@ -105,8 +105,6 @@ class OrderCreate(SQLModel):
     @field_validator('items', mode='after')  
     @classmethod
     def items_to_order_exists(cls, items: list):
-       product_ids = [item.dict()['product_id'] for item in items]
-
        if len(items) == 0 or items is None:
         raise ValueError("order should consists of at least one product to order")
 

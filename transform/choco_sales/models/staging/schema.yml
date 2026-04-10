@@ -13,6 +13,53 @@ sources:
           - name: Date
           - name: Amount
           - name: Boxes Shipped
+  - name: choco_db_online_store
+    database: choco_db
+    schema: oltp_online_store
+    tables:
+      - name: countries
+        columns:
+          - name: id
+          - name: name
+      - name: customers
+        columns:
+          - name: id
+          - name: name
+          - name: username
+          - name: email
+          - name: country_id
+      - name: order_items
+        columns: 
+          - name: id
+          - name: product_id
+          - name: order_id
+          - name: quantity
+          - name: price_per_unit_at_purchase
+      - name: order_status_history
+        columns:
+          - name: id
+          - name: order_id
+          - name: status_id
+          - name: updated_at
+      - name: orders
+        columns:
+          - name: id
+          - name: created_at
+          - name: status_last_updated_at
+          - name: current_status_id
+          - name: customer_id
+          - name: tax_amount
+          - name: discount_amount
+          - name: shipping_costs_amount
+      - name: products
+        columns: 
+          - name: id
+          - name: name
+          - name: current_price
+      - name: statuses
+        columns:
+          name: id
+          name: name
 
 models:
   - name: stg_choco_db__choco_stats

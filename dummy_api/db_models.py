@@ -37,7 +37,7 @@ class Customer(SQLModel, table=True):
 
 class Status(SQLModel, table=True):
     __table_args__ = {"schema": "oltp_online_store"}
-    __tablename__ = "status"
+    __tablename__ = "statuses"
     id: int | None = Field(default=None, primary_key=True)
     name: str = Field(sa_type=String(50), index=False, nullable=False, unique=True, max_length=50, min_length=1)
 
@@ -56,7 +56,7 @@ class Order(SQLModel, table=True):
         server_default=text("CURRENT_TIMESTAMP"),
         server_onupdate=text("CURRENT_TIMESTAMP"),
     ))
-    current_status_id: int = Field(nullable=False, foreign_key="oltp_online_store.status.id")
+    current_status_id: int = Field(nullable=False, foreign_key="oltp_online_store.statuses.id")
     customer_id: int = Field(nullable=False, foreign_key="oltp_online_store.customers.id")
     tax_amount: Decimal = Field(nullable=False, max_digits=10, decimal_places=3, ge=0)
     discount_amount: Decimal = Field(nullable=False, max_digits=10, decimal_places=3, ge=0)
@@ -67,7 +67,7 @@ class StatusHistory(SQLModel, table=True):
     __tablename__ = "order_status_history"
     id: int | None = Field(default=None, primary_key=True)
     order_id: int = Field(nullable=False, foreign_key="oltp_online_store.orders.id")
-    status_id: int = Field(nullable=False, foreign_key="oltp_online_store.status.id")
+    status_id: int = Field(nullable=False, foreign_key="oltp_online_store.statuses.id")
     updated_at: datetime = Field(sa_column=Column(
         TIMESTAMP(timezone=True),
         nullable=False,

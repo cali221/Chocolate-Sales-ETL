@@ -8,14 +8,13 @@ from .db_models import (Product,
                         Customer, 
                         Status, 
                         Order,
-                        OrderItem,
-                        StatusHistory)
+                        OrderItem)
 from .api_models import (ProductPublic, ProductCreate, 
                          CountryCreate, CountryPublic, 
                          CustomerPublic, CustomerCreate, 
                          StatusPublic, StatusCreate,
                          OrderCreate, OrderPublic, OrderUpdate,
-                         OrderItemCreate, OrderItemPublic)
+                         OrderItemPublic)
 
 engine = get_engine()
 
