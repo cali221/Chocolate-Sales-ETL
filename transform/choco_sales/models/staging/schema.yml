@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: choco_db
+  - name: choco_db_kaggle_hist
     database: choco_db
     schema: kaggle_hist_data
     tables:

@@ -167,7 +167,7 @@ def create_order(order: OrderCreate, session: SessionDep):
             # push to array for output
             items_arr.append(item_data)
 
-        print(f"ITEMS ARRAY FOR OUTPUT: {items_arr}")
+        #print(f"ITEMS ARRAY FOR OUTPUT: {items_arr}")
 
         # build output
         output = OrderPublic(
@@ -245,7 +245,7 @@ def update_order(order_id: int, order: OrderUpdate, session: SessionDep):
         items_arr.append(item_data)
 
     # preview the items_array for output
-    print(f"ITEMS ARRAY FOR OUTPUT: {items_arr}")
+    #print(f"ITEMS ARRAY FOR OUTPUT: {items_arr}")
 
     # get the data to update the order with
     order_update_data = order.model_dump(exclude_unset=True)
@@ -265,7 +265,6 @@ def update_order(order_id: int, order: OrderUpdate, session: SessionDep):
         order_items = items_arr
     )
 
-# TODO: add GET endpoints the online_store simulator can use
 # get products
 @app.get("/products/", response_model=list[ProductPublic])
 def read_products(
@@ -364,7 +363,7 @@ def read_orders(
             items_arr.append(item_data)
 
         # preview the items_array for output
-        print(f"ITEMS ARRAY FOR OUTPUT: {items_arr}")
+        #print(f"ITEMS ARRAY FOR OUTPUT: {items_arr}")
 
         output_arr.append(
             OrderPublic(
@@ -439,7 +438,7 @@ def read_orders(
             items_arr.append(item_data)
 
         # preview the items_array for output
-        print(f"ITEMS ARRAY FOR OUTPUT: {items_arr}")
+        #print(f"ITEMS ARRAY FOR OUTPUT: {items_arr}")
         
         output_arr.append(
             OrderPublic(
