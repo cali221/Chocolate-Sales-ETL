@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: kaggle_hist
+    database: choco_db
+    schema: kaggle_hist_data
+    tables:
+      - name: choco_stats
+        description: "Raw chocolate sales data (2022-2024) from Kaggle"
+        columns: 
+          - name: Sales Person
+          - name: Country
+          - name: Product
+          - name: Date
+          - name: Amount
+          - name: Boxes Shipped
