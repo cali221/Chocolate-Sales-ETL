@@ -6,14 +6,5 @@ from scripts.transform_db import transform_and_check
 # get dataframe from CSV
 df = load_csv()
 
-# TODO: move to transform service
-# get cleaned dataframe
-#cleaned_df = clean_data(df)
-
 # load cleaned dataframe to database
-#load_to_db(cleaned_df)
 load_to_db(df)
-
-# TODO: move to transform service
-# transform DB schema and check results
-#transform_and_check("sql_scripts/setup.psql", "sql_scripts/tests.psql")
