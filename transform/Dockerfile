@@ -52,7 +52,7 @@ RUN echo "Build GID is: $GID"
 EXPOSE 8080
 
 # Run the application.
-CMD ["dbt", "build"]
+#CMD ["dbt", "build"]
 
 # keep container up for development
-#CMD ["tail", "-f", "/dev/null"]
+CMD ["tail", "-f", "/dev/null"]

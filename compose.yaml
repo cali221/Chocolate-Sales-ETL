@@ -68,9 +68,9 @@ services:
     build:
       context: ./transform
       dockerfile: Dockerfile
-      args:
-        UID: ${UID}
-        GID: ${GID}
+      # args:
+      #   UID: ${UID}
+      #   GID: ${GID}
     container_name: transform
     volumes: 
       - ./transform:/choco-project-transform
@@ -88,7 +88,7 @@ services:
     #profiles: [transform]
     restart: "no"
     init: true
-    user: "${UID}:${GID}"
+    #user: "${UID}:${GID}"
     ports: 
       - "127.0.0.1:8080:8080"
 

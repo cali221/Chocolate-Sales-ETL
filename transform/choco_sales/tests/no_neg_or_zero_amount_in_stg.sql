@@ -1,4 +1,4 @@
 -- check if there's no value <= 0 for sales amount in staging table derived from kaggle historical data
 select *
-from {{ ref('stg_choco_db__choco_stats') }}
+from {{ ref('stg_choco_db__kaggle_choco_stats') }}
 where sales_amount_usd <= 0
