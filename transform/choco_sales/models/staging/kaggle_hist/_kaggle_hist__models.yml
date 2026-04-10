@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: stg_kaggle_hist__choco_stats
+    description: "Cleaned raw sales records table"
+    columns: 
+      - name: sales_person
+        data_type: varchar(100)
+        data_tests: 
+          - not_null
+      - name: country
+        data_type: varchar(50)
+        data_tests: 
+          - not_null
+      - name: product
+        data_type: varchar(100)
+        data_tests:
+          - not_null
+      - name: date
+        data_type: date
+        data_tests: 
+          - not_null
+      - name: sales_amount_usd
+        data_type: decimal
+        data_tests: 
+          - not_null
+      - name: boxes_shipped
+        data_type: integer
+        data_tests: 
+          - not_null
