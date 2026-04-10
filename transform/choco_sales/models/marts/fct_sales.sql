@@ -10,4 +10,4 @@ SELECT ROW_NUMBER() OVER (ORDER BY sales_person,
        md5(sales_person) AS sales_person_id,
        md5(product) AS product_id,
        md5(country) AS country_id      
-FROM {{ ref('stg_choco_db__choco_stats') }}
+FROM {{ ref('stg_choco_db__kaggle_choco_stats') }}

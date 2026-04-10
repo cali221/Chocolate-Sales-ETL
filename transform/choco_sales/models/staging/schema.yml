@@ -58,11 +58,11 @@ sources:
           - name: current_price
       - name: statuses
         columns:
-          name: id
-          name: name
+          - name: id
+          - name: name
 
 models:
-  - name: stg_choco_db__choco_stats
+  - name: stg_choco_db__kaggle_choco_stats
     description: "Cleaned raw sales records table"
     columns: 
       - name: sales_person
