@@ -14,7 +14,7 @@ models:
         data_tests: 
           - not_null
           - unique
-  - name: dim_countries
+  - name: dim_buyers_countries
     description: "Distinct countries"
     columns:
       - name: id
