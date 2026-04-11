@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: int_customers_with_country
+    description: "All customer data + their country name"
+    columns:
+      - name: customer_id
+        data_type: integer
+        data_tests:
+          - not_null
+          - unique
+      - name: customer_name
+        data_type: varchar(50)
+        data_tests:
+          - not_null
+      - name: customer_username
+        data_type: varchar(50)
+        data_tests: 
+          - not_null
+          - unique
+      - name: customer_email
+        data_type: varchar(100)
+        data_tests:
+          - not_null
+      - name: country_name
+        data_type: varchar(50)
+        data_tests:
+          - not_null

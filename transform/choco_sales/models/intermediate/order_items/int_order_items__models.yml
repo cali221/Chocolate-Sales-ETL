@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: int_orders_items_with_product_name
+    description: "Orders with product names instead of product IDs"
+    columns:
+      - name: order_item_id
+        data_type: integer
+        data_tests:
+          - not_null
+          - unique
+      - name: order_item_product_name
+        data_type: varchar(50)
+        data_tests:
+          - not_null
+      - name: order_item_order_id
+        data_type: integer
+        data_tests:
+          - not_null
+      - name: order_item_quantity
+        data_type: integer
+        data_tests:
+          - not_null
+      - name: order_item_price_per_unit_at_purchase
+        data_type: numeric(10,3)
+        data_tests:
+          - not_null

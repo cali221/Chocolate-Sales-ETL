@@ -14,7 +14,7 @@ WITH kaggle_source_cols_renamed AS (
 ),
 {# adjust data types and clean text data #}
 kaggle_data_cleaned AS (
-    SELECT CAST(TRIM(INITCAP(LOWER(sales_person))) AS VARCHAR(100)) AS sales_person, 
+    SELECT CAST(TRIM(INITCAP(LOWER(sales_person))) AS VARCHAR(50)) AS sales_person, 
            CAST((CASE WHEN (TRIM(LOWER(country)) = 'uk' OR TRIM(LOWER(country)) = 'usa') THEN TRIM(UPPER(country))
                 ELSE TRIM(INITCAP(LOWER(country))) 
                 END) AS VARCHAR(50)) AS country,

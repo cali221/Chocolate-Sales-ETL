@@ -5,15 +5,16 @@ models:
     description: "Cleaned raw sales records table"
     columns: 
       - name: sales_person
-        data_type: varchar(100)
+        data_type: varchar(50)
         data_tests: 
           - not_null
       - name: country
+        description: "Country of customer"
         data_type: varchar(50)
         data_tests: 
           - not_null
       - name: product
-        data_type: varchar(100)
+        data_type: varchar(50)
         data_tests:
           - not_null
       - name: date
