@@ -10,15 +10,19 @@ GROUP BY order_item_order_id)
 -- get relevant data from orders
 SELECT o.order_id AS order_id,
        o.order_customer_id AS customer_id,
+       c.customer_country_id AS customer_country_id,
        o.order_created_at AS created_at,
        o.order_status_last_updated_at AS status_last_updated_at,
        o.order_current_status_id AS current_status_id,
        oi.number_of_distinct_products AS number_of_distinct_products,
        oi.total_items_ordered AS total_items_ordered,
-       oi.subtotal AS subtotal,
+       oi.subtotal AS subtotal_usd,
        CAST((oi.subtotal + 
              o.order_shipping_costs_amount_usd + 
              o.order_tax_amount_usd - 
              o.order_discount_amount_usd) AS NUMERIC(10, 3)) AS total_amount_usd
-FROM order_item_data oi JOIN {{ref('stg_online_store__orders')}} o
+FROM order_item_data oi 
+JOIN {{ref('stg_online_store__orders')}} o
 ON o.order_id = oi.order_id
+JOIN {{ref('stg_online_store__customers')}} c
+ON o.order_customer_id = c.customer_id

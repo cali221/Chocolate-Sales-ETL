@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: int_orders_with_totals
+    description: "Orders data with relevant totals (subtotal, total amount, total number of items, number of distinct products)"
+    columns:
+      - name: order_id
+        data_type: integer
+        data_tests: 
+          - not_null
+          - unique
+      - name: customer_id
+        description: "Customer ID of the customer that made the order"
+        data_type: integer
+        data_tests: 
+          - not_null
+          - relationships: 
+              arguments:
+                to: ref('stg_online_store__customers')
+                field: customer_id
+      - name: customer_country_id
+        description: "Country ID of the customer's country"
+        data_type: integer
+        data_tests: 
+          - not_null
+      - name: created_at
+        description: "The timestamp with timezone at which the order was created"
+        data_type: timestamptz
+        data_tests:
+          - not_null
+      - name: status_last_updated_at
+        description: "The timestamp with timezone at which the order's status was last updated"
+        data_tests: 
+          - not_null
+      - name: current_status_id
+        description: "The ID of the current status of the order"
+        data_tests: 
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_online_store__statuses')
+                field: status_id
+      - name: number_of_distinct_products
+        description: "The number of distinct products in the order"
+        data_tests: 
+          - not_null
+      - name: total_items_ordered
+        description: "The total number of items ordered (sum of each product's quantity in the order)"
+        data_tests: 
+          - not_null
+      - name: subtotal_usd
+        description: "The total price of the items in the order (sum of quantity*price per unit at time of purchase)"
+        data_tests: 
+          - not_null
+      - name: total_amount_usd
+        description: "The total amount that need to be paid (subtotal + shipping costs + tax - discount)"
+        data_tests: 
+          - not_null
