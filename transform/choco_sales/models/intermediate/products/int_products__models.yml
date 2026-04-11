@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: int_products_with_stats
+    description: "Products with stats from orders"
+    columns:
+      - name: product_id
+        data_type: integer
+        data_tests:
+          - not_null
+          - unique
+      - name: number_of_times_ordered
+        data_type: integer
+        data_tests: 
+          - not_null
+      - name: total_amount_from_orders_usd
+        data_type: numeric(10, 3)
+        data_tests:
+          - not_null
+      - name: total_quantity_ordered
+        data_type: integer
+        data_tests: 
+          - not_null
