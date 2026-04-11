@@ -4,49 +4,84 @@ models:
   - name: dim_sales_people
     description: "Distinct sales people"
     columns:
-      - name: id
+      - name: sales_person_id
         data_type: text
         data_tests:
           - not_null
           - unique
-      - name: name
-        data_type: varchar(100)
+      - name: sales_person_name
+        data_type: varchar(50)
         data_tests: 
           - not_null
           - unique
-  - name: dim_buyers_countries
-    description: "Distinct countries"
+  - name: dim_online_store_customers
+    description: "Customers (i.e. users) of the online store that might or might not have made a purchase"
     columns:
-      - name: id
+      - name: customer_id
         data_type: text
         data_tests:
           - not_null
           - unique
-      - name: name
+      - name: customer_name
+        data_type: varchar(50)
+        data_tests:
+          - not_null
+      - name: customer_username
+        data_type: varchar(50)
+        data_tests:
+          - not_null
+          - unique
+      - name: customer_email
         data_type: varchar(100)
+        data_tests:
+          - not_null
+      - name: customer_country_name
+        data_type: varchar(50)
+        data_tests:
+          - not_null
+  - name: dim_customers_countries
+    description: "Distinct countries"
+    columns:
+      - name: country_id
+        data_type: text
+        data_tests:
+          - not_null
+          - unique
+      - name: country_name
+        data_type: varchar(50)
         data_tests: 
           - not_null
           - unique
   - name: dim_products
-    description: "Distinct products"
+    description: "Distinct products available"
     columns:
-      - name: id
+      - name: product_id
         data_type: text
         data_tests:
           - not_null
           - unique
-      - name: name
-        data_type: varchar(100)
+      - name: product_name
+        data_type: varchar(50)
         data_tests: 
           - not_null
           - unique
-  - name: fct_sales
-    description: "Sales records"
-    columns:
-      - name: id
-        data_type: integer
+      - name: product_available_at
+        data_type: varchar(50)
         data_tests:
           - not_null
+          - accepted_values:
+              arguments:
+                values: ['Both', 'Sales Person', 'Online Store']
+      - name: product_current_price
+        data_type: numeric(10,3)
+  - name: fct_salespeople_sales
+    description: "Sales records from sales people"
+    columns:
+      - name: sales_id
+        data_type: text
+        data_tests:
+          - not_null
+          - unique
       - name: sales_amount_usd
         data_type: decimal
         data_tests: 
@@ -66,15 +101,15 @@ models:
           - relationships:
               arguments: 
                 to: ref('dim_products')
-                field: id
+                field: product_id
       - name: country_id
         data_type: text
         data_tests:
           - not_null
           - relationships:
               arguments: 
-                to: ref('dim_countries')
-                field: id
+                to: ref('dim_customers_countries')
+                field: country_id
       - name: sales_person_id
         data_type: text
         data_tests:
@@ -82,5 +117,5 @@ models:
           - relationships:
               arguments: 
                 to: ref('dim_sales_people')
-                field: id
+                field: sales_person_id
 

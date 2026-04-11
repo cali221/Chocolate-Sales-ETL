@@ -4,4 +4,4 @@
 -- from kaggle historical data that's not present in the products dimension table
 SELECT DISTINCT product
 FROM {{ ref('stg_kaggle_hist__choco_stats') }}
-WHERE product NOT IN (SELECT name FROM {{ ref('dim_products') }})
+WHERE product NOT IN (SELECT product_name FROM {{ ref('dim_products') }})

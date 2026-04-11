@@ -4,4 +4,4 @@
 -- from kaggle historical data that's not present in the country dimension table
 SELECT DISTINCT country 
 FROM {{ ref('stg_kaggle_hist__choco_stats') }}
-WHERE country NOT IN (SELECT name FROM {{ ref('dim_countries') }})
+WHERE country NOT IN (SELECT country_name FROM {{ ref('dim_countries') }})
