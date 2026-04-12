@@ -2,6 +2,7 @@ from typing import Annotated
 from fastapi import Depends, FastAPI, HTTPException, Query
 from contextlib import asynccontextmanager
 from sqlmodel import Session, select
+from sqlalchemy import or_
 from .database import setup_db, get_engine
 from .db_models import (Product, 
                         Country, 
@@ -264,7 +265,7 @@ def update_order(order_id: int, order: OrderUpdate, session: SessionDep):
         order_items = items_arr
     )
 
-# get products
+# get all products
 @app.get("/products/", response_model=list[ProductPublic])
 def read_products(
     session: SessionDep,
@@ -272,6 +273,16 @@ def read_products(
     limit: Annotated[int, Query(le=100)] = 100,
 ) -> list[Product]:
     products = session.exec(select(Product).offset(offset).limit(limit)).all()
+    return products
+
+# get productds available in online store
+@app.get("/products/available_online/", response_model=list[ProductPublic])
+def read_products(
+    session: SessionDep,
+    offset: int = 0,
+    limit: Annotated[int, Query(le=100)] = 100,
+) -> list[Product]:
+    products = session.exec(select(Product).where(or_(Product.channel=='Online Only', Product.channel=='Both')).offset(offset).limit(limit)).all()
     return products
 
 # get statuses
