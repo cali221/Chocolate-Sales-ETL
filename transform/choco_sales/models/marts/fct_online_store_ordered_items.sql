@@ -1,4 +1,5 @@
--- TODO: split into fct_orders and fct_order_items (?)
+-- TODO: https://greatobi.wordpress.com/2009/07/16/modeling-header-details/ 
+-- use allocated numerical values instead
 SELECT oi.order_item_id,
        oi.order_item_order_id,
        {{ dbt_utils.generate_surrogate_key(['oi.order_item_product_name']) }} AS product_id,
