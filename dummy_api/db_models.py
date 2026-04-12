@@ -11,9 +11,9 @@ class ProductChannels(str, Enum):
     BOTH = 'Both'
 
 class Product(SQLModel, table=True):
-    __table_args__ = (CheckConstraint("((channel='OFFLINE_ONLY') AND current_price IS NULL)" \
-                                      "OR ((channel='ONLINE_ONLY' OR channel='BOTH') AND current_price IS NOT NULL)", 
-                                      name="check_current_price_null_for_offline_only_not_null_otherwise"),
+    __table_args__ = (CheckConstraint("((channel='OFFLINE_ONLY') AND current_price_online IS NULL)" \
+                                      "OR ((channel='ONLINE_ONLY' OR channel='BOTH') AND current_price_online IS NOT NULL)", 
+                                      name="check_current_price_online_match_channel"),
                       {"schema": "oltp_online_store"})
     __tablename__ = "products"
     id: int | None = Field(default=None, primary_key=True)
@@ -24,7 +24,7 @@ class Product(SQLModel, table=True):
                       max_length=50, 
                       min_length=1)
     # current_price is nullable for products only available through sales person
-    current_price: Optional[Decimal] = Field(nullable=True, max_digits=10, decimal_places=3, ge=0)
+    current_price_online: Optional[Decimal] = Field(nullable=True, max_digits=10, decimal_places=3, ge=0)
     channel: ProductChannels
     
 class Country(SQLModel, table=True):
@@ -93,4 +93,7 @@ class OrderItem(SQLModel, table=True):
     product_id: int = Field(nullable=False, foreign_key="oltp_online_store.products.id")
     order_id: int = Field(nullable=False, foreign_key="oltp_online_store.orders.id")
     quantity: int = Field(nullable=False, ge=1)
-    price_per_unit_at_purchase: Decimal = Field(nullable=False, max_digits=10, decimal_places=3, ge=0)
+    price_per_unit_at_purchase: Decimal = Field(nullable=False, 
+                                                max_digits=10, 
+                                                decimal_places=3, 
+                                                ge=0)

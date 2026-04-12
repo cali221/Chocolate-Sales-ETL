@@ -43,7 +43,7 @@ sources:
         columns: 
           - name: id
           - name: name
-          - name: current_price
+          - name: current_price_online
       - name: statuses
         columns:
           - name: id

@@ -1,10 +1,11 @@
-from sqlmodel import Field, SQLModel, String
+from sqlmodel import Field, SQLModel
 from decimal import Decimal
-from pydantic import Field, field_validator, BaseModel, PlainSerializer
+from pydantic import Field, field_validator, model_validator, PlainSerializer
 from datetime import datetime
 from typing_extensions import Annotated
 from .db_models import ProductChannels 
 from typing import Optional
+from typing_extensions import Self
                         
 # start of code I did not write myself
 # copied from (as of April 9th 2026): https://github.com/pydantic/pydantic/issues/7457#issuecomment-2994018396
@@ -20,13 +21,22 @@ FloatDecimal = Annotated[
 class ProductPublic(SQLModel):
     id: int = Field(nullable=False)
     name: str = Field(min_length=1, nullable=False, max_length=50)
-    current_price: Optional[FloatDecimal] = Field(max_digits=10, decimal_places=3, ge=0, nullable=True)
+    current_price_online: Optional[FloatDecimal] = Field(max_digits=10, decimal_places=3, ge=0, nullable=True)
     channel: ProductChannels
 
 class ProductCreate(SQLModel):
     name: str = Field(max_length=50, min_length=1, nullable=False)
-    current_price: Optional[Decimal] = Field(nullable=True, max_digits=10, decimal_places=3, ge=0)
+    current_price_online: Optional[Decimal] = Field(nullable=True, max_digits=10, decimal_places=3, ge=0)
     channel: ProductChannels
+
+    @model_validator(mode='after')
+    def check_current_price_online_matches_channel(self) -> Self:
+        if (self.channel == 'Online Only' or self.channel == 'Both') and self.current_price_online == None: 
+            raise ValueError('products available in online store should have a current price online')
+        elif (self.channel == 'Offline Only' and self.current_price_online != None):
+           raise ValueError('offline only products should not have online current prices stored')
+        
+        return self
 
 # countries table api models
 class CountryPublic(SQLModel):
