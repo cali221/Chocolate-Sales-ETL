@@ -3,7 +3,9 @@ from decimal import Decimal
 from pydantic import Field, field_validator, BaseModel, PlainSerializer
 from datetime import datetime
 from typing_extensions import Annotated
-
+from .db_models import ProductChannels 
+from typing import Optional
+                        
 # start of code I did not write myself
 # copied from (as of April 9th 2026): https://github.com/pydantic/pydantic/issues/7457#issuecomment-2994018396
 # author: samuelcolvin (username on GitHub)
@@ -18,11 +20,13 @@ FloatDecimal = Annotated[
 class ProductPublic(SQLModel):
     id: int = Field(nullable=False)
     name: str = Field(min_length=1, nullable=False, max_length=50)
-    current_price: FloatDecimal = Field(max_digits=10, decimal_places=3, ge=0, nullable=False)
+    current_price: Optional[FloatDecimal] = Field(max_digits=10, decimal_places=3, ge=0, nullable=True)
+    channel: ProductChannels
 
 class ProductCreate(SQLModel):
     name: str = Field(max_length=50, min_length=1, nullable=False)
-    current_price: Decimal = Field(max_digits=10, decimal_places=3, ge=0)
+    current_price: Optional[Decimal] = Field(nullable=True, max_digits=10, decimal_places=3, ge=0)
+    channel: ProductChannels
 
 # countries table api models
 class CountryPublic(SQLModel):

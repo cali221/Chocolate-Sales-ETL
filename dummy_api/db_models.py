@@ -1,10 +1,20 @@
 from sqlmodel import Field, SQLModel, String
-from sqlalchemy import Column, TIMESTAMP, text
+from sqlalchemy import Column, TIMESTAMP, text, CheckConstraint
 from datetime import datetime
 from decimal import Decimal
+from enum import Enum
+from typing import Optional
+
+class ProductChannels(str, Enum):
+    OFFLINE_ONLY = 'Offline Only'
+    ONLINE_ONLY = 'Online Only'
+    BOTH = 'Both'
 
 class Product(SQLModel, table=True):
-    __table_args__ = {"schema": "oltp_online_store"}
+    __table_args__ = (CheckConstraint("((channel='OFFLINE_ONLY') AND current_price IS NULL)" \
+                                      "OR ((channel='ONLINE_ONLY' OR channel='BOTH') AND current_price IS NOT NULL)", 
+                                      name="check_current_price_null_for_offline_only_not_null_otherwise"),
+                      {"schema": "oltp_online_store"})
     __tablename__ = "products"
     id: int | None = Field(default=None, primary_key=True)
     name: str = Field(sa_type=String(50), 
@@ -13,8 +23,10 @@ class Product(SQLModel, table=True):
                       unique=True, 
                       max_length=50, 
                       min_length=1)
-    current_price: Decimal = Field(nullable=False, max_digits=10, decimal_places=3, ge=0)
-
+    # current_price is nullable for products only available through sales person
+    current_price: Optional[Decimal] = Field(nullable=True, max_digits=10, decimal_places=3, ge=0)
+    channel: ProductChannels
+    
 class Country(SQLModel, table=True):
     __table_args__ = {"schema": "oltp_online_store"}
     __tablename__ = "countries"

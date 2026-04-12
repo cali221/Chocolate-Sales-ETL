@@ -1,13 +1,30 @@
-INSERT INTO oltp_online_store.products(name, current_price)
-VALUES ('99% Dark & Pure', 4.0), 
-       ('Milk Bars', 3.5), 
-       ('Drinking Coco', 4.0), 
-       ('White Choc', 3.0), 
-       ('Spicy Special Slims', 5.0),
-       ('Caramel Stuffed Bars', 4.5),
-       ('After Nines', 3.5),
-       ('Smooth Sliky Salty', 3.2),
-       ('Peanut Butter Cubes', 4.5),
-       ('Choco Coated Almonds', 5.0),
-       ('Online Only Chocolate', 1.0)
+INSERT INTO oltp_online_store.products(name, current_price, channel)
+VALUES ('Online Only Chocolate', 1.0, 'ONLINE_ONLY'),
+       ('Assorted Chocolates', 15.0, 'ONLINE_ONLY'),
+       ('Chocolate Praline 120g', 12.0, 'ONLINE_ONLY'),
+       ('Milk Bars', 3.5, 'BOTH'),
+       ('White Choc', 3.7, 'BOTH'),
+       ('Baker''s Choco Chips', 4.0, 'BOTH'),
+       ('50% Dark Bites', 3.0, 'BOTH'),
+       ('99% Dark & Pure', 4.0,'BOTH'),
+       ('Organic Choco Syrup', 5.5,'BOTH'),
+       ('Choco Coated Almonds', 4.5,'BOTH'),
+       ('70% Dark Bites', 3.5,'BOTH'),
+       ('Mint Chip Choco', 4.0,'BOTH'),
+       ('After Nines', 3.0,'BOTH'),
+       ('Smooth Sliky Salty', 3.0,'BOTH'),
+       ('Spicy Special Slims', 4.5,'BOTH'),
+       ('Peanut Butter Cubes', 4.5,'BOTH'),
+       ('85% Dark Bars', 4.0,'BOTH'),
+       ('Raspberry Choco', 4.5,'BOTH')
+ON CONFLICT (name) DO NOTHING;
+
+INSERT INTO oltp_online_store.products(name, channel)
+VALUES ('Drinking Coco', 'OFFLINE_ONLY'),
+       ('Manuka Honey Choco', 'OFFLINE_ONLY'),
+       ('Almond Choco', 'OFFLINE_ONLY'),
+       ('Caramel Stuffed Bars', 'OFFLINE_ONLY'),
+       ('Orange Choco', 'OFFLINE_ONLY'),
+       ('Eclairs', 'OFFLINE_ONLY'),
+       ('Fruit & Nut Bars', 'OFFLINE_ONLY')
 ON CONFLICT (name) DO NOTHING;
