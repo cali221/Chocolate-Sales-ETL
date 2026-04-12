@@ -148,7 +148,7 @@ def create_order(order: OrderCreate, session: SessionDep):
                 product_id = product.id,
                 order_id = order_data.id,
                 quantity = item.quantity,
-                price_per_unit_at_purchase = product.current_price
+                price_per_unit_at_purchase = product.current_price_online
             )
 
             # add the item to the order_items table

@@ -1,4 +1,4 @@
-INSERT INTO oltp_online_store.products(name, current_price, channel)
+INSERT INTO oltp_online_store.products(name, current_price_online, channel)
 VALUES ('Online Only Chocolate', 1.0, 'ONLINE_ONLY'),
        ('Assorted Chocolates', 15.0, 'ONLINE_ONLY'),
        ('Chocolate Praline 120g', 12.0, 'ONLINE_ONLY'),

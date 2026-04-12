@@ -34,3 +34,51 @@ CREATE OR REPLACE TRIGGER update_order_status_last_updated_at_when_order_updated
 BEFORE UPDATE OF current_status_id ON oltp_online_store.orders
 FOR EACH ROW 
 EXECUTE FUNCTION oltp_online_store.update_order_status_last_updated_at_when_order_updated();
+
+-- trigger function to throw exception if order item is offline only
+CREATE OR REPLACE FUNCTION oltp_online_store.throw_except_if_order_item_is_offline_only() 
+RETURNS TRIGGER AS $$
+BEGIN
+   IF (SELECT channel FROM oltp_online_store.products WHERE id = NEW.product_id) = 'OFFLINE_ONLY'
+   THEN RAISE EXCEPTION 'Offline only products cannot be ordered online';
+   END IF;
+
+   RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- create and attach the trigger to the order_items table
+CREATE OR REPLACE TRIGGER throw_except_if_order_item_is_offline_only_trigger 
+BEFORE INSERT ON oltp_online_store.order_items
+FOR EACH ROW 
+EXECUTE FUNCTION oltp_online_store.throw_except_if_order_item_is_offline_only(); 
+
+-- trigger function to set the price_per_unit_at_purchase when order item is inserted
+CREATE OR REPLACE FUNCTION oltp_online_store.set_order_item_price_at_purchase() 
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.price_per_unit_at_purchase = (SELECT current_price_online FROM oltp_online_store.products WHERE id = NEW.product_id);
+   RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- create and attach the trigger to the order_items table
+CREATE OR REPLACE TRIGGER set_order_item_price_at_purchase_trigger 
+BEFORE INSERT ON oltp_online_store.order_items
+FOR EACH ROW 
+EXECUTE FUNCTION oltp_online_store.set_order_item_price_at_purchase();
+
+-- trigger function to set the first current_status_id when an order is inserted
+CREATE OR REPLACE FUNCTION oltp_online_store.set_order_status_id_on_insert() 
+RETURNS TRIGGER AS $$
+BEGIN
+   NEW.current_status_id = (SELECT id FROM oltp_online_store.statuses WHERE name='Pending');
+   RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- create and attach the trigger to the orders table
+CREATE OR REPLACE TRIGGER set_order_status_id_on_insert_rigger 
+BEFORE INSERT ON oltp_online_store.orders
+FOR EACH ROW 
+EXECUTE FUNCTION oltp_online_store.set_order_status_id_on_insert();
