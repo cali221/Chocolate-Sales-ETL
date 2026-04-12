@@ -58,8 +58,13 @@ models:
           - not_null
       - name: product_current_price_online
         data_type: numeric(10, 3)
+      - name: product_channel
+        data_type: varchar(50)
         data_tests:
           - not_null
+          - accepted_values: 
+              arguments:
+                values: ['Both', 'Online Only', 'Offline Only']
   - name: stg_online_store__statuses
     description: "Available statuses for orders from the online store"
     columns:
