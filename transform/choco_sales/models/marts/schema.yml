@@ -118,4 +118,5 @@ models:
               arguments: 
                 to: ref('dim_sales_people')
                 field: sales_person_id
+  # TODO: add fct_online_store_ordered_items
 
