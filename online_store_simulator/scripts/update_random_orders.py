@@ -39,17 +39,18 @@ def update_random_orders_status(host, port):
             # get the order's next status name
             next_status = status_transition_mapping[current_status]
 
-            # print some data
-            print(f"\nORDER ID: {order['id']} | CURRENT STATUS: {current_status} | NEXT STATUS: {next_status} | NEXT STATUS ID: {status_id_mapping[next_status]}")
-            
-            # if next status is not None (not completed)
-            if next_status is not None:
-                # update the order so it has the next status
-                update_response = requests.patch(f"http://{host}:{port}/orders/{order['id']}", json={"current_status_id": status_id_mapping[next_status]})
+            if status_id_mapping[next_status]:
+                # print some data
+                print(f"\nORDER ID: {order['id']} | CURRENT STATUS: {current_status} | NEXT STATUS: {next_status} | NEXT STATUS ID: {status_id_mapping[next_status]}")
                 
-                # print the updated status result
-                print(f"Updated order status: {update_response.json()['current_status_name']} (status ID: {update_response.json()['current_status_id']})\n")
-            else:
-                print("Order has been completed, skipping update...")
+                # if next status is not None (not completed)
+                if next_status is not None:
+                    # update the order so it has the next status
+                    update_response = requests.patch(f"http://{host}:{port}/orders/{order['id']}", json={"current_status_id": status_id_mapping[next_status]})
+                    
+                    # print the updated status result
+                    print(f"Updated order status: {update_response.json()['current_status_name']} (status ID: {update_response.json()['current_status_id']})\n")
+                else:
+                    print("Order has been completed, skipping update...")
 
         print("\nFinished updating status of random orders...\n")

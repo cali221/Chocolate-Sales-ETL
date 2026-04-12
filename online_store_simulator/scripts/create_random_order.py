@@ -5,7 +5,7 @@ import json
 def create_random_order(host, port):
   print("\nCreating a new random order....")
   # get product IDs (limit 100)
-  products = requests.get(f"http://{host}:{port}/products").json()
+  products = requests.get(f"http://{host}:{port}/products/available_online/").json()
   product_ids = [product['id'] for product in products]
 
   # get customer IDs (limit 100)
