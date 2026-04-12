@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: int_kaggle_data_countries_standardized
+    description: "Kaggle data countries with ID based on matching on name between countries_of_the_world seed and the countries data"
+    columns:
+      - name: country_id
+        data_type: integer
+        data_tests:
+          - not_null
+          - unique
+      - name: country_name
+        data_type: varchar(50)
+        data_tests:
+          - not_null
+          - unique
+  - name: int_online_store_countries_standardized
+    description: "Online store countries with modified ID based on matching on name between countries_of_the_world seed and the countries data"
+    columns:
+      - name: country_id
+        data_type: integer
+        data_tests:
+          - not_null
+          - unique
+      - name: country_name
+        data_type: varchar(50)
+        data_tests:
+          - not_null
+          - unique

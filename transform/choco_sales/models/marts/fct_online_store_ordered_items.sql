@@ -11,10 +11,12 @@ SELECT oi.order_item_id,
        o.order_status_last_updated_at,
        o.order_current_status_id,
        o.order_customer_id,
-       {{ dbt_utils.generate_surrogate_key(['o.customer_country_name'])}} AS customer_country_id,
+       c.country_id AS customer_country_id,
        CAST(o.order_tax_amount_usd/o.number_of_distinct_products AS NUMERIC(10, 5)) AS allocated_tax,
        CAST(o.order_discount_amount_usd/o.number_of_distinct_products AS NUMERIC(10, 5)) AS allocated_discount,
        CAST(o.order_shipping_costs_amount_usd/o.number_of_distinct_products AS NUMERIC(10, 5)) AS allocated_shipping_costs
 FROM {{ref('int_order_items_with_product_name')}} oi
 JOIN {{ref('int_orders_with_names_and_totals')}} o
 ON o.order_id = oi.order_item_order_id
+JOIN {{ref('countries_of_the_world')}} c
+ON c.country_name = o.customer_country_name

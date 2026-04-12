@@ -1,13 +1,13 @@
 WITH all_countries AS (
-    SELECT DISTINCT country AS country_name 
-    FROM {{ref('stg_kaggle_hist__choco_stats')}}
+    SELECT DISTINCT country_id, country_name
+    FROM {{ref('int_kaggle_data_countries_standardized')}}
   
     UNION
   
-    SELECT DISTINCT country_name 
-    FROM {{ref('stg_online_store__countries')}}
+    SELECT DISTINCT country_id, country_name 
+    FROM {{ref('int_online_store_countries_standardized')}}
 )
 
-SELECT {{ dbt_utils.generate_surrogate_key(['country_name'])}} AS country_id, 
+SELECT country_id, 
        country_name
 FROM all_countries

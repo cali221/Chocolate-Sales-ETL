@@ -15,9 +15,10 @@ WITH kaggle_source_cols_renamed AS (
 {# adjust data types and clean text data #}
 kaggle_data_cleaned AS (
     SELECT CAST(TRIM(INITCAP(LOWER(sales_person))) AS VARCHAR(50)) AS sales_person, 
-           CAST((CASE WHEN (TRIM(LOWER(country)) = 'uk' OR TRIM(LOWER(country)) = 'usa') THEN TRIM(UPPER(country))
-                ELSE TRIM(INITCAP(LOWER(country))) 
-                END) AS VARCHAR(50)) AS country,
+           CAST((CASE WHEN (TRIM(LOWER(country))) = 'uk' THEN 'United Kingdom'
+                      WHEN (TRIM(LOWER(country))) = 'usa' THEN 'United States'
+                 ELSE TRIM(INITCAP(LOWER(country))) 
+                 END) AS VARCHAR(50)) AS country,
            CAST(TRIM(product) AS VARCHAR(50)) AS product, 
            to_date(date, 'DD/MM/YYYY') AS date, 
            CAST((REPLACE(REPLACE(sales_amount_usd, '$', ''), ',', '')) AS numeric(10, 3)) AS sales_amount_usd,
