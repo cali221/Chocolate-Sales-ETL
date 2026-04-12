@@ -1,4 +1,4 @@
-SELECT {{ dbt_utils.generate_surrogate_key(['customer_id']) }} as customer_id, 
+SELECT customer_id, 
        customer_name,
        customer_username,
        customer_email,

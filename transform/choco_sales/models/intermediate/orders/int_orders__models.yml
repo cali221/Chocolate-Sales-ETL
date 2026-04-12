@@ -17,14 +17,22 @@ models:
         data_type: timestamptz
         data_tests: 
           - not_null
-      - name: current_status_name
-        data_type: varchar(50)
+      - name: order_current_status_id
+        data_type: integer
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_online_store__statuses')
+                field: status_id
       - name: order_customer_id
         data_type: integer
         data_tests:
           - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_online_store__customers')
+                field: customer_id
       - name: order_tax_amount_usd
         data_type: numeric(10, 3)
         data_tests: 
