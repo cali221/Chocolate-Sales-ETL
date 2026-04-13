@@ -170,7 +170,7 @@ models:
               arguments:
                 to: ref('dim_online_store_customers')
                 field: customer_id
-      - name: customer_country_id
+      - name: order_customer_country_id
         data_type: integer
         data_tests:
           - not_null

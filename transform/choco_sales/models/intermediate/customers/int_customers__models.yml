@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: int_customers_with_country
+  - name: int_customers_with_country_and_new_country_id
     description: "All customer data + their country name"
     columns:
       - name: customer_id
@@ -26,3 +26,8 @@ models:
         data_type: varchar(50)
         data_tests:
           - not_null
+      - name: country_id
+        data_type: integer
+        data_tests: 
+          - not_null
+                
