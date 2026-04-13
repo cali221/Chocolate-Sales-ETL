@@ -119,7 +119,7 @@ models:
         data_type: numeric(10, 3)
         data_tests:
           - not_null
-      - name: order_discount_off_order_amount_usd
+      - name: discount_off_order_amount_usd
         description: "Discount amount for the order in USD"
         data_type: numeric(10, 3)
         data_tests:
@@ -193,8 +193,13 @@ models:
         data_type: integer
         data_tests:
           - not_null
-      - name: order_item_price_per_unit_at_purchase
-        description: "Price per unit of the product/item at the time of pruchase"
+      - name: order_item_price_per_unit_at_purchase_usd
+        description: "Price per unit in USD of the product/item at the time of purchased"
         data_type: numeric(10, 3)
+        data_tests:
+          - not_null
+      - name: discount_per_unit_amount_usd
+        description: "Discount amount in USD for one unit of item ordered"
+        data_type: numeric(10,3)
         data_tests:
           - not_null

@@ -11,7 +11,7 @@ SELECT {{dbt_utils.generate_surrogate_key(['st.sales_person',
        p.product_id,
        c.country_id
 FROM {{ ref('stg_kaggle_hist__choco_stats') }} st
-JOIN {{ ref('countries_of_the_world') }} c
+JOIN {{ ref('int_kaggle_data_countries_standardized') }} c
 ON st.country = c.country_name
 JOIN {{ ref('stg_online_store__products') }} p
 ON p.product_name = st.product

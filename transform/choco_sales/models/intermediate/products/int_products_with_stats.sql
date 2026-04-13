@@ -6,7 +6,7 @@ FROM {{ref('stg_online_store__products')}} p
 LEFT JOIN (
 SELECT oi.order_item_product_id AS product_id, 
        COUNT(oi.order_item_order_id) AS number_of_times_ordered,
-       SUM(oi.order_item_quantity * oi.order_item_price_per_unit_at_purchase) AS total_amount_from_orders_usd,
+       SUM(oi.order_item_quantity * oi.order_item_price_per_unit_at_purchase_usd) AS total_amount_from_orders_usd,
        SUM(oi.order_item_quantity) AS total_quantity_ordered
 FROM {{ref('stg_online_store__order_items')}} oi
 JOIN {{ref('stg_online_store__orders')}} o

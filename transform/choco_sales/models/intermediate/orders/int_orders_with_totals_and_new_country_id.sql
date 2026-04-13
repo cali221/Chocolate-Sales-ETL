@@ -1,6 +1,7 @@
 -- get relevant data from order items
 WITH order_item_data AS(
-SELECT CAST(SUM(order_item_price_per_unit_at_purchase * order_item_quantity) AS NUMERIC(10, 3)) AS subtotal,
+SELECT CAST(SUM(order_item_price_per_unit_at_purchase_usd * order_item_quantity) AS NUMERIC(10, 3)) AS subtotal,
+       CAST(SUM(discount_per_unit_amount_usd * order_item_quantity) AS NUMERIC(10, 3)) AS total_discount_amount_for_all_items_usd,
        COUNT(order_item_product_id) AS number_of_distinct_products,
        SUM(order_item_quantity) AS total_items_ordered,
        order_item_order_id AS order_id
@@ -15,11 +16,12 @@ SELECT o.order_id AS order_id,
        o.order_status_last_updated_at,
        o.order_current_status_id,
        o.order_tax_amount_usd,
-       o.order_discount_off_order_amount_usd,
+       o.discount_off_order_amount_usd,
        o.order_shipping_costs_amount_usd,
        oi.number_of_distinct_products AS number_of_distinct_products,
        oi.total_items_ordered AS total_items_ordered,
-       oi.subtotal AS subtotal_usd
+       oi.subtotal AS subtotal_usd,
+       oi.total_discount_amount_for_all_items_usd
 FROM order_item_data oi 
 JOIN {{ref('stg_online_store__orders')}} o
 ON o.order_id = oi.order_id

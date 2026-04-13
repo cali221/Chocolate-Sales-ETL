@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: int_orders_with_names_and_totals
+  - name: int_orders_with_totals_and_new_country_id
     description: "Orders with status name instead of status ID and items related values"
     columns:
       - name: order_id
@@ -37,7 +37,7 @@ models:
         data_type: numeric(10, 3)
         data_tests: 
           - not_null
-      - name: order_discount_off_order_amount_usd
+      - name: discount_off_order_amount_usd
         data_type: numeric(10, 3)
         data_tests:
           - not_null
@@ -56,4 +56,8 @@ models:
       - name: subtotal_usd
         description: "The total price of the items in the order (sum of quantity*price per unit at time of purchase)"
         data_tests: 
+          - not_null
+      - name: total_discount_amount_for_all_items_usd
+        description: "Total discount amount for items ordered in USD"
+        data_tests:
           - not_null

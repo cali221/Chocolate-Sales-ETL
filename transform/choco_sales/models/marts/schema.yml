@@ -126,47 +126,35 @@ models:
         data_tests: 
           - not_null
           - unique
-      - name: order_item_order_id
-        data_type: integer
-        data_tests: 
-          - not_null
       - name: order_item_product_id
-        data_type: text
-        data_tests: 
+        data_type: integer
+        data_tests:
           - not_null
           - relationships:
               arguments:
                 to: ref('dim_products')
                 field: product_id
-      - name: order_item_quantity
+      - name: order_item_order_id
         data_type: integer
-        data_tests: 
-          - not_null
-      - name: order_item_price_per_unit_at_purchase
-        data_type: numeric(10, 3)
-        data_tests: 
-          - not_null
-      - name: order_created_at
-        data_type: timestamptz
-        data_tests: 
-          - not_null
-      - name: order_status_last_updated_at
-        data_type: timestamptz
         data_tests:
           - not_null
-      - name: order_current_status_id
+      - name: order_item_quantity
         data_type: integer
-        data_tests: 
+        data_tests:
           - not_null
-          - relationships:
-              arguments:
-                to: ref('dim_statuses')
-                field: status_id
+      - name: order_item_price_per_unit_at_purchase_usd
+        data_type: numeric(10, 3)
+        data_tests:
+          - not_null
+      - name: discount_per_unit_amount_usd
+        data_type: numeric(10, 3)
+        data_tests:
+          - not_null
       - name: order_customer_id
         data_type: integer
         data_tests:
           - not_null
-          - relationships: 
+          - relationships:
               arguments:
                 to: ref('dim_online_store_customers')
                 field: customer_id
@@ -178,16 +166,31 @@ models:
               arguments:
                 to: ref('dim_customers_countries')
                 field: country_id
-      - name: allocated_tax
-        data_type: numeric(10, 5)
+      - name: order_created_at
+        data_type: timstamptz
+        data_tests:
+          - not_null
+      - name: order_status_last_updated_at
+        data_type: timstamptz
+        data_tests:
+          - not_null
+      - name: order_current_status_id
+        data_type: integer
         data_tests: 
           - not_null
-      - name: allocated_discount
-        data_type: numeric(10, 5)
+          - relationships:
+              arguments:
+                to: ref('dim_statuses')
+                field: status_id
+      - name: alloc_tax_amount_usd
+        data_type: numeric
         data_tests:
           - not_null
-      - name: allocated_shipping_costs
-        data_type: numeric(10, 5)
+      - name: alloc_shipping_costs_usd
+        data_type: numeric
         data_tests:
           - not_null
-
+      - name: alloc_discount_off_order_amount_usd
+        data_type: numeric
+        data_tests:
+          - not_null
