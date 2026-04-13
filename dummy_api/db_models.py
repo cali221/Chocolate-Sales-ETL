@@ -71,7 +71,7 @@ class Order(SQLModel, table=True):
     current_status_id: int = Field(nullable=False, foreign_key="oltp_online_store.statuses.id")
     customer_id: int = Field(nullable=False, foreign_key="oltp_online_store.customers.id")
     tax_amount: Decimal = Field(nullable=False, max_digits=10, decimal_places=3, ge=0)
-    discount_amount: Decimal = Field(nullable=False, max_digits=10, decimal_places=3, ge=0)
+    discount_off_order_amount: Decimal = Field(nullable=False, max_digits=10, decimal_places=3, ge=0)
     shipping_costs_amount: Decimal = Field(nullable=False, max_digits=10, decimal_places=3, ge=0)
 
 class StatusHistory(SQLModel, table=True):
@@ -97,3 +97,7 @@ class OrderItem(SQLModel, table=True):
                                                 max_digits=10, 
                                                 decimal_places=3, 
                                                 ge=0)
+    discount_per_unit_amount: Decimal = Field(nullable=False, 
+                                              max_digits=10, 
+                                              decimal_places=3, 
+                                              ge=0)

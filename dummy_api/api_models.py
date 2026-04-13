@@ -77,10 +77,12 @@ class OrderItemPublic(SQLModel):
     order_id: int = Field(nullable=False)
     quantity: int = Field(nullable=False, ge=1)
     price_per_unit_at_purchase: FloatDecimal = Field(max_digits=10, decimal_places=3, ge=0, nullable=False)
+    discount_per_unit_amount: FloatDecimal = Field(max_digits=10, decimal_places=3, ge=0, nullable=False)
 
 class OrderItemCreate(SQLModel):
     quantity: int = Field(nullable=False, ge=0)
     product_id: int = Field(nullable=False)
+    discount_per_unit_amount: Decimal = Field(max_digits=10, decimal_places=3, ge=0, nullable=False)
 
 # orders table api models
 class OrderPublic(SQLModel):
@@ -92,7 +94,7 @@ class OrderPublic(SQLModel):
     customer_id: int = Field(nullable=False)
     customer_name: str = Field(max_length=50, min_length=1, nullable=False)
     tax_amount: FloatDecimal = Field(max_digits=10, decimal_places=3, ge=0)
-    discount_amount: FloatDecimal = Field(max_digits=10, decimal_places=3, ge=0)
+    discount_off_order_amount: FloatDecimal = Field(max_digits=10, decimal_places=3, ge=0)
     shipping_costs_amount: FloatDecimal = Field(max_digits=10, decimal_places=3, ge=0)
     order_items: list[OrderItemPublic]
 
@@ -100,7 +102,7 @@ class OrderCreate(SQLModel):
     customer_id: int = Field(nullable=False)
     items: list[OrderItemCreate] = Field(nullable=False)
     tax_amount: Decimal = Field(max_digits=10, decimal_places=3, ge=0, nullable=False)
-    discount_amount: Decimal = Field(max_digits=10, decimal_places=3, ge=0, nullable=False)
+    discount_off_order_amount: Decimal = Field(max_digits=10, decimal_places=3, ge=0, nullable=False)
     shipping_costs_amount: Decimal = Field(max_digits=10, decimal_places=3, ge=0, nullable=False)
 
     # check if there are duplicated product IDs in the list of items purchased

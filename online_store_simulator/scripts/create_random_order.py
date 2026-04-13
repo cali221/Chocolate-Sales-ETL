@@ -6,35 +6,38 @@ def create_random_order(host, port):
   print("\nCreating a new random order....")
   # get product IDs (limit 100)
   products = requests.get(f"http://{host}:{port}/products/available_online/").json()
-  product_ids = [product['id'] for product in products]
+  product_ids_and_prices = [{"product_id": product['id'], 
+                             "product_price": product['current_price_online']} for product in products]
 
   # get customer IDs (limit 100)
   customers = requests.get(f"http://{host}:{port}/customers").json()
   customer_ids = [customer['id'] for customer in customers]
 
-  # print the available IDs for products and customers
-  print(f"Customer IDs: {customer_ids}")
-  print(f"Product IDs: {product_ids}")
-  print(f"len(product_ids): {len(product_ids)}")
-
   # get a random number of distinct products to order
   # should be <= the number of product IDs
-  number_of_items = random.randint(1, len(product_ids))
+  number_of_items = random.randint(1, len(product_ids_and_prices))
 
   print(f"Number of distinct products to order: {number_of_items}")
 
   # get number_of_items unique product IDs 
-  selected_product_ids = random.sample(product_ids, number_of_items)
+  selected_product_ids_and_prices = random.sample(product_ids_and_prices, number_of_items)
+  
+  print("Selected products to order:")
+  for item in selected_product_ids_and_prices:
+    print(f"Product ID: {item['product_id']} | Product Price: {item['product_price']}")
 
   # get a list of the items to order with their quantities
-  order_items = [ {"quantity": random.randint(1, 500), "product_id": item} for item in selected_product_ids]
+  order_items = [ {"quantity": random.randint(1, 500), 
+                   "product_id": item['product_id'],
+                   "discount_per_unit_amount":  round(random.uniform(0, item['product_price']), 3)} 
+                  for item in selected_product_ids_and_prices]
 
   # set up the order data
   order_data = {
     "customer_id": random.choice(customer_ids),
     "items": order_items,
     "tax_amount": round(random.uniform(1, 15), 3),
-    "discount_amount": round(random.uniform(1, 10), 3),
+    "discount_off_order_amount": round(random.uniform(1, 10), 3),
     "shipping_costs_amount": round(random.uniform(1, 15), 3)
   }
 

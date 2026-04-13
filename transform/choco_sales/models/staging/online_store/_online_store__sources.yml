@@ -37,7 +37,7 @@ sources:
           - name: current_status_id
           - name: customer_id
           - name: tax_amount
-          - name: discount_amount
+          - name: discount_off_order_amount
           - name: shipping_costs_amount
       - name: products
         columns: 

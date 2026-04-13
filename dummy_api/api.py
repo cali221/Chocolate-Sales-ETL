@@ -121,7 +121,7 @@ def create_order(order: OrderCreate, session: SessionDep):
             current_status_id = status.id,
             customer_id = order.customer_id,
             tax_amount = order.tax_amount,
-            discount_amount = order.discount_amount,
+            discount_off_order_amount = order.discount_off_order_amount,
             shipping_costs_amount = order.shipping_costs_amount
         )
 
@@ -149,7 +149,8 @@ def create_order(order: OrderCreate, session: SessionDep):
                 product_id = product.id,
                 order_id = order_data.id,
                 quantity = item.quantity,
-                price_per_unit_at_purchase = product.current_price_online
+                price_per_unit_at_purchase = product.current_price_online,
+                discount_per_unit_amount = item.discount_per_unit_amount
             )
 
             # add the item to the order_items table
@@ -239,6 +240,7 @@ def update_order(order_id: int, order: OrderUpdate, session: SessionDep):
             order_id = ord_item.order_id,
             quantity = ord_item.quantity,
             price_per_unit_at_purchase = ord_item.price_per_unit_at_purchase,
+            discount_per_unit_amount = ord_item.discount_per_unit_amount,
             product_name = product.name
         )
 
@@ -367,6 +369,7 @@ def read_orders(
                 order_id = ord_item.order_id,
                 quantity = ord_item.quantity,
                 price_per_unit_at_purchase = ord_item.price_per_unit_at_purchase,
+                discount_per_unit_amount = ord_item.discount_per_unit_amount,
                 product_name = product.name
             )
 
@@ -442,6 +445,7 @@ def read_orders(
                 order_id = ord_item.order_id,
                 quantity = ord_item.quantity,
                 price_per_unit_at_purchase = ord_item.price_per_unit_at_purchase,
+                discount_per_unit_amount = ord_item.discount_per_unit_amount,
                 product_name = product.name
             )
 
