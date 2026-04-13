@@ -55,7 +55,6 @@ SELECT *,
                  rounded_raw_discount_off_order_amount_usd
        END AS alloc_discount_off_order_amount_usd
 FROM numbered_order_items_with_order_data
-WHERE order_item_order_id = 6 
 ),
 checking_query AS(
 SELECT 
