@@ -2,9 +2,13 @@
 .env.docker
 .env.local
 __pycache__/
+*.pyc
 venv/
 target/
 dbt_packages/
 logs/
 .user.yml
 airflow.cfg
+.vscode/
+*.log
+*.tmp

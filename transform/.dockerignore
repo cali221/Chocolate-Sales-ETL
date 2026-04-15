@@ -11,3 +11,5 @@ choco_sales/target/
 choco_sales/dbt_packages/
 choco_sales/logs/
 **/.user.yml
+**/*.log
+**/*.tmp

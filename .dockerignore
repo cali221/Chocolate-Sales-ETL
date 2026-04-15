@@ -2,8 +2,16 @@
 **/.env.local
 **/.env.docker
 **/__pycache__/
+**/*.pyc
 **/venv/
 **/.gitignore
 **/.git
 **/README.md
 **/LICENSE
+**/airflow.cfg
+**/logs/
+**/.user.yml
+**/target/
+**/dbt_packages/
+**/*.log
+**/*.tmp
