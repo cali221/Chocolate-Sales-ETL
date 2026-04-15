@@ -3,13 +3,13 @@ from fastapi import Depends, FastAPI, HTTPException, Query
 from contextlib import asynccontextmanager
 from sqlmodel import Session, select
 from sqlalchemy import or_
-from .database import setup_db, get_engine
-from .db_models import (Product, 
-                        Country, 
-                        Customer, 
-                        Status, 
-                        Order,
-                        OrderItem)
+from .database import get_engine
+from shared.oltp_db_models import (Product, 
+                                   Country, 
+                                   Customer, 
+                                   Status, 
+                                   Order,
+                                   OrderItem)
 from .api_models import (ProductPublic, ProductCreate, 
                          CountryCreate, CountryPublic, 
                          CustomerPublic, CustomerCreate, 
@@ -28,7 +28,6 @@ SessionDep = Annotated[Session, Depends(get_session)]
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print('LIFESPAN START')
-    setup_db(engine)
     yield
     print('LIFESPAN END')
     

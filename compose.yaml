@@ -1,21 +1,38 @@
 services:
-  # pipeline to load data from kaggle dataset to PostgreSQL DB
-  # NOTE: this will reset the data by dropping table if they exist
-  load_kaggle_data:
+  db_setup:
     build:
-      context: ./load_data
-      dockerfile: Dockerfile
-    container_name: load_kaggle_data
-    volumes: 
-      - ./load_data:/choco-project-load-kaggle-data
+      context: .
+      dockerfile: db_setup/Dockerfile
+    container_name: db_setup
+    volumes:
+      - ./db_setup:/choco-project-db-setup/db_setup
     depends_on:
       database:
         condition: service_healthy
     env_file:
       - .env.docker
+    networks:
+      - proxy_network
+
+  # pipeline to load data from kaggle dataset to PostgreSQL DB
+  # NOTE: this will reset the data by dropping the kaggle data table if they exist
+  load_kaggle_data:
+    build:
+      context: ./load_kaggle_data
+      dockerfile: Dockerfile
+    container_name: load_kaggle_data
+    volumes: 
+      - ./load_kaggle_data:/choco-project-load-kaggle-data
+    depends_on:
+      db_setup:
+        condition: service_completed_successfully
+    env_file:
+      - .env.docker
     #profiles: [load]
     restart: "no"
     init: true
+    networks:
+      - proxy_network
 
   online_store_sim:
     build:
@@ -32,20 +49,22 @@ services:
     #profiles: [online_store_sim]
     restart: unless-stopped
     init: true
+    networks:
+      - proxy_network
 
   # API for simulated online store
   # available at: http://127.0.0.1:8000 
   # docs are at: http://127.0.0.1:8000/docs 
   dummy_api:
     build:
-      context: ./dummy_api
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: dummy_api/Dockerfile
     container_name: dummy_api
     volumes: 
-      - ./dummy_api:/choco-project-dummy-api
+      - ./dummy_api:/choco-project-dummy-api/dummy_api
     depends_on: 
-      database:
-        condition: service_healthy
+      db_setup:
+        condition: service_completed_successfully
     env_file:
       - .env.docker
     #profiles: [api]
@@ -59,6 +78,8 @@ services:
       timeout: 5s
       retries: 3
       start_period: 30s
+    networks:
+      - proxy_network
 
   # transform DB's schema (to be completed)
   # note (applies to me only): 
@@ -79,7 +100,7 @@ services:
     volumes: 
       - ./transform:/choco-project-transform
     depends_on:
-      load_kaggle_data:
+      db_setup:
         condition: service_completed_successfully
         required: false
     env_file:
@@ -95,6 +116,8 @@ services:
     #user: "${UID}:${GID}"
     ports: 
       - "127.0.0.1:8080:8080"
+    networks:
+      - proxy_network
 
   # streamlit dashboard showing data visualization from DB's data
   dashboard:
@@ -112,7 +135,9 @@ services:
         required: false
     env_file:
       - .env.docker
-        
+    networks:
+      - proxy_network
+
   # PostgreSQL DB
   database:
     image: postgres:18
@@ -129,7 +154,14 @@ services:
       retries: 5
       start_period: 30s
       timeout: 10s
-      
-# volume for PostgreSQL data  
+    networks:
+      - proxy_network
+
 volumes:
+  # volume for PostgreSQL data  
   postgres_data:
+
+networks:
+  # network to join project and airflow compose
+  proxy_network:
+    name: airflow_network

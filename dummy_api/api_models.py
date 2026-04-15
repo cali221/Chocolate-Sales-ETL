@@ -3,7 +3,7 @@ from decimal import Decimal
 from pydantic import Field, field_validator, model_validator, PlainSerializer
 from datetime import datetime
 from typing_extensions import Annotated
-from .db_models import ProductChannels 
+from shared.oltp_db_models import ProductChannels 
 from typing import Optional
 from typing_extensions import Self
                         

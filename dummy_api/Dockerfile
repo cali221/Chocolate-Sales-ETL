@@ -28,14 +28,20 @@ RUN adduser \
 # Leverage a bind mount to requirements.txt to avoid having to copy them into
 # into this layer.
 RUN --mount=type=cache,target=/root/.cache/pip \
-    --mount=type=bind,source=requirements.txt,target=requirements.txt \
+    --mount=type=bind,source=dummy_api/requirements.txt,target=requirements.txt \
     python -m pip install -r requirements.txt
 
 # Switch to the non-privileged user to run the application.
 USER appuser
 
 # Copy the source code into the container.
-COPY  . .
+COPY dummy_api/ dummy_api/
+
+# Copy shared folder into the container
+COPY shared/ shared/
+
+# Change workdir to dummy_api
+WORKDIR /choco-project-dummy-api/dummy_api
 
 # Expose the port that the application listens on.
 EXPOSE 80

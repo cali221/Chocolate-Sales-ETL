@@ -1,9 +1,0 @@
-**/.env
-**/.env.local
-**/.env.docker
-**/__pycache__/
-**/venv/
-**/.gitignore
-**/.git
-**/README.md
-**/LICENSE
