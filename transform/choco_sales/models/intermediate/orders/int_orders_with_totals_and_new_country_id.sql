@@ -12,9 +12,14 @@ GROUP BY order_item_order_id)
 SELECT o.order_id AS order_id,
        o.order_customer_id AS order_customer_id,
        c.country_id AS order_customer_country_id,
+       o.order_current_status_id,
        o.order_created_at,
        o.order_status_last_updated_at,
-       o.order_current_status_id,
+       osh.started_pending_at AS order_started_pending_at,
+       osh.started_processing_at AS order_started_processing_at ,
+       osh.started_in_transit_at AS order_started_in_transit_at,
+       osh.arrived_at AS order_arrived_at,
+       osh.completed_at AS order_completed_at,
        o.order_tax_amount_usd,
        o.discount_off_order_amount_usd,
        o.order_shipping_costs_amount_usd,
@@ -27,3 +32,5 @@ JOIN {{ref('stg_online_store__orders')}} o
 ON o.order_id = oi.order_id
 JOIN {{ref('int_customers_with_country_and_new_country_id')}} c
 ON o.order_customer_id = c.customer_id
+JOIN {{ref('int_order_status_history_modified')}} osh 
+ON osh.order_status_history_order_id = o.order_id

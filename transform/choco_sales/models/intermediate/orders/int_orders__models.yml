@@ -1,6 +1,24 @@
 version: 2
 
 models:
+  - name: int_order_status_history_modified
+    description: "Order status history for each order ID with all statuses update timestamps in one row"
+    columns:
+      - name: order_status_history_order_id
+        data_type: integer
+        data_tests:
+          - not_null
+          - unique
+      - name: started_pending_at
+        data_type: timestamptz
+      - name: started_processing_at
+        data_type: timestamptz
+      - name: started_in_transit_at
+        data_type: timestamptz
+      - name: arrived_at
+        data_type: timestamptz
+      - name: completed_at
+        data_type: timestamptz
   - name: int_orders_with_totals_and_new_country_id
     description: "Orders with status name instead of status ID and items related values"
     columns:
@@ -9,13 +27,23 @@ models:
         data_tests:
           - not_null
           - unique
+      - name: order_started_pending_at
+        data_type: timestamptz
+      - name: order_started_processing_at
+        data_type: timestamptz
+      - name: order_started_in_transit_at
+        data_type: timestamptz
+      - name: order_arrived_at
+        data_type: timestamptz
+      - name: order_completed_at
+        data_type: timestamptz
       - name: order_created_at
         data_type: timestamptz
         data_tests:
           - not_null
       - name: order_status_last_updated_at
         data_type: timestamptz
-        data_tests: 
+        data_tests:
           - not_null
       - name: order_current_status_id
         data_type: integer

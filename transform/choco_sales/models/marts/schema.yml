@@ -182,6 +182,16 @@ models:
               arguments:
                 to: ref('dim_statuses')
                 field: status_id
+      - name: order_started_pending_at
+        data_type: timestamptz
+      - name: order_started_processing_at
+        data_type: timestamptz
+      - name: order_started_in_transit_at
+        data_type: timestamptz
+      - name: order_arrived_at
+        data_type: timestamptz
+      - name: order_completed_at
+        data_type: timestamptz
       - name: alloc_tax_amount_usd
         data_type: numeric
         data_tests:

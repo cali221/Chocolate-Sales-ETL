@@ -80,10 +80,12 @@ SELECT order_item_id,
        order_created_at,
        order_status_last_updated_at,
        order_current_status_id,
+       order_started_pending_at,
+       order_started_processing_at,
+       order_started_in_transit_at,
+       order_arrived_at,
+       order_completed_at,
        alloc_tax_amount_usd,
-       --order_tax_amount_usd,
        alloc_shipping_costs_usd,
-       --order_shipping_costs_amount_usd,
        alloc_discount_off_order_amount_usd
-       --discount_off_order_amount_usd
 FROM order_items_with_alloc_vals
