@@ -19,10 +19,17 @@ def load_to_db(df):
     POSTGRES_DB = os.getenv('POSTGRES_DB')
     engine = create_engine(f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}")
 
-    with engine.connect() as connection:
-        connection.execute(text("DROP TABLE IF EXISTS kaggle_hist_data.choco_stats CASCADE"))
-        connection.commit()
-
     print("Loading DataFrame to database...")
-    df.to_sql("choco_stats", engine, if_exists="replace", index=False, schema="kaggle_hist_data")
-    print("Finished loading dataframe into database")
+
+    try:
+        # automatically rollback if failed, commit if successful
+        with engine.begin() as conn:
+            conn.execute(text("TRUNCATE TABLE kaggle_hist_data.choco_stats"))
+            df.to_sql("choco_stats", 
+                    conn, 
+                    if_exists="append", 
+                    index=False, 
+                    schema="kaggle_hist_data")
+        print("Finished loading dataframe into database")
+    except Exception as e:
+        print(f"Failed to load dataframe into DB: {e}")
