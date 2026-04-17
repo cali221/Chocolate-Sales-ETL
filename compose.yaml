@@ -21,6 +21,7 @@ services:
       context: ./load_kaggle_data
       dockerfile: Dockerfile
     container_name: load_kaggle_data
+    image: load_kaggle_data
     volumes: 
       - ./load_kaggle_data:/choco-project-load-kaggle-data
     depends_on:
@@ -97,6 +98,7 @@ services:
       #   UID: ${UID}
       #   GID: ${GID}
     container_name: transform
+    image: transform
     volumes: 
       - ./transform:/choco-project-transform
     depends_on:

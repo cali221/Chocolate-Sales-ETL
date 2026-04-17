@@ -26,10 +26,12 @@ def load_to_db(df):
         with engine.begin() as conn:
             conn.execute(text("TRUNCATE TABLE kaggle_hist_data.choco_stats"))
             df.to_sql("choco_stats", 
-                    conn, 
-                    if_exists="append", 
-                    index=False, 
-                    schema="kaggle_hist_data")
+                      conn, 
+                      if_exists="append", 
+                      index=False, 
+                      schema="kaggle_hist_data",
+                      method='multi',
+                      chunksize=1641)
         print("Finished loading dataframe into database")
     except Exception as e:
         print(f"Failed to load dataframe into DB: {e}")

@@ -51,8 +51,10 @@ RUN echo "Build GID is: $GID"
 # Expose the port that the docs webserver listens on
 EXPOSE 8080
 
+RUN dbt deps --project-dir choco_sales --profiles-dir choco_sales
+
 # Run the application.
-#CMD ["dbt", "build"]
+CMD ["dbt", "build"]
 
 # keep container up for development
-CMD ["tail", "-f", "/dev/null"]
+#CMD ["tail", "-f", "/dev/null"]

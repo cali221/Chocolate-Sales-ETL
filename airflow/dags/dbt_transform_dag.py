@@ -1,6 +1,6 @@
 import os
 from airflow import DAG
-from datetime import datetime
+from datetime import datetime, timedelta
 from airflow.providers.docker.operators.docker import DockerOperator
 
 dag_default_arguments = {
@@ -8,15 +8,15 @@ dag_default_arguments = {
     'email': 'theresiacalista57@gmail.com'
 }
 
-with DAG('load_kaggle_data', 
+with DAG('dbt_transform', 
          default_args=dag_default_arguments, 
-         start_date=datetime(2026, 1, 1),
+         start_date=datetime(2026, 4, 15),
          catchup=False,
-         schedule='@yearly') as load_kaggle_data_dag:
-    load_kaggle_data_task = DockerOperator(task_id='load_kaggle_data',
-                                           image='load_kaggle_data',
-                                           command=["python", "-m", "main"],
-                                           container_name='load_kaggle_data',
+         schedule=timedelta(minutes=1)) as load_kaggle_data_dag:
+    load_kaggle_data_task = DockerOperator(task_id='dbt_transform',
+                                           image='transform',
+                                           command=["dbt", "build"],
+                                           container_name='transform',
                                            docker_url='unix://var/run/docker.sock',
                                            network_mode='airflow_network',
                                            mount_tmp_dir=False,
@@ -27,6 +27,10 @@ with DAG('load_kaggle_data',
                                                 "POSTGRES_HOST":os.getenv('POSTGRES_HOST'),
                                                 "POSTGRES_USER":os.getenv('POSTGRES_USER'),
                                                 "POSTGRES_PORT":os.getenv('POSTGRES_PORT'),
-                                                "POSTGRES_DB":os.getenv('POSTGRES_DB')
+                                                "POSTGRES_DB":os.getenv('POSTGRES_DB'),
+                                                "DBT_PROJECT_DIR": "/choco-project-transform/choco_sales",
+                                                "DBT_PROFILES_DIR": "/choco-project-transform/choco_sales",
+                                                "DBT_ENGINE_LOG_PATH": "/choco-project-transform/choco_sales/logs",
+                                                "DBT_ENGINE_TARGET_PATH": "/choco-project-transform/choco_sales/target"
                                             })
                                             
