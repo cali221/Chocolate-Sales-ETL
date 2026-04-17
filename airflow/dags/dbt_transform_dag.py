@@ -8,17 +8,18 @@ dag_default_arguments = {
     'email': 'theresiacalista57@gmail.com'
 }
 
-with DAG('dbt_transform', 
+with DAG(dag_id='dbt_transform', 
          default_args=dag_default_arguments, 
          start_date=datetime(2026, 4, 15),
          catchup=False,
-         schedule=timedelta(minutes=1)) as load_kaggle_data_dag:
+         max_active_runs=1,
+         schedule=timedelta(minutes=15)) as load_kaggle_data_dag:
     load_kaggle_data_task = DockerOperator(task_id='dbt_transform',
                                            image='transform',
                                            command=["dbt", "build"],
                                            container_name='transform',
                                            docker_url='unix://var/run/docker.sock',
-                                           network_mode='airflow_network',
+                                           network_mode='chocolate-sales-data-pipeline_default',
                                            mount_tmp_dir=False,
                                            auto_remove='success',
                                            environment={
