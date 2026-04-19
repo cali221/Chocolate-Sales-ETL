@@ -38,3 +38,15 @@ def draw_hourly_order_count_linechart(df):
 
     # draw the line chart
     st.altair_chart(hourly_order_count_linechart)
+
+def draw_top_5_cust_countries_barchart(df):
+    """
+    draw bar chart showing online store customers'
+    countries that make the higher number of orders
+    """
+    top_5_cust_countries = alt.Chart(df).mark_bar().encode(
+        alt.X("order_count:Q", axis=alt.Axis(tickMinStep=1)).title("Number of orders"),
+        alt.Y("country_name:N").sort('-x').title("Country")
+    )
+    
+    st.altair_chart(top_5_cust_countries)

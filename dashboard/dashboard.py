@@ -130,8 +130,8 @@ def load_hourly_order_count_data(engine):
     sql_query = f"""
                 WITH hours AS(
                     SELECT generate_series(
-                        DATE_TRUNC('hours', NOW() - INTERVAL '24 hours'),
-                        DATE_TRUNC('hours', NOW()),
+                        DATE_TRUNC('hour', NOW() - INTERVAL '24 hours'),
+                        DATE_TRUNC('hour', NOW()),
                         INTERVAL '1 hour'
                     ) AS hour
                 )
@@ -177,6 +177,40 @@ def refreshing_online_hourly_order_count(engine):
     # draw chart using dataframe
     draw_hourly_order_count_linechart(hourly_order_count)
     
+def load_top_5_cust_countries_online_store(engine):
+    """
+    load the data for top 5 online store customers' countries
+    """
+    sql_query = """
+                SELECT COUNT(DISTINCT(oi.order_item_order_id)) AS order_count,
+                       co.country_name, 
+                       oi.order_customer_country_id
+                FROM marts.fct_online_store_ordered_items oi
+                JOIN marts.dim_customers_countries co
+                ON co.country_id = oi.order_customer_country_id
+                GROUP BY oi.order_customer_country_id, co.country_name
+                ORDER BY COUNT(oi.order_item_order_id) DESC
+                LIMIT 5
+                """
+    top_5_cust_countries = pd.read_sql(sql_query, engine)
+
+    # get the timestamp for last fetched time
+    top_5_cust_countries_last_fetched_at = datetime.now(ZoneInfo(st.context.timezone))
+
+    # return last fetched time and dataframe
+    return top_5_cust_countries, top_5_cust_countries_last_fetched_at
+
+@st.fragment(run_every=timedelta(minutes=15))
+def refreshing_top_5_cust_countries(engine):
+    # load dataframe and last fetched time
+    top_5_cust_countries, top_5_cust_countries_last_fetched_at = load_top_5_cust_countries_online_store(engine)
+
+    # show caption for last fetched time
+    st.caption(f"Last fetched at: {top_5_cust_countries_last_fetched_at}")
+
+    # draw chart using dataframe
+    draw_top_5_cust_countries_barchart(top_5_cust_countries)
+
 def create_dashboard(): 
     """
     create the dashboard showing charts about the data
@@ -200,6 +234,9 @@ def create_dashboard():
 
         st.subheader("Hourly order count in the last 24 hours")
         refreshing_online_hourly_order_count(engine)
+
+        st.subheader("Top 5 customers' countries making the largest number of orders (all time)")
+        refreshing_top_5_cust_countries(engine)
 
         # ------------------- sales people's sales --------------------
         # title for charts for sales people's sales
