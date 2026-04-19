@@ -20,8 +20,8 @@ def draw_online_status_transition_durations_barchart(df):
     status transitions 
     """
     status_transition_durations = alt.Chart(df).mark_bar().encode(
-        alt.Y("transitions:N", axis=alt.Axis(labelLimit=1000)).title("Status Transition"),
-        alt.X("durations:Q").title("Average Duration of Transition (hours)")
+        alt.Y("transitions:N", axis=alt.Axis(labelLimit=1000)).title("Status transition"),
+        alt.X("durations:Q").title("Average duration of transition (hours)")
     )
     
     st.altair_chart(status_transition_durations)

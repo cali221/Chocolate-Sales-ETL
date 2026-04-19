@@ -23,8 +23,8 @@ def draw_pie_chart_for_boxes_shipped_per_country(df):
     else:
         # create the chart
         boxes_shipped_countries_piechart = alt.Chart(filtered_df_countries_boxes_shipped).mark_arc().encode(
-            theta="sum(boxes_shipped):Q",
-            color="country:N"
+            alt.Theta("sum(boxes_shipped):Q").title("Total boxes shipped"),
+            alt.Color("country:N").title("Country")
         )
         # draw the pie chart
         st.altair_chart(boxes_shipped_countries_piechart)
@@ -59,9 +59,9 @@ def draw_boxes_shipped_overtime_per_countries_linechart(df):
         st.info(error_msg)
     else:
         boxes_shipped_overtime_linechart = alt.Chart(filtered_df_boxes_shipped_overtime_per_country).mark_line().encode(
-            alt.X("date:T", axis=alt.Axis(format="%Y/%m/%d")),
+            alt.X("date:T", axis=alt.Axis(format="%Y/%m/%d")).title("Date"),
             alt.Y("sum(boxes_shipped):Q").title("Total boxes shipped"),
-            color="country:N",
+            alt.Color("country:N").title("Country")
         )
         # draw the line chart
         st.altair_chart(boxes_shipped_overtime_linechart)
@@ -94,7 +94,7 @@ def draw_boxes_shipped_per_product_barchart(df):
     else:
         # create the bar chart
         products_sold_barchart = alt.Chart(filtered_df_boxes_shipped_by_products).mark_bar().encode(
-            alt.X("product:N"),
+            alt.X("product:N").title("Product"),
             alt.Y("sum(boxes_shipped):Q").title("Total boxes shipped")
         )
 
@@ -129,7 +129,7 @@ def draw_sales_amount_per_product_barchart(df):
     else:
         # create the bar chart
         products_sold_barchart = alt.Chart(filtered_df_products_amount).mark_bar().encode(
-            alt.X("product:N"),
+            alt.X("product:N").title("Product"),
             alt.Y("sum(sales_amount_usd):Q").title("Total amount ($)")
         )
         # draw the bar chart
@@ -165,9 +165,9 @@ def draw_sales_person_boxes_shipped_linechart(df):
     else:
         # create the line chart
         boxes_shipped_overtime_linechart = alt.Chart(filtered_df_sales_person_boxes_shipped).mark_line().encode(
-            alt.X("date:T", axis=alt.Axis(format="%Y/%m/%d")),
+            alt.X("date:T", axis=alt.Axis(format="%Y/%m/%d")).title("Date"),
             alt.Y("sum(boxes_shipped):Q").title("Total boxes shipped"),
-            color="sales_person:N",
+            alt.Color("sales_person:N").title("Sales person")
         )
 
         # draw the line chart

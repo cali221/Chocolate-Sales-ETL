@@ -14,7 +14,7 @@ def create_dashboard():
         # ------------------------ online store sales ----------------------------
         # title for charts for online store sales
         st.title("Online Store Sales")
-        st.caption("Charts for online store sales are updated every 15 minutes")
+        st.markdown("**Charts for online store sales are updated every 15 minutes**")
 
         st.subheader("Hourly order count in the last 24 hours")
         refreshing_online_hourly_order_count(engine)
@@ -34,7 +34,7 @@ def create_dashboard():
         # ------------------- sales people's sales --------------------
         # title for charts for sales people's sales
         st.title("Chocolate Sales by Sales People Between 2022 to 2024")
-        st.caption("Charts for sales people's sales are static")
+        st.markdown("**Charts for sales people's sales are static**")
 
         # get data for the sales people's sales data (shared between charts)
         sales_peoples_sales = load_sales_peoples_sales_data(engine)
