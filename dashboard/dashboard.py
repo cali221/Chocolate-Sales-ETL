@@ -11,27 +11,31 @@ def create_dashboard():
     try:
         engine = get_engine()
 
-        # ------------------------ online store sales ----------------------------
-        # title for charts for online store sales
+        # -------------------------- online store sales ------------------------------
         st.title("Online Store Sales")
         st.markdown("**Charts for online store sales are updated every 15 minutes**")
 
         st.subheader("Hourly order count in the last 24 hours")
+        # line chart showing hourly order count in the last 24 hours
         refreshing_online_hourly_order_count(engine)
 
         st.subheader("Hourly revenue in the last 24 hours")
+        # line chart showing hourly revenue in the last 24 hours
         refreshing_online_hourly_revenue(engine)
 
         st.subheader("Comparison of quantities ordered between products (all time)")
+        # bar chart showing average duration of online order status transitions
         refreshing_online_prod_qty_chart(engine)
 
         st.subheader("Average orders' status transition durations (all time)")
+        # bar chart showing average duration of online order status transitions
         refreshing_online_status_transition_durations_chart(engine)
 
         st.subheader("Top 5 customers' countries making the largest number of orders (all time)")
+        # bar chart showing top 5 customers' countries that made the most orders
         refreshing_top_5_cust_countries(engine)
 
-        # ------------------- sales people's sales --------------------
+        # -------------------------- sales people's sales ----------------------------
         # title for charts for sales people's sales
         st.title("Chocolate Sales by Sales People Between 2022 to 2024")
         st.markdown("**Charts for sales people's sales are static**")
