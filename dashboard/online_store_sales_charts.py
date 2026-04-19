@@ -25,3 +25,16 @@ def draw_online_status_transition_durations_barchart(df):
     )
     
     st.altair_chart(status_transition_durations)
+
+def draw_hourly_order_count_linechart(df):
+    """
+    draw the line chart showing the hourly number of 
+    orders in the last 24 hours
+    """
+    hourly_order_count_linechart = alt.Chart(df).mark_line().encode(
+        alt.X("hours_range:N", sort=alt.SortField('hour')).title("Hours range"),
+        alt.Y("order_count:Q", axis=alt.Axis(tickMinStep=1)).title("Number of orders")
+    )
+
+    # draw the line chart
+    st.altair_chart(hourly_order_count_linechart)
