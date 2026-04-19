@@ -354,7 +354,7 @@ services:
       - .env.docker
 
   # pipeline to load data from kaggle dataset to PostgreSQL DB
-  # NOTE: this will reset the data by dropping the kaggle data table if they exist
+  # NOTE: this will reset the data by truncating table before reloading the data
   load_kaggle_data:
     build:
       context: ./load_kaggle_data
@@ -368,7 +368,6 @@ services:
         condition: service_completed_successfully
     env_file:
       - .env.docker
-    #profiles: [manual_kaggle_data_load]
     restart: "no"
     init: true
 
@@ -384,7 +383,7 @@ services:
         condition: service_healthy
     env_file:
       - .env.docker
-    profiles: [run_with_online_store_sim]
+    profiles: [with_online_store_sim]
     restart: unless-stopped
     init: true
 
@@ -403,7 +402,6 @@ services:
         condition: service_completed_successfully
     env_file:
       - .env.docker
-    #profiles: [api]
     restart: unless-stopped
     init: true
     ports: 
@@ -465,8 +463,8 @@ services:
     depends_on:
       database:
         condition: service_healthy
-      #airflow-apiserver:
-      #  condition: service_healthy
+      airflow-apiserver:
+        condition: service_healthy
     env_file:
       - .env.docker
 
