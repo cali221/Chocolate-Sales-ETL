@@ -22,7 +22,7 @@ def create_dashboard():
         st.subheader("Hourly revenue in the last 24 hours")
         refreshing_online_hourly_revenue(engine)
 
-        st.subheader("Comparison of quantities ordered between products (all tinme)")
+        st.subheader("Comparison of quantities ordered between products (all time)")
         refreshing_online_prod_qty_chart(engine)
 
         st.subheader("Average orders' status transition durations (all time)")
