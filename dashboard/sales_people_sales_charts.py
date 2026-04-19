@@ -130,7 +130,7 @@ def draw_sales_amount_per_product_barchart(df):
         # create the bar chart
         products_sold_barchart = alt.Chart(filtered_df_products_amount).mark_bar().encode(
             alt.X("product:N"),
-            alt.Y("sum(sales_amount_usd):Q").title("Total amount (USD)")
+            alt.Y("sum(sales_amount_usd):Q").title("Total amount ($)")
         )
         # draw the bar chart
         st.altair_chart(products_sold_barchart)

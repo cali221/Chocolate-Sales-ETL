@@ -16,8 +16,8 @@ def draw_item_quantities_ordered_online_barchart(df):
 
 def draw_online_status_transition_durations_barchart(df):
     """
-    draw the bar chart showing the average duration of orders'
-    status transitions
+    draw the bar chart showing the average duration of online orders'
+    status transitions 
     """
     status_transition_durations = alt.Chart(df).mark_bar().encode(
         alt.Y("transitions:N", axis=alt.Axis(labelLimit=1000)).title("Status Transition"),
@@ -29,7 +29,7 @@ def draw_online_status_transition_durations_barchart(df):
 def draw_hourly_order_count_linechart(df):
     """
     draw the line chart showing the hourly number of 
-    orders in the last 24 hours
+    orders form online store in the last 24 hours
     """
     hourly_order_count_linechart = alt.Chart(df).mark_line().encode(
         alt.X("hours_range:N", sort=alt.SortField('hour')).title("Hours range"),
@@ -50,3 +50,16 @@ def draw_top_5_cust_countries_barchart(df):
     )
     
     st.altair_chart(top_5_cust_countries)
+
+def draw_hourly_revenue_linechart(df):
+    """
+    draw the line chart showing the hourly 
+    revenue from online store in the last 24 hours
+    """
+    hourly_revenue_linechart = alt.Chart(df).mark_line().encode(
+        alt.X("hours_range:N", sort=alt.SortField('hour')).title("Hours range"),
+        alt.Y("revenue_per_hour:Q").title("Revenue ($)")
+    )
+
+    # draw the line chart
+    st.altair_chart(hourly_revenue_linechart)
