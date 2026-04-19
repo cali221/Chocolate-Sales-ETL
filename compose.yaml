@@ -403,7 +403,7 @@ services:
         condition: service_completed_successfully
     env_file:
       - .env.docker
-    profiles: [api]
+    #profiles: [api]
     restart: unless-stopped
     init: true
     ports: 

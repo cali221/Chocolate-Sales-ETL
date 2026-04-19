@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
-from utils import validate_date_range_and_filter
+from utils import validate_time_range_and_filter
 
 def draw_pie_chart_for_boxes_shipped_per_country(df):
     """
@@ -13,7 +13,9 @@ def draw_pie_chart_for_boxes_shipped_per_country(df):
                                                   [df["date"].min(), df["date"].max()], 
                                                   key="countries-boxes-shipped-dates")
 
-    filtered_df_countries_boxes_shipped, error_msg = validate_date_range_and_filter(date_range_selected_boxes_shipped_countries, df)
+    filtered_df_countries_boxes_shipped, error_msg = validate_time_range_and_filter(date_range_selected_boxes_shipped_countries, 
+                                                                                    df,
+                                                                                    "date")
 
     # if date range is invalid show error message
     if error_msg:
@@ -26,6 +28,7 @@ def draw_pie_chart_for_boxes_shipped_per_country(df):
         )
         # draw the pie chart
         st.altair_chart(boxes_shipped_countries_piechart)
+
 
 def draw_boxes_shipped_overtime_per_countries_linechart(df):
     """
@@ -48,8 +51,9 @@ def draw_boxes_shipped_overtime_per_countries_linechart(df):
                                                                              df["date"].max()], 
                                                                             key="boxes-chart-dates")
     
-    filtered_df_boxes_shipped_overtime_per_country, error_msg = validate_date_range_and_filter(date_range_selected_boxes_shipped_per_country_over_time, 
-                                                                                               filtered_df_boxes_shipped_overtime_per_country)
+    filtered_df_boxes_shipped_overtime_per_country, error_msg = validate_time_range_and_filter(date_range_selected_boxes_shipped_per_country_over_time, 
+                                                                                               filtered_df_boxes_shipped_overtime_per_country,
+                                                                                               "date")
     # if date range is invalid show error message
     if error_msg:
         st.info(error_msg)
@@ -81,8 +85,9 @@ def draw_boxes_shipped_per_product_barchart(df):
     date_range_selected_boxes_shipped_by_products = st.date_input("Select Date Range", 
                                                                   [df["date"].min(), df["date"].max()], 
                                                                   key="product-chart-dates")
-    filtered_df_boxes_shipped_by_products, error_msg = validate_date_range_and_filter(date_range_selected_boxes_shipped_by_products, 
-                                                                                      filtered_df_boxes_shipped_by_products)
+    filtered_df_boxes_shipped_by_products, error_msg = validate_time_range_and_filter(date_range_selected_boxes_shipped_by_products, 
+                                                                                      filtered_df_boxes_shipped_by_products,
+                                                                                      "date")
     # if date range is invalid show error message
     if error_msg:
         st.info(error_msg)
@@ -115,8 +120,9 @@ def draw_sales_amount_per_product_barchart(df):
                                                         [df["date"].min(), df["date"].max()], 
                                                         key="product-amount-chart-dates")
     
-    filtered_df_products_amount, error_msg = validate_date_range_and_filter(date_range_selected_products_amount, 
-                                                                            filtered_df_products_amount)
+    filtered_df_products_amount, error_msg = validate_time_range_and_filter(date_range_selected_products_amount, 
+                                                                            filtered_df_products_amount,
+                                                                            "date")
     # if date range is invalid show error message
     if error_msg:
         st.info(error_msg)
@@ -150,8 +156,9 @@ def draw_sales_person_boxes_shipped_linechart(df):
                                                       df["date"].max()], 
                                                      key="sales-person-boxes-shipped-chart")
     
-    filtered_df_sales_person_boxes_shipped, error_msg = validate_date_range_and_filter(date_range_selected_sales_person_boxes_shipped,
-                                                                                       filtered_df_sales_person_boxes_shipped)
+    filtered_df_sales_person_boxes_shipped, error_msg = validate_time_range_and_filter(date_range_selected_sales_person_boxes_shipped,
+                                                                                       filtered_df_sales_person_boxes_shipped,
+                                                                                       "date")
     # if date range is invalid show error message
     if error_msg:
         st.info(error_msg)
