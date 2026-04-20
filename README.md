@@ -24,6 +24,7 @@ This project was inspired by the article '[Build a Complete Data Engineering Pro
 ## Requirements
 - Docker
 - Docker Compose
+- Kaggle API key (obtained by going to your Kaggle account settings page and clicking 'Generat New Token' or using your existing token)
 ## Step 1
 Create a ```.env.docker``` file in the root directory of this project and add the following (with your PostgreSQL user and password, and Kaggle API token instead) to the file:
 ```
