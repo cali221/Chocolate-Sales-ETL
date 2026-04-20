@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
-from utils import validate_time_range_and_filter
+from scripts.utils import validate_time_range_and_filter
 
 def draw_pie_chart_for_boxes_shipped_per_country(df):
     """

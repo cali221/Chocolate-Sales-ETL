@@ -1,6 +1,15 @@
 import streamlit as st
-from load_data import *
-from online_store_sales_charts import *
+from scripts.load_data import load_online_store_products_quantities_ordered_data, \
+                              load_hourly_order_count_data, \
+                              load_online_status_transition_avg_time, \
+                              load_top_5_cust_countries_online_store, \
+                              load_online_store_hourly_revenue
+from scripts.chart_drawing_scripts.online_store_sales_charts import draw_item_quantities_ordered_online_barchart, \
+                                                                    draw_online_status_transition_durations_barchart, \
+                                                                    draw_hourly_order_count_linechart, \
+                                                                    draw_top_5_cust_countries_barchart, \
+                                                                    draw_hourly_revenue_linechart
+
 from datetime import timedelta
 
 @st.fragment(run_every=timedelta(minutes=15))

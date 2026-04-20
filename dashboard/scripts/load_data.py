@@ -2,7 +2,7 @@ import pandas as pd
 import streamlit as st
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from utils import fetch_from_db
+from scripts.utils import fetch_from_db
 
 def load_sales_peoples_sales_data(engine):
     """
