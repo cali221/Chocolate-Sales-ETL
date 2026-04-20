@@ -88,7 +88,7 @@ You can view the DAG by going to the Dags tab as shown below:<br>
 Once Airflow has finished its first DAG run, the data marts are now available to use for data visualization. Open the dashboard at http://localhost:8501/ to view the charts. 
 
 ## Note
-The charts for online store data are updated every 15 mintues and the Airflow DAG for dbt transformation that creates and updates the data marts for the dashboard is run every 10 minutes. Therefore, data changes might not show right away or the dashboard might show empty charts or error messages when it's unable to fetch data from the marts for the tables. 
+The charts for online store data are updated every 15 mintues and the Airflow DAG for dbt transformation that creates and updates the data marts for the dashboard is run every 10 minutes. Therefore, new data might not show right away or the dashboard might show empty charts or error messages when it's unable to fetch data from the marts for the charts. 
 
 # Dashboard screenshots
 (Section to be updated later)<br>
