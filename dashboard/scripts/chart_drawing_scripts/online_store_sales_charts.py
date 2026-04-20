@@ -32,7 +32,7 @@ def draw_hourly_order_count_linechart(df):
     orders form online store in the last 24 hours
     """
     hourly_order_count_linechart = alt.Chart(df).mark_line().encode(
-        alt.X("hours_range:N", sort=alt.SortField('hour')).title("Hours range"),
+        alt.X("hours_range:N", sort=alt.EncodingSortField('hour')).title("Hours range"),
         alt.Y("order_count:Q", axis=alt.Axis(tickMinStep=1)).title("Number of orders")
     )
 

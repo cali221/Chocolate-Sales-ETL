@@ -1,5 +1,5 @@
 import streamlit as st
-from scripts.load_data import load_sales_peoples_sales_data
+from scripts.data_loading_scripts.sales_peoples_sales_data_loading_script import load_sales_peoples_sales_data
 from scripts.chart_drawing_scripts.sales_people_sales_charts import draw_pie_chart_for_boxes_shipped_per_country, \
                                                                     draw_boxes_shipped_overtime_per_countries_linechart, \
                                                                     draw_boxes_shipped_per_product_barchart, \

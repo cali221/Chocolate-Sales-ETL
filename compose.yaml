@@ -124,6 +124,8 @@ services:
     restart: always
 
   # airflow web UI is on http://127.0.0.1:8081/
+  # username: airflow
+  # password: airflow
   airflow-apiserver:
     <<: *airflow-common
     command: api-server
