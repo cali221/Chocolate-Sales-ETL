@@ -85,7 +85,7 @@ x-airflow-common:
     - ${AIRFLOW_PROJ_DIR:-.}/airflow/config:/opt/airflow/config
     - ${AIRFLOW_PROJ_DIR:-.}/airflow/plugins:/opt/airflow/plugins
     - "/var/run/docker.sock:/var/run/docker.sock" 
-  user: "${AIRFLOW_UID:-50000}:0"
+  user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-0}"
   depends_on:
     &airflow-common-depends-on
     redis:
@@ -427,9 +427,9 @@ services:
     build:
       context: ./transform
       dockerfile: Dockerfile
-      # args:
-      #   UID: ${UID}
-      #   GID: ${GID}
+      args:
+        UID: ${HOST_UID:-1000}
+        GID: ${HOST_GID:-1000}
     container_name: transform
     image: transform
     volumes: 
@@ -448,7 +448,7 @@ services:
     profiles: [manual_dbt_transform]
     restart: "no"
     init: true
-    #user: "${UID}:${GID}"
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
     ports: 
       - "127.0.0.1:8080:8080"
 

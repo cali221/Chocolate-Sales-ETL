@@ -1,73 +1,76 @@
 # Project's Description
-This is a mini learning project undergoing a refactor. It consists of a simple data pipeline and data visualization on a dashboard. The README shown below reflects the previous versions of this project and hence doesn't reflect the updated code or currently aimed pipeline.
-
-## Current refactor plan:
-- Complete transition to use dbt for transformation by adding tests
-- Integrate Airflow
-- Possibly integrate a dummy API to supply changing data instead of just ingesting static data from the Kaggle dataset
-- Modify README to match latest progress
+This is a mini learning project consisting of a simple data pipeline and data visualization on a dashboard. It processes data from 2 sources:
+- The dataset '[Chocolate Sales](https://www.kaggle.com/datasets/saidaminsaidaxmadov/chocolate-sales/versions/2)' which was uploaded to Kaggle by [Saidamin Saidakhmadov](https://www.kaggle.com/saidaminsaidaxmadov) and licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). In this project, the dataset is transformed using dbt into a fact table and dimension tables. Then the resulting tables are used for data visualization on the dashboard
+- Online store data stored in a normalized schema which emulates an OLTP system
 
 ## Initial Inspiration
 This project was inspired by the article '[Build a Complete Data Engineering Project from Scratch (Day 42–45)](https://medium.com/@lasyachowdary1703/build-a-complete-data-engineering-project-from-scratch-day-42-45-b14b74ae1586)' by [Lasya](https://medium.com/@lasyachowdary1703) on Medium. This project adapts it to a different dataset and extends it by adding:
-- Database table decomposition to improve the database schema
-- Validation checks between the initial database table and the final tables
-- Environment configuration
-- More charts to visualize data
 - Docker
+- dbt transformations
+- Airflow DAG to run dbt transformations on a schedule
+- A second source of data (dummy online store's data)
+- An API for the dummy online store implemented using FastAPI
+- An OLTP database schema for the dummy online store
+- Database triggers for the online store's schema
+- Generator for random online store's incoming data i.e. new orders created and updates on existing orders' statuses 
 
-# Dataset Source
-This project uses the dataset: '[Chocolate Sales](https://www.kaggle.com/datasets/saidaminsaidaxmadov/chocolate-sales/versions/2)' which was uploaded to Kaggle by [Saidamin Saidakhmadov](https://www.kaggle.com/saidaminsaidaxmadov) and licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
-<br><br>
-In this project, the data was used/modified in the following ways after being converted into a DataFrame:
-- The column names were modified 
-- The data was cleaned
-- It was loaded to a database as one table which was then split into multiple related tables
+# Tech Stack
+(Section to be written later)
 
 # Data Pipeline
-1. The data from CSV was converted into pandas DataFrame. Then the DataFrame was cleaned and the columns were renamed
-2. The DataFrame was loaded into the PostgreSQL database as a table
-3. The database table is decomposed into multiple related tables with primary keys and foreign keys
-4. The data from the database table is used for the dashboard for data visualization
+(section to be written later)
 
 # Steps to Run (Docker and Docker Compose are required)
 1. Create a ```.env.docker``` file in the root directory of this project and add the following (with your PostgreSQL user and password, and Kaggle API token instead) to the file: 
 ```
 USING_DOCKER="true"
-KAGGLE_API_TOKEN="your Kaggle API token"
-POSTGRES_USER="your PostgreSQL user"
-POSTGRES_PASSWORD="your PostgreSQL password"
+KAGGLE_API_TOKEN="your kaggle API token here"
+POSTGRES_USER="your PostgreSQL user here"
+POSTGRES_PASSWORD="your PostgreSQL password here"
 POSTGRES_PORT="5432"
 POSTGRES_HOST="database"
 POSTGRES_DB="choco_db"
+API_HOST="dummy_api"
+API_PORT="80"
+AIRFLOW_CONN_POSTGRES_DEFAULT="postgresql://<your PostgreSQL user>:<your PostgreSQL password>@database:5432/choco_db"
 ```
-2. Create a ```.env``` file in the root directory of this project and add the following to the file with your host's UID and GID instead: 
+2. On Linux or WSL, run the following command while at the root of this project
 ```
-UID=your host's UID, check by running id -u in terminal
-GID=your host's GID, check by running id -g in terminal
+echo -e "AIRFLOW_UID=$(id -u)
+AIRFLOW_GID=$(getent group docker | cut -d: -f3)
+HOST_GID=$(id -g)
+HOST_UID=$(id -u)" > .env
 ```
-3. Run ```docker compose --profile load --profile transform up --build``` (make sure port 5433 is free on the host)
-4. The data will be loaded to the choco_db database, the schema will be transformed and the results of the tests for the results of the transformation will be printed 
-5. View the dashboard at http://localhost:8501/
-6. When done, stop the containers by running ```docker compose --profile load --profile transform down```
+On Windows or Mac, create a .env file at the root of this project and add:
+```
+AIRFLOW_UID=50000
+```
+3. Run ```docker compose up``` to run without starting the online store data generator or run ```docker compose --profile with_online_store_sim up``` to run with the generator (make sure port 5433 is free on the host)
+4. Wait until Airflow finished starting up and view the web UI at http://127.0.0.1:8081/. Login using the following credentials:
+```
+Username: airflow
+Password: airflow
+```
+5. Once Airflow has finished its first DAG run, the data marts are now available to use for data visualization. Open the dashboard at http://localhost:8501/ to view the charts
 
 # Results
-## Database schema
-After the cleaned DataFrame is loaded to the database, the following database schema with just one table was achieved:<br>
-![screenshot of initial database ERD](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/initial-erd.png?raw=true) 
-<br><br>
-The table was then decomposed into tables representing different entities (country, sales_person, product and sales).<br>
-Primary keys were introduced to ensure the uniqueness of each row and foreign keys were introduced to represent<br>
-the relationships between the entities. The following database schema was obtained:<br>
-![screenshot of final database ERD](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/final-erd.png?raw=true) 
-<br> 
-This was done to improve maintainablity, because separating the entities makes updating the data simpler and reduces<br>
-the risks of inconsistent records. Additionally, it allows data, such as products or countries, to be stored independently<br>
-of sales records.<br><br> 
-The initial table (choco_stats) was intentionally kept in the database, so that the new tables that resulted<br>
-from the decomposition can be checked against the initial table using the tests.psql script.
+(Section to be written later)
 
 ## Dashboard screenshots
-The dashboard consists of 5 interactive charts as shown by the following screenshots:
+(Section to be updated later)<br>
+The dashboard consists of 10 charts in total with 5 automatially refreshing charts for the onliene store data and 5 interactive charts for the sales people's sales data as shown below
+### Charts for Online Store Data
+![screenshot of a line chart showing hourly order count in the last 24 hours](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-6.png?raw=true) 
+
+![screenshot of a line chart showing hourly revenue in the last 24 hours](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-7.png?raw=true) 
+
+![screenshot of a bar chart showing comparison of quantities ordered between products sold in online store (all time)](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-8.png?raw=true) 
+
+![screenshot of a bar chart showing the average orders' status transition durations for online orders (all time)](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-9.png?raw=true) 
+
+![screenshot of a bar chart showing the top 5 customers' countries that made the highest number of orders (all time)](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-10.png?raw=true) 
+
+### Charts for Historical Sales People's Sales Data
 ![screenshot of a pie chart comparing the number of boxes shipped in different countries](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-1.png?raw=true) 
 
 ![screenshot of a line chart comparing the number of boxes shipped over time within a selected date range in selected countries](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-2.png?raw=true) 
