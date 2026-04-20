@@ -10,14 +10,17 @@ def load_online_store_products_quantities_ordered_data(engine):
     and last fetched time
     """
     sql_query= """
-              SELECT COALESCE(oi.order_item_quantity, 0) AS ordered_quantity, 
-                     p.product_id, 
-                     p.product_name,
-                     oi.order_created_at,
-                     oi.order_item_order_id
+               SELECT COALESCE(oi.order_item_quantity, 0) AS ordered_quantity, 
+                      p.product_id, 
+                      p.product_name,
+                      p.product_channel,
+                      oi.order_created_at,
+                      oi.order_item_order_id
                FROM marts.fct_online_store_ordered_items oi
-               RIGHT JOIN marts.dim_products p 
-               ON p.product_id = oi.order_item_product_id 
+               RIGHT JOIN (SELECT product_id, product_name, product_channel 
+                           FROM marts.dim_products
+                           WHERE product_channel = 'Both' OR product_channel= 'Online Only') p
+               ON p.product_id = oi.order_item_product_id
                """
     # get dataframe from db's data
     online_store_product_quantity_ordered = fetch_from_db(sql_query, engine)
