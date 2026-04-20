@@ -15,7 +15,14 @@ This project was inspired by the article '[Build a Complete Data Engineering Pro
 - Generator for random online store's incoming data i.e. new orders created and updates on existing orders' statuses 
 
 # Tech Stack
-(Section to be written later)
+(to be updated later)
+- Python
+- PostgreSQL
+- FastAPI and SQLModel
+- dbt
+- Apache Airflow
+- Streamlit and Altair
+- Docker and Docker Compose
 
 # Data Pipeline
 (section to be written later)
@@ -25,7 +32,7 @@ This project was inspired by the article '[Build a Complete Data Engineering Pro
 - Docker
 - Docker Compose
 - Kaggle API key
-    - This is obtained by going to your Kaggle account settings page and clicking 'Generate New Token' under the 'API Tokens (Recommended)' section (as of 21st April 2026) or using your existing token
+    - This is obtained by going to your Kaggle account settings page and clicking 'Generate New Token' under the 'API Tokens (Recommended)' section (as of April 21st 2026) or using your existing token
 ## Step 1
 Create a ```.env.docker``` file in the root directory of this project and add the following (with your PostgreSQL user and password, and Kaggle API token instead) to the file:
 ```
@@ -60,7 +67,7 @@ AIRFLOW_CONN_POSTGRES_DEFAULT="postgresql://<your PostgreSQL user>:<your Postgre
 - Run ```docker compose --profile with_online_store_sim up``` to run with the generator 
    
 Make sure port 5433 is free on the host.<br>
-Note that if you run without the online store data generator and don't add the data manually the charts for online store data will be empty
+Note that if you run without the online store data generator and don't add the data manually the charts for online store data will be empty.
 
 ## Step 4 (Optional)
 Once the db_setup and dummy_api services are up, you can add order or status update data for the online store manually by running SQL queries or by using the API endpoints at http://127.0.0.1:8000/docs by using the 'Try it out' button under the following POST or PATCH endpoints:
@@ -78,7 +85,10 @@ You can view the DAG by going to the Dags tab as shown below:<br>
 ![screenshot of the Dags tab on Airflow's web UI showing the dag in completed state](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/airflow-dags.png?raw=true)
 
 ## Step 6
-Once Airflow has finished its first DAG run, the data marts are now available to use for data visualization. Open the dashboard at http://localhost:8501/ to view the charts
+Once Airflow has finished its first DAG run, the data marts are now available to use for data visualization. Open the dashboard at http://localhost:8501/ to view the charts. 
+
+## Note
+The charts for online store data are updated every 15 mintues and the Airflow DAG for dbt transformation that creates and updates the data marts for the dashboard is run every 10 minutes. Therefore, changes might not show right away or the dashboard might show empty charts or error messages when it's unable to fetch data from the marts for the tables. 
 
 # Dashboard screenshots
 (Section to be updated later)<br>
