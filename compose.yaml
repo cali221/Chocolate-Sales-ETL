@@ -488,3 +488,7 @@ services:
 volumes:
   airflow-postgres-db-volume:
   postgres_data:
+
+networks:
+  default:
+    name: choco-net
