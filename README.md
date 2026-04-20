@@ -81,7 +81,7 @@ Once Airflow has finished its first DAG run, the data marts are now available to
 (Section to be updated later)<br>
 The dashboard consists of 10 charts in total with 5 automatially refreshing charts for the online store data and 5 interactive charts for the sales people's sales data as shown below
 ## Charts for Online Store Data
-Please note that not since the online store data generator generates random data including status updates with short intervals in-between, the data shown might seem unrealistic.
+Please note that since the online store data generator generates random data including status updates with short intervals in-between, the data shown might seem unrealistic.
 
 ![screenshot of a line chart showing hourly order count in the last 24 hours](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-6.png?raw=true) 
 
