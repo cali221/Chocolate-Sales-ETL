@@ -40,18 +40,19 @@ AIRFLOW_CONN_POSTGRES_DEFAULT="postgresql://<your PostgreSQL user>:<your Postgre
 ```
 
 ## Step 2
-On Linux or WSL, run the following command while at the root of this project
-```
-echo -e "AIRFLOW_UID=50000
-DOCKER_GID=$(getent group docker | cut -d: -f3)
-HOST_GID=$(id -g)
-HOST_UID=$(id -u)" > .env
-```
+- On Linux or WSL, run the following command while at the root of this project:
+    ```
+    echo -e "AIRFLOW_UID=50000
+    DOCKER_GID=$(getent group docker | cut -d: -f3)
+    HOST_GID=$(id -g)
+    HOST_UID=$(id -u)" > .env
+    ```
 
-On Windows or Mac, create a .env file at the root of this project and add:
-```
-AIRFLOW_UID=50000
-```
+- On Windows or Mac, create a .env file at the root of this project and add:
+    ```
+    AIRFLOW_UID=50000
+    ```
+    
 ## Step 3
 - Run ```docker compose up``` to run without starting online store data generator run
 - Run ```docker compose --profile with_online_store_sim up``` to run with the generator 
