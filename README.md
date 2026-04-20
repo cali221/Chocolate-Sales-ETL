@@ -20,8 +20,12 @@ This project was inspired by the article '[Build a Complete Data Engineering Pro
 # Data Pipeline
 (section to be written later)
 
-# Steps to Run (Docker and Docker Compose are required)
-1. Create a ```.env.docker``` file in the root directory of this project and add the following (with your PostgreSQL user and password, and Kaggle API token instead) to the file:
+# Steps to Run 
+## Requirements
+- Docker
+- Docker Compose
+## Step 1
+Create a ```.env.docker``` file in the root directory of this project and add the following (with your PostgreSQL user and password, and Kaggle API token instead) to the file:
 ```
 USING_DOCKER="true"
 KAGGLE_API_TOKEN="your kaggle API token here"
@@ -35,30 +39,34 @@ API_PORT="80"
 AIRFLOW_CONN_POSTGRES_DEFAULT="postgresql://<your PostgreSQL user>:<your PostgreSQL password>@database:5432/choco_db"
 ```
 
-2. On Linux or WSL, run the following command while at the root of this project
+## Step 2
+On Linux or WSL, run the following command while at the root of this project
 ```
 echo -e "AIRFLOW_UID=50000
 DOCKER_GID=$(getent group docker | cut -d: -f3)
 HOST_GID=$(id -g)
 HOST_UID=$(id -u)" > .env
 ```
+
 On Windows or Mac, create a .env file at the root of this project and add:
 ```
 AIRFLOW_UID=50000
 ```
-
-3. - Run ```docker compose up``` to run without starting online store data generator run
-   - Run ```docker compose --profile with_online_store_sim up``` to run with the generator 
+## Step 3
+- Run ```docker compose up``` to run without starting online store data generator run
+- Run ```docker compose --profile with_online_store_sim up``` to run with the generator 
    
-   Make sure port 5433 is free on the host.<br>
-   Note that if you run without the online store data generator and don't add the data manually the charts for online store data will be empty
+Make sure port 5433 is free on the host.<br>
+Note that if you run without the online store data generator and don't add the data manually the charts for online store data will be empty
 
-4. Once the db_setup and dummy_api services are up, you can add order or status update data for the online store manually by running SQL queries or by using the API endpoints at http://127.0.0.1:8000/docs by using the 'Try it out' button under the following POST or PATCH endpoints:
+## Step 4 (Optional)
+Once the db_setup and dummy_api services are up, you can add order or status update data for the online store manually by running SQL queries or by using the API endpoints at http://127.0.0.1:8000/docs by using the 'Try it out' button under the following POST or PATCH endpoints:
 ![screenshot of create order endpoint](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/api-create-order-endpoint.png?raw=true) 
 ![screenshot of update order endpoint](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/api-patch-order-status-endpoint.png?raw=true) <br>
 You can also find relevant data from the database by using the 'Try it out' button under the GET endpoints.
 
-5. Wait until Airflow finished starting up (it might take a while) and view the web UI at http://127.0.0.1:8081/. Login using the following credentials:
+## Step 5
+Wait until Airflow finished starting up (it might take a while) and view the web UI at http://127.0.0.1:8081/. Login using the following credentials:
 ```
 Username: airflow
 Password: airflow
@@ -66,10 +74,8 @@ Password: airflow
 You can view the DAG by going to the Dags tab as shown below:<br>
 ![screenshot of the Dags tab on Airflow's web UI showing the dag in completed state](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/airflow-dags.png?raw=true)
 
-6. Once Airflow has finished its first DAG run, the data marts are now available to use for data visualization. Open the dashboard at http://localhost:8501/ to view the charts
-
-# Results
-(Section to be written later)
+## Step 6
+Once Airflow has finished its first DAG run, the data marts are now available to use for data visualization. Open the dashboard at http://localhost:8501/ to view the charts
 
 ## Dashboard screenshots
 (Section to be updated later)<br>
