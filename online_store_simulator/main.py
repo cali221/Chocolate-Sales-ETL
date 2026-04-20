@@ -21,8 +21,8 @@ while True:
     # simulate random events in the online store with pauses:
     # create one random order
     create_random_order(host, port)
-    time.sleep(random.randint(2, 5))
+    time.sleep(random.randint(60, 120))
 
     # update one or more orders' status
     update_random_orders_status(host, port)
-    time.sleep(random.randint(2, 5))
+    time.sleep(random.randint(60, 120))
