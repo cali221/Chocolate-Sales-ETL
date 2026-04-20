@@ -102,7 +102,7 @@ def load_hourly_order_count_data(engine):
 
     # create a column with hours range
     hourly_order_count['hours_range'] = (
-        hourly_order_count['hour'].dt.strftime('%H:%M') + ' - ' +
+        hourly_order_count['hour'].dt.strftime('%a %H:%M') + ' - ' +
         (hourly_order_count['hour'] + pd.Timedelta(hours=1)).dt.strftime('%H:%M')
     )
 
@@ -177,7 +177,7 @@ def load_online_store_hourly_revenue(engine):
 
     # create a column with hours range
     hourly_rev['hours_range'] = (
-        hourly_rev['hour'].dt.strftime('%H:%M') + ' - ' +
+        hourly_rev['hour'].dt.strftime('%a %H:%M') + ' - ' +
         (hourly_rev['hour'] + pd.Timedelta(hours=1)).dt.strftime('%H:%M')
     )
 

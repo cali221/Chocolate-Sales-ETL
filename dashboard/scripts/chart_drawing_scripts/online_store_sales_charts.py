@@ -57,7 +57,7 @@ def draw_hourly_revenue_linechart(df):
     revenue from online store in the last 24 hours
     """
     hourly_revenue_linechart = alt.Chart(df).mark_line().encode(
-        alt.X("hours_range:N", sort=alt.SortField('hour')).title("Hours range"),
+        alt.X("hours_range:N", sort=alt.EncodingSortField('hour')).title("Hours range"),
         alt.Y("revenue_per_hour:Q").title("Revenue ($)")
     )
 
