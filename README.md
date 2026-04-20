@@ -45,21 +45,27 @@ On Windows or Mac, create a .env file at the root of this project and add:
 ```
 AIRFLOW_UID=50000
 ```
-3. Run ```docker compose up``` to run without starting the online store data generator or run ```docker compose --profile with_online_store_sim up``` to run with the generator (make sure port 5433 is free on the host)
-4. Wait until Airflow finished starting up and view the web UI at http://127.0.0.1:8081/. Login using the following credentials:
+3. Run ```docker compose up``` to run without starting the online store data generator or run ```docker compose --profile with_online_store_sim up``` to run with the generator (make sure port 5433 is free on the host). Note that if you run without the online store data generator and don't add the data manually the charts for online store data will be empty
+4. Once the db_setup and dummy_api services are up, you can add data for the online store manually by running SQL queries or by using the API endpoints at http://127.0.0.1:8000/docs by using the 'Try it out' button under the following endpoints:
+![screenshot of relevant endpoints on Swagger docs](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/relevant-api-endpoints.png?raw=true) 
+5. Wait until Airflow finished starting up (it might take a while) and view the web UI at http://127.0.0.1:8081/. Login using the following credentials:
 ```
 Username: airflow
 Password: airflow
 ```
-5. Once Airflow has finished its first DAG run, the data marts are now available to use for data visualization. Open the dashboard at http://localhost:8501/ to view the charts
+You can view the DAG by going to the Dags tab as shown below:
+![screenshot of the Dags tab on Airflow's web UI showing the dag in completed state](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/airflow-dags.png?raw=true) 
+6. Once Airflow has finished its first DAG run, the data marts are now available to use for data visualization. Open the dashboard at http://localhost:8501/ to view the charts
 
 # Results
 (Section to be written later)
 
 ## Dashboard screenshots
 (Section to be updated later)<br>
-The dashboard consists of 10 charts in total with 5 automatially refreshing charts for the onliene store data and 5 interactive charts for the sales people's sales data as shown below
+The dashboard consists of 10 charts in total with 5 automatially refreshing charts for the online store data and 5 interactive charts for the sales people's sales data as shown below
 ### Charts for Online Store Data
+Please note that not all since the online store data generator generates random data including status updates with short intervals in-between, the data shown might seem unrealistic.
+
 ![screenshot of a line chart showing hourly order count in the last 24 hours](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-6.png?raw=true) 
 
 ![screenshot of a line chart showing hourly revenue in the last 24 hours](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-7.png?raw=true) 
