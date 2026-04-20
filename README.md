@@ -36,8 +36,8 @@ AIRFLOW_CONN_POSTGRES_DEFAULT="postgresql://<your PostgreSQL user>:<your Postgre
 ```
 2. On Linux or WSL, run the following command while at the root of this project
 ```
-echo -e "AIRFLOW_UID=$(id -u)
-AIRFLOW_GID=$(getent group docker | cut -d: -f3)
+echo -e "AIRFLOW_UID=50000
+DOCKER_GID=$(getent group docker | cut -d: -f3)
 HOST_GID=$(id -g)
 HOST_UID=$(id -u)" > .env
 ```
