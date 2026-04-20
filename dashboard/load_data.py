@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 from datetime import datetime
 from zoneinfo import ZoneInfo
+from utils import fetch_from_db
 
 def load_sales_peoples_sales_data(engine):
     """
@@ -21,8 +22,15 @@ def load_sales_peoples_sales_data(engine):
                 JOIN marts.dim_sales_people sp ON sp.sales_person_id = s.sales_person_id
                 JOIN marts.dim_products p on p.product_id = s.product_id
                 """
-    # get the dataframe
-    sales_peoples_sales = pd.read_sql(sql_query, engine)
+    
+    # get dataframe from db's data
+    sales_peoples_sales = fetch_from_db(sql_query, engine)
+
+    # raise error if df is empty because it should automatically be filled
+    # unlike online store's data
+    if sales_peoples_sales.empty:
+        raise ValueError("Dataframe for sales people's sales data is empty")
+
     return sales_peoples_sales
 
 def load_online_store_products_quantities_ordered_data(engine):
@@ -40,8 +48,8 @@ def load_online_store_products_quantities_ordered_data(engine):
                RIGHT JOIN marts.dim_products p 
                ON p.product_id = oi.order_item_product_id 
                """
-    # get the dataframe 
-    online_store_product_quantity_ordered = pd.read_sql(sql_query, engine)
+    # get dataframe from db's data
+    online_store_product_quantity_ordered = fetch_from_db(sql_query, engine)
 
     # get the timestamp for last fetched time
     online_product_qty_last_fetched_at = datetime.now(ZoneInfo(st.context.timezone))
@@ -61,7 +69,9 @@ def load_online_status_transition_avg_time(engine):
                        AVG(EXTRACT(EPOCH FROM (order_completed_at - order_arrived_at)) / 3600) AS arrived_to_completed_hours
                 FROM marts.fct_online_store_ordered_items
                 """
-    status_transition_durations = pd.read_sql(sql_query, engine)
+    
+    # get dataframe from db's data
+    status_transition_durations = fetch_from_db(sql_query, engine)
 
     # convert the dataframe so it has one row for each transition
     # get the values as an array
@@ -110,8 +120,8 @@ def load_hourly_order_count_data(engine):
                 ORDER BY h.hour ASC
                 """
     
-    # fetch data from db
-    hourly_order_count = pd.read_sql(sql_query, engine)
+    # get dataframe from db's data
+    hourly_order_count = fetch_from_db(sql_query, engine)
 
     # convert the time to datetime to UTC
     hourly_order_count['hour'] = pd.to_datetime(hourly_order_count['hour'], utc=True)
@@ -146,7 +156,8 @@ def load_top_5_cust_countries_online_store(engine):
                 ORDER BY COUNT(oi.order_item_order_id) DESC
                 LIMIT 5
                 """
-    top_5_cust_countries = pd.read_sql(sql_query, engine)
+    # get dataframe from db's data
+    top_5_cust_countries = fetch_from_db(sql_query, engine)
 
     # get the timestamp for last fetched time
     top_5_cust_countries_last_fetched_at = datetime.now(ZoneInfo(st.context.timezone))
@@ -182,7 +193,8 @@ def load_online_store_hourly_revenue(engine):
                 ORDER BY h.hour ASC
                 """
 
-    hourly_rev = pd.read_sql(sql_query, engine)
+    # get dataframe from db's data
+    hourly_rev = fetch_from_db(sql_query, engine)
 
     # convert the time to datetime to UTC
     hourly_rev['hour'] = pd.to_datetime(hourly_rev['hour'], utc=True)
