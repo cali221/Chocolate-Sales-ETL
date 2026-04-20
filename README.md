@@ -77,10 +77,10 @@ You can view the DAG by going to the Dags tab as shown below:<br>
 ## Step 6
 Once Airflow has finished its first DAG run, the data marts are now available to use for data visualization. Open the dashboard at http://localhost:8501/ to view the charts
 
-## Dashboard screenshots
+# Dashboard screenshots
 (Section to be updated later)<br>
 The dashboard consists of 10 charts in total with 5 automatially refreshing charts for the online store data and 5 interactive charts for the sales people's sales data as shown below
-### Charts for Online Store Data
+## Charts for Online Store Data
 Please note that not all since the online store data generator generates random data including status updates with short intervals in-between, the data shown might seem unrealistic.
 
 ![screenshot of a line chart showing hourly order count in the last 24 hours](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-6.png?raw=true) 
@@ -93,7 +93,7 @@ Please note that not all since the online store data generator generates random 
 
 ![screenshot of a bar chart showing the top 5 customers' countries that made the highest number of orders (all time)](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-10.png?raw=true) 
 
-### Charts for Historical Sales People's Sales Data
+## Charts for Historical Sales People's Sales Data
 ![screenshot of a pie chart comparing the number of boxes shipped in different countries](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-1.png?raw=true) 
 
 ![screenshot of a line chart comparing the number of boxes shipped over time within a selected date range in selected countries](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-2.png?raw=true) 
