@@ -460,11 +460,11 @@ services:
       - ./dashboard:/choco-project-dashboard
     ports: 
       - "127.0.0.1:8501:8501"
-    #depends_on:
-    #  database:
-    #    condition: service_healthy
-      #airflow-apiserver:
-      #  condition: service_healthy
+    depends_on:
+      database:
+        condition: service_healthy
+      airflow-apiserver:
+        condition: service_healthy
     env_file:
       - .env.docker
 
