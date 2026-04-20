@@ -88,7 +88,7 @@ You can view the DAG by going to the Dags tab as shown below:<br>
 Once Airflow has finished its first DAG run, the data marts are now available to use for data visualization. Open the dashboard at http://localhost:8501/ to view the charts. 
 
 ## Note
-The charts for online store data are updated every 15 mintues and the Airflow DAG for dbt transformation that creates and updates the data marts for the dashboard is run every 10 minutes. Therefore, changes might not show right away or the dashboard might show empty charts or error messages when it's unable to fetch data from the marts for the tables. 
+The charts for online store data are updated every 15 mintues and the Airflow DAG for dbt transformation that creates and updates the data marts for the dashboard is run every 10 minutes. Therefore, data changes might not show right away or the dashboard might show empty charts or error messages when it's unable to fetch data from the marts for the tables. 
 
 # Dashboard screenshots
 (Section to be updated later)<br>
@@ -116,3 +116,13 @@ Please note that since the online store data generator generates random data inc
 ![screenshot of a bar chart comparing the sales amount obtained from different products according to selected date range and countries](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-4.png?raw=true) 
 
 ![screenshot of a line chart showing the number of boxes shipped attributed to selected sales people over time within selected date range](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/dashboard-5.png?raw=true) 
+
+# URLs List for Services
+Once the Docker services are up and running, the following are available:
+- http://localhost:8501/ for Streamlit dashboard
+- http://127.0.0.1:8081/ for Airflow's web UI
+- http://127.0.0.1:8000/docs for API docs
+- http://127.0.0.1:8080/ for dbt docs
+    - To open the dbt docs run the following commands before going to the URL above:
+        - ```docker compose run transform dbt docs generate``` then
+        - ```docker compose run -p 127.0.0.1:8080:8080 transform dbt docs serve --host 0.0.0.0```
