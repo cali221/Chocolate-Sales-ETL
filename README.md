@@ -48,7 +48,7 @@ AIRFLOW_UID=50000
 3. Run ```docker compose up``` to run without starting the online store data generator or run ```docker compose --profile with_online_store_sim up``` to run with the generator (make sure port 5433 is free on the host). Note that if you run without the online store data generator and don't add the data manually the charts for online store data will be empty
 4. Once the db_setup and dummy_api services are up, you can add order or status update data for the online store manually by running SQL queries or by using the API endpoints at http://127.0.0.1:8000/docs by using the 'Try it out' button under the following POST or PATCH endpoints:
 ![screenshot of create order endpoint](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/api-create-order-endpoint.png?raw=true) 
-![screenshot of path order status endpoint](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/api-path-order-status-endpoint.png?raw=true) 
+![screenshot of update order endpoint](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/api-patch-order-status-endpoint.png?raw=true) 
 <br>
 You can also find relevant data from the database by using the 'Try it out' button under the GET endpoints.
 5. Wait until Airflow finished starting up (it might take a while) and view the web UI at http://127.0.0.1:8081/. Login using the following credentials:
