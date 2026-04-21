@@ -109,8 +109,6 @@ def load_hourly_order_count_data(engine):
         (hourly_order_count['hour'] + pd.Timedelta(hours=1)).dt.strftime('%H:%M')
     )
 
-    print(hourly_order_count[['hours_range', 'hour', 'order_count']])
-
     # get timestamp for the last fetched time
     hourly_order_count_last_fetched_at = datetime.now(ZoneInfo(st.context.timezone))
 

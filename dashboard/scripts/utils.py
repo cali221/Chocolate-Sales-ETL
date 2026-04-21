@@ -44,9 +44,8 @@ def fetch_from_db(sql_query, engine):
         raise RuntimeError("""
                            Failed to fetch data from database. 
                            The data might not be available yet, 
-                           Airflow needs to run the dbt_transform dag at least once
-                           so the data is available. Alternatively please run
-                           the docker transform service to transform the source data 
-                           into marts
+                           Airflow needs to finish running 
+                           the dbt_transform dag at least once
+                           so the data is available.
                            """) from e
 
