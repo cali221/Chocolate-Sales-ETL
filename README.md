@@ -119,10 +119,8 @@ AIRFLOW_CONN_POSTGRES_DEFAULT="postgresql://<your PostgreSQL user>:<your Postgre
 - Run ```docker compose up``` to run without starting online store data generator 
    
 Make sure port 5433 is free on the host.
-
-<br><br>
-
-**Note:** if you run without the online store data generator and don't add the data manually the charts for online store data will be empty.
+<br>
+**Note:** if you run without the online store data generator and don't add the data manually the charts for online store data will show empty states.
 
 ## Step 4 (Optional)
 Once the db_setup and dummy_api services are up, you can add order or status update data for the online store manually by running SQL queries or by using the API endpoints at http://127.0.0.1:8000/docs by using the 'Try it out' button under the following POST or PATCH endpoints:
@@ -142,7 +140,9 @@ You can view the DAG by going to the Dags tab as shown below:<br>
 ## Step 6
 Once Airflow has finished its first DAG run, the data marts are now available for the dashabord. Open the dashboard at http://localhost:8501/ to view the charts. 
 <br><br>
-**Note:** The charts for online store data refresh every 15 minutes and the Airflow DAG for dbt transformation runs every 10 minutes. Therefore, new data might not appear immediately and the dashboard might temporarily show empty states or error messages while the data is being processed.
+**Notes:**<br>
+- The charts for online store data refresh every 15 minutes and the Airflow DAG for dbt transformation runs every 10 minutes. As a result, new data may not appear immediately and charts may display empty states until the relevant data is available
+- During the initial run, the dashboard might show temporary messages if opened before the Airflow DAG has finished its first run. If this happens, simply refresh the page after the DAG has finished running.
 
 # URLs List for Services
 Once the Docker services are up and running, the following are available:
