@@ -11,7 +11,7 @@ This is a learning project consisting of an end-to-end data pipeline and data vi
 - The dataset '[Chocolate Sales](https://www.kaggle.com/datasets/saidaminsaidaxmadov/chocolate-sales/versions/2)' which was uploaded to Kaggle by [Saidamin Saidakhmadov](https://www.kaggle.com/saidaminsaidaxmadov) and licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). In this project, the dataset is transformed using dbt into a fact table and dimension tables. Then the resulting tables are used for data visualization on the dashboard
 - Online store data stored in an OLTP database schema
 
-The data is ingested, transformed into a star schema fact and dimension tables, then finally used to power a dashboard for analysis and near real-time monitoring for the online store data. 
+The data is ingested, transformed into a star schema with fact and dimension tables, then finally used to power a dashboard for analysis and near real-time monitoring for the online store data. 
 
 ## Initial Inspiration
 This project started as a simpler pipeline and dashboard inspired by the article '[Build a Complete Data Engineering Project from Scratch (Day 42–45)](https://medium.com/@lasyachowdary1703/build-a-complete-data-engineering-project-from-scratch-day-42-45-b14b74ae1586)' by [Lasya](https://medium.com/@lasyachowdary1703) on Medium. Over time, it evolved into a more complex project with multiple data sources, additional data transformations, orchestration, containerization.
@@ -138,7 +138,7 @@ You can view the DAG by going to the Dags tab as shown below:<br>
 ![screenshot of the Dags tab on Airflow's web UI showing the dag in completed state](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/airflow-dags.png?raw=true)
 
 ## Step 6
-Once Airflow has finished its first DAG run, the data marts are now available for the dashabord. Open the dashboard at http://localhost:8501/ to view the charts. 
+Once Airflow has finished its first DAG run, the data marts are now available for the dashboard. Open the dashboard at http://localhost:8501/ to view the charts. 
 <br><br>
 **Notes:**<br>
 - The charts for online store data refresh every 15 minutes and the Airflow DAG for dbt transformation runs every 10 minutes. As a result, new data may not appear immediately and charts may display empty states until the relevant data is available
