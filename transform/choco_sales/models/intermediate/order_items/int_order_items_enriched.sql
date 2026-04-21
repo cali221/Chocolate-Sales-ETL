@@ -55,18 +55,6 @@ SELECT *,
                  rounded_raw_discount_off_order_amount_usd
        END AS alloc_discount_off_order_amount_usd
 FROM numbered_order_items_with_order_data
-),
-checking_query AS(
-SELECT 
-  order_item_order_id,
-  SUM(alloc_tax_amount_usd) AS allocated_tax_sum,
-  MAX(order_tax_amount_usd) AS original_total_tax,
-  SUM(alloc_shipping_costs_usd) AS allocated_shipping_costs_sum,
-  MAX(order_shipping_costs_amount_usd) AS original_total_shipping_costs,
-  SUM(alloc_discount_off_order_amount_usd) AS allocated_discount_sum,
-  MAX(discount_off_order_amount_usd) AS original_total_discount_off_order
-FROM order_items_with_alloc_vals
-GROUP BY order_item_order_id
 )
 
 SELECT order_item_id,
