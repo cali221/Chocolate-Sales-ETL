@@ -1,10 +1,10 @@
 # Table of Contents  
-1. [Project's Description](#proj-desc)     
+1. [Project's Description](#projects-description)     
 2. [Tech Stack](#tech-stack)   
-3. [Data Pipeline Overview](#pipeline-overview)
+3. [Data Pipeline Overview](#data-pipeline-overview)
 4. [Dashboard](#dashboard)
 5. [Steps to Run](#steps-to-run)
-6. [URLs List for Services](#services-urls)
+6. [URLs List for Services](#urls-list-for-services)
 
 # Project's Description
 This is a learning project consisting of an end-to-end data pipeline and data visualization on a dashboard. It processes data from 2 sources:
