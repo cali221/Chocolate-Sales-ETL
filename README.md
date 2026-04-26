@@ -26,19 +26,19 @@ This project started as a simpler pipeline and dashboard inspired by the article
 - Docker and Docker Compose
 
 # Data Pipeline Overview 
-## Ingestion
+## Data Sources
 ### Kaggle Data Ingestion
 The static data about sales people's sales historical data is ingested using kagglehub and stored in a table in its designated schema in the database. The ERD of this schema is shown below:
 ![screenshot of the ERD for kaggle_hist_data schema](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/kaggle-hist-data-schema-erd.png?raw=true) 
 
-### Dummy Online Store Data Ingestion
+### Dummy Online Store Data Creation 
 An OLTP database schema was created in the database for the hypothetical online store. The ERD for this schema is shown below:
 ![screenshot of the ERD for oltp_online_store schema](https://github.com/cali221/Chocolate-Sales-ETL/blob/main/readme-images/oltp-online-store-schema-erd.png?raw=true) 
 
 An API was created to communicate with the database schema. A separate service uses the API's endpoints to continously create new orders and update the status of existing orders, simulating an online store's data.
 
 ## dbt Transformations
-dbt is used to transform the data into a star schema. The transformation happens in 3 stages:
+dbt uses the data in the schemas above as sources and transforms them into a star schema. The transformation happens in 3 stages:
 - The source data is transformed into staging models, these are stored as views in the staging schema in the database
 - The staging models are transformed into intermediate models that are stored as views in the intermediate schema in the database
 - The intermediate models are transformed into the final marts models that are stored as tables in the marts schema in the database
