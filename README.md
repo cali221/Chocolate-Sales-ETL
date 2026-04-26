@@ -11,7 +11,7 @@ This is a learning project consisting of an end-to-end data pipeline and data vi
 - The dataset '[Chocolate Sales](https://www.kaggle.com/datasets/saidaminsaidaxmadov/chocolate-sales/versions/2)' which was uploaded to Kaggle by [Saidamin Saidakhmadov](https://www.kaggle.com/saidaminsaidaxmadov) and licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). In this project, the dataset is transformed using dbt into a fact table and dimension tables. Then the resulting tables are used for data visualization on the dashboard
 - Online store data stored in an OLTP database schema
 
-The data is ingested, transformed into a star schema with fact and dimension tables, then finally used to power a dashboard for analysis and near real-time monitoring.
+The data from both sources is transformed into a star schema with fact and dimension tables, which is then used to power a dashboard for analysis and near real-time monitoring. For simplicity, both OLAP and OLTP systems are implemented in separate schemas within the same PostgreSQL database. 
 
 ## Initial Inspiration
 This project started as a simpler pipeline and dashboard inspired by the article '[Build a Complete Data Engineering Project from Scratch (Day 42–45)](https://medium.com/@lasyachowdary1703/build-a-complete-data-engineering-project-from-scratch-day-42-45-b14b74ae1586)' by [Lasya](https://medium.com/@lasyachowdary1703) on Medium. Over time, it evolved into a more complex project with multiple data sources, additional data transformations, orchestration, containerization.
